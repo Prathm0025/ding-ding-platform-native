@@ -2,13 +2,14 @@ import axios from "axios";
 import { config } from "../utils/config";
 import * as SecureStore from 'expo-secure-store';
 
-export const loginUser= async(username:string, password:string)=>{
+export const loginUser = async (username: string, password: string) => {
 try {
-    
-    const response = await axios.post(`${config.server}/api/users/login`, {username, password});
+    const response = await axios.post(`${config.server}/api/users/login`, { username, password });
+    console.log(response, "res")
     const data = response.data; 
     const token = data.token;  
     await saveToken(token);
+    return data;
 } catch (error:any) {
     console.log(error.message);
 }
