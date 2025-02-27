@@ -27,7 +27,6 @@ const LoginScreen = () => {
     setLoading(true);
     try {
       const response = await loginUser(username, password);
-      console.log(response, "res")
       if (response?.role==='player') {
         if (response?.token) {
           Alert.alert('Success', 'Login Successful');
