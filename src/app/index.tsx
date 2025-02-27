@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   StyleSheet, Text, View, TextInput, TouchableOpacity,
-  Image, ImageBackground, KeyboardAvoidingView, Platform, Dimensions,
-  Alert
+  Image, ImageBackground, KeyboardAvoidingView, Platform, Alert
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import {
   responsiveWidth, responsiveHeight, responsiveFontSize
 } from 'react-native-responsive-dimensions';
 import { loginUser } from '../api/auth';
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
+import * as ScreenOrientation from 'expo-screen-orientation';
+import Loader from '../components/Loader';
 
 const LoginScreen = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -17,6 +18,15 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  useFocusEffect(
+    useCallback(() => {
+        const lockOrientation = async () => {
+            await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+        };
+        lockOrientation();
+    }, [])
+);
 
   const handleLogin = async () => {
     if (!username || !password) {
@@ -28,72 +38,71 @@ const LoginScreen = () => {
     try {
       const response = await loginUser(username, password);
       console.log(response, "res")
-      if (response?.role==='player') {
-        if (response?.token) {
-          Alert.alert('Success', 'Login Successful');
-          router.push('/home')
-        }
+      if (response?.role === 'player' && response?.token) {
+        Alert.alert('Success', 'Login Successful');
+        router.push('/home');
       }
-
-
     } catch (error) {
-      // Alert.alert('Login Failed', error.message);
+      Alert.alert('Login Failed');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <ImageBackground
-      source={require('../assets/images/bg.png')}
-      style={styles.background}
-    >
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.container}
+    <>
+      <ImageBackground
+        source={require('../assets/images/bg.png')}
+        style={styles.background}
       >
-        {/* Login Form */}
-        <View style={styles.formContainer}>
-          <Image source={require('../assets/images/logo.png')} style={styles.logo} />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.container}
+        >
+          {/* Login Form */}
+          <View style={styles.formContainer}>
+            <Image source={require('../assets/images/logo.png')} style={styles.logo} />
 
-          {/* Username Input */}
-          <View style={styles.inputContainer}>
-            <Image source={require('../assets/images/user.png')} style={styles.icon} />
-            <TextInput
-              placeholder="Username"
-              style={styles.input}
-              placeholderTextColor="#FFFFFF"
-              value={username}
-              onChangeText={setUsername}
-            />
-          </View>
+            {/* Username Input */}
+            <View style={styles.inputContainer}>
+              <Image source={require('../assets/images/user.png')} style={styles.icon} />
+              <TextInput
+                placeholder="Username"
+                style={styles.input}
+                placeholderTextColor="#FFFFFF"
+                value={username}
+                onChangeText={setUsername}
+              />
+            </View>
 
-          {/* Password Input with Show/Hide Toggle */}
-          <View style={styles.inputContainer}>
-            <Image source={require('../assets/images/lock.png')} style={styles.icon} />
-            <TextInput
-              placeholder="Password"
-              style={styles.input}
-              placeholderTextColor="#FFFFFF"
-              secureTextEntry={!passwordVisible}
-              value={password}
-              onChangeText={setPassword}
-            />
-            <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
-              <Ionicons name={passwordVisible ? 'eye' : 'eye-off'} size={20} color="#FFFFFF" />
+            {/* Password Input with Show/Hide Toggle */}
+            <View style={styles.inputContainer}>
+              <Image source={require('../assets/images/lock.png')} style={styles.icon} />
+              <TextInput
+                placeholder="Password"
+                style={styles.input}
+                placeholderTextColor="#FFFFFF"
+                secureTextEntry={!passwordVisible}
+                value={password}
+                onChangeText={setPassword}
+              />
+              <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
+                <Ionicons name={passwordVisible ? 'eye' : 'eye-off'} size={20} color="#FFFFFF" />
+              </TouchableOpacity>
+            </View>
+
+            {/* Login Button */}
+            <TouchableOpacity onPress={() => handleLogin()} style={styles.button}>
+              <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
           </View>
 
-          {/* Login Button */}
-          <TouchableOpacity onPress={() => handleLogin()} style={styles.button}>
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Lady Image at Bottom */}
-        <Image source={require('../assets/images/lady.png')} style={styles.ladyImage} />
-      </KeyboardAvoidingView>
-    </ImageBackground>
+          {/* Lady Image at Bottom */}
+          <Image source={require('../assets/images/lady.png')} style={styles.ladyImage} />
+        </KeyboardAvoidingView>
+      </ImageBackground>
+      {loading&&<Loader />}
+    </>
   );
 };
 
@@ -138,7 +147,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: responsiveHeight(6),
     borderColor: '#FFB302',
-    borderWidth: responsiveWidth(.5),
+    borderWidth: responsiveWidth(0.5),
     borderRadius: responsiveWidth(20),
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     marginBottom: responsiveWidth(4),
