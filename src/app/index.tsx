@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import { 
   StyleSheet, Text, View, TextInput, TouchableOpacity, 
   Image, ImageBackground, KeyboardAvoidingView, Platform, Dimensions 
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
+import { 
+    responsiveWidth, responsiveHeight, responsiveFontSize
+} from 'react-native-responsive-dimensions';
+  
 const { width, height } = Dimensions.get('window'); // Get screen width & height
 
 const LoginScreen = () => {
-  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false)
 
   return (
     <ImageBackground
@@ -74,20 +77,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logo: {
-    width: width * 0.6, // 60% of screen width
-    height: height * 0.15, // 15% of screen height
-    marginBottom: height * 0.02,
+    width: responsiveWidth(60),
+    height: responsiveHeight(15),
+    marginBottom: responsiveHeight(2),
     resizeMode: 'contain',
   },
   formContainer: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    padding: width * 0.05,
-    borderRadius: 10,
-    width: width * 0.8, // 80% of screen width
+    padding: responsiveWidth(5),
+    borderRadius: responsiveWidth(3),
+    width: responsiveWidth(87),
     alignItems: 'center',
-    elevation: 5,
+    elevation: responsiveHeight(5),
     position: 'absolute',
-    top: height * 0.35, // Adjust based on screen size
+    top: responsiveHeight(35),
     transform: [{ translateY: -50 }],
     zIndex: 2,
   },
@@ -95,41 +98,41 @@ const styles = StyleSheet.create({
     flexDirection: 'row',  
     alignItems: 'center',
     width: '100%',
-    height: height * 0.07, // Dynamic height
+    height: responsiveHeight(6),
     borderColor: '#FFB302', 
-    borderWidth: 2,
-    borderRadius: 25, 
+    borderWidth: responsiveWidth(.5),
+    borderRadius: responsiveWidth(20), 
     backgroundColor: 'rgba(0, 0, 0, 0.6)', 
-    marginBottom: height * 0.02, // Dynamic margin
-    paddingHorizontal: width * 0.04,
+    marginBottom: responsiveWidth(4),
+    paddingHorizontal: responsiveWidth(4),
   },
   icon: {
-    width: width * 0.06, // Scale icon size dynamically
-    height: width * 0.06,
-    marginRight: width * 0.02,
+    width: responsiveWidth(6),
+    height: responsiveHeight(3),
+    marginRight: responsiveWidth(3),
   },
   input: {
     flex: 1, 
     color: '#FFFFFF', 
-    fontSize: width * 0.04, // Scales font size dynamically
+    fontSize: responsiveFontSize(1.7),
   },
   button: {
     backgroundColor: '#F69E04',
-    paddingVertical: height * 0.015, 
-    borderRadius: 25,
+    paddingVertical: responsiveWidth(2), 
+    borderRadius: responsiveWidth(10),
     width: '100%',
     alignItems: 'center',
   },
   buttonText: {
     color: '#fff',
-    fontSize: width * 0.045, 
+    fontSize: responsiveFontSize(2), 
     fontWeight: 'bold',
   },
   ladyImage: {
     position: 'absolute',
     bottom: 0,
-    width: '100%',
-    height: height * 0.45, // Scales with screen size
+    width: responsiveWidth(100),
+    height: responsiveHeight(90),
     resizeMode: 'cover',
   },
 });

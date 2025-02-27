@@ -3,11 +3,11 @@
     "name": "ding-ding",
     "slug": "ding-ding",
     "version": "1.0.0",
-    "orientation": "landscape",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "orientation": "portrait",  
     "ios": {
       "supportsTablet": true
     },
