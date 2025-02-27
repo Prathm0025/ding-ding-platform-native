@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unity WebGL Simulator</title>
+</head>
+<body>
+    <h1>Unity WebGL Simulator</h1>
+    <div id="output"></div>
+    <div id="urlParamsOutput"></div>
+
+    <script>
+        // Simulate the Unity instance /.bn
+        window.unityInstance = {
+            SendMessage: function(objectName, methodName, message) {
+                document.getElementById('output').innerHTML += `<p>Received: ${objectName}.${methodName}(${message})</p>`;
+            }
+        };
+
+        // Simulate Unity loaded event
+        window.dispatchEvent(new Event('unityLoaded'));
+
+        // Log URL parameters to the page
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlParamsOutput = document.getElementById('urlParamsOutput');
+
+        urlParamsOutput.innerHTML = "<h2>URL Parameters</h2>";
+        urlParams.forEach((value, key) => {
+            urlParamsOutput.innerHTML += `<p><strong>${key}:</strong> ${value}</p>`;
+        });
+    </script>
+</body>
+</html>
