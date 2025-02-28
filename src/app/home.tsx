@@ -2,6 +2,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useCallback } from 'react';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { useFocusEffect } from '@react-navigation/native';
+import Header from '../components/Header';
+import Games from '../components/Games';
+import Footer from '../components/Footer';
 
 const Home = () => {
     useFocusEffect(
@@ -15,7 +18,9 @@ const Home = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Home</Text>
+            <Header />
+            <Games />
+            <Footer/>
         </View>
     );
 };
@@ -27,9 +32,5 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    text: {
-        fontSize: 24,
-        fontWeight: 'bold',
-    },
+    }
 });
