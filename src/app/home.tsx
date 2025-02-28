@@ -5,10 +5,17 @@ import { useFocusEffect } from '@react-navigation/native';
 import Header from '../components/Header';
 import Games from '../components/Games';
 import Footer from '../components/Footer';
+
 import { Image, ImageBackground } from 'expo-image';
 import { BlurView } from 'expo-blur';
 
+import useSocket from '../socket/hooks/useSocket';
+import { emitEvent } from '../socket/socket';
+
+
 const Home = () => {
+    const socket = useSocket();
+
     useFocusEffect(
         useCallback(() => {
             const lockOrientation = async () => {
@@ -17,6 +24,13 @@ const Home = () => {
             lockOrientation();
         }, [])
     );
+
+    useEffect(() => {
+        if (socket) {
+            //update credit
+        }
+      }, [socket]);
+    
 
     return (
         <View style={styles.container}>
