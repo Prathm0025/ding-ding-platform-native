@@ -1,17 +1,19 @@
-import axios from "axios";
-import { config } from "../utils/config";
 import * as SecureStore from 'expo-secure-store';
+import { jwtDecode } from "jwt-decode";
+import { api } from "../utils/utils";
 
 //function to login user
 export const loginUser = async (username: string, password: string) => {
     try {
 
-        const response = await axios.post(`${config.server}/api/users/login`, { username, password });
+        const response = await api.post(`/api/users/login`, { username, password });
         const data = response.data;
         const token = data.token;
-       //save the token in secureStore after login
+        //save the token in secureStore after login
         await saveToken(token);
-        return response.data;
+        console.log(await isTokenValid());
+
+        return data;
     } catch (error: any) {
         console.log(error.message);
     }
@@ -21,11 +23,13 @@ export const loginUser = async (username: string, password: string) => {
 //function to save token in superStore
 export const saveToken = async (token: string) => {
     try {
-     
+
         await SecureStore.setItemAsync('userToken', token, {
-           // only accessible when device in unlocked
+            // only accessible when device in unlocked
             keychainAccessible: SecureStore.WHEN_UNLOCKED
         });
+        const decoded: any = jwtDecode(token);
+        await SecureStore.setItemAsync('name',decoded.username)
     } catch (error) {
         console.log(error);
 
@@ -59,6 +63,44 @@ export const removeToken = async () => {
         console.log(error);
     }
 }
+
+
+//Check Token expiration
+
+export const isTokenValid = async () => {
+
+    const authTokn = await getAuthToken();
+
+    if (!authTokn) {
+        return false;
+    }
+    try {
+        const decoded: any = jwtDecode(authTokn);
+        if (decoded.exp * 1000 < Date.now()) {
+            //logout if token has expired
+            await removeToken();
+            return false;
+        }
+        return true;
+    } catch (error) {
+        console.log(error);
+
+    }
+
+
+}
+
+export const getUserName= async () => {
+    try {
+
+        const name = await SecureStore.getItemAsync('name');
+         return name;
+    } catch (error) {
+        console.log(error);
+
+    }
+}
+
 
 
 
