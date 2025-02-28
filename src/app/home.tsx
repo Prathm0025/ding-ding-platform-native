@@ -1,11 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useCallback } from 'react';
+import { StyleSheet, View } from 'react-native';
+import React, { useCallback } from 'react';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { useFocusEffect } from '@react-navigation/native';
 import Header from '../components/Header';
 import Games from '../components/Games';
 import Footer from '../components/Footer';
 import { Image, ImageBackground } from 'expo-image';
+import { BlurView } from 'expo-blur';
 
 const Home = () => {
     useFocusEffect(
@@ -25,12 +26,15 @@ const Home = () => {
                 style={styles.background}
                 resizeMode="cover"
             >
-                {/* Coin GIF - Positioned above background but behind content */}
+                {/* Blurred Overlay */}
+                <BlurView intensity={50} style={styles.blurOverlay} tint="dark" />
+
+                {/* Coin GIF - Positioned above blurred overlay but below content */}
                 <View style={styles.coinContainer}>
                     <Image source={require('../assets/images/coin.gif')} style={styles.coinGif} />
                 </View>
 
-                <View style={styles.mainContainer} >
+                <View style={styles.mainContainer}>
                     {/* Main Content */}
                     <Header />
                     <Games />
@@ -54,6 +58,10 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
+    blurOverlay: {
+        ...StyleSheet.absoluteFillObject, // Covers the entire screen
+        zIndex: 1, // Ensures it's above the background but below the coin GIF
+    },
     coinContainer: {
         position: 'absolute',  // Ensures it's above background but below content
         top: 0,
@@ -62,21 +70,21 @@ const styles = StyleSheet.create({
         bottom: 0,
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: 1, // Lower than content but above background
+        zIndex: 2, // Above blur overlay
     },
     mainContainer: {
-        position: 'absolute',  // Ensures it's above background but below content
+        position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
         justifyContent: 'space-between',
         alignItems: 'center',
-        zIndex: 1, // Lower than content but above background
+        zIndex: 3, // Above both blur and coin GIF
     },
     coinGif: {
-        width: '100%',
-        height: '100%',
-        opacity: 0.5, // Optional: Adjust transparency
+        width: '80%',
+        height: '80%',
+        opacity: 0.7, // Slightly visible through the blur
     },
 });

@@ -36,6 +36,7 @@ const Header = () => {
                     width: responsiveWidth(22),
                     height: responsiveWidth(20),
                     marginTop: responsiveWidth(3),
+                    zIndex:99,
                     resizeMode: 'contain'
                 }} />
             </View>
