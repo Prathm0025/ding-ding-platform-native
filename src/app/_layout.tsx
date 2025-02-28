@@ -1,4 +1,6 @@
 import { Stack, useRouter, useSegments } from "expo-router";
+import Toast from 'react-native-toast-message';
+
 import { useEffect, useState } from "react";
 import { isTokenValid } from "../api/auth";
 
@@ -33,10 +35,14 @@ if (isAuthenticated === null) {
 }
 
 
-return (
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="home" options={{ headerShown: false }} />
-    </Stack>
+
+  return (
+    <>
+      <Stack screenOptions={{ statusBarHidden: true }}>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="home" options={{ headerShown: false}} />
+      </Stack>
+      <Toast />
+    </>
   );
 }
