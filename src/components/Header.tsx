@@ -1,11 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, useWindowDimensions } from 'react-native';
 import { Image } from 'expo-image';
+import { removeToken } from '../api/auth';
+import { useRouter } from 'expo-router';
 
 const Header = () => {
+    const router = useRouter();
+
     const { width } = useWindowDimensions();
     const responsiveWidth = (percentage:any) => (percentage / 100) * width;
-
+    const handleLogout = async()=>{
+        await removeToken();
+        router.replace("/");
+    } 
     return (
         <ImageBackground
             source={require('../assets/images/header-bg.png')}
@@ -43,7 +50,7 @@ const Header = () => {
 
             {/* Icons */}
             <View style={styles.iconsContainer}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>handleLogout()}>
                     <Image source={require('../assets/images/h-icon1.png')} style={{
                         width: responsiveWidth(3.5),
                         height: responsiveWidth(4),
