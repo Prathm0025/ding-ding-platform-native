@@ -1,6 +1,8 @@
 import * as SecureStore from 'expo-secure-store';
 import { jwtDecode } from "jwt-decode";
 import { api } from "../utils/utils";
+import * as Crypto from "expo-crypto";
+import { v4 as uuidv4 } from "uuid";
 
 //function to login user
 export const loginUser = async (username: string, password: string) => {
@@ -29,7 +31,10 @@ export const saveToken = async (token: string) => {
             keychainAccessible: SecureStore.WHEN_UNLOCKED
         });
         const decoded: any = jwtDecode(token);
-        await SecureStore.setItemAsync('name',decoded.username)
+        let platformId = await generateUUID();
+        console.log(platformId)          
+        await SecureStore.setItemAsync('name',decoded.username);
+        await SecureStore.setItemAsync("platformId", platformId);
     } catch (error) {
         console.log(error);
 
@@ -90,9 +95,9 @@ export const isTokenValid = async () => {
 
 }
 
+//get user name from super store
 export const getUserName= async () => {
     try {
-
         const name = await SecureStore.getItemAsync('name');
          return name;
     } catch (error) {
@@ -101,6 +106,20 @@ export const getUserName= async () => {
     }
 }
 
+export const getPlatformId = async () =>{
+ try {
+    const platformId = await SecureStore.getItemAsync('platformId');
+    return platformId;
+ } catch (error) {
+    
+ }   
+}
 
 
 
+
+const generateUUID = async () => {
+    const randomBytes = await Crypto.getRandomBytesAsync(16);
+    return uuidv4({ random: randomBytes });
+  };
+  
