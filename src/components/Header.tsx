@@ -1,43 +1,69 @@
-import React, { useCallback } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
-import { responsiveWidth } from 'react-native-responsive-dimensions';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, useWindowDimensions } from 'react-native';
+import { Image } from 'expo-image';
 
 const Header = () => {
-   
+    const { width } = useWindowDimensions();
+    const responsiveWidth = (percentage:any) => (percentage / 100) * width;
 
     return (
         <ImageBackground
             source={require('../assets/images/header-bg.png')}
-            style={styles.container}
+            style={[styles.container, { height: responsiveWidth(7) }]}
             resizeMode="cover"
         >
             {/* User Info */}
             <View style={styles.userInfo}>
                 <Image
                     source={require('../assets/images/profile.png')}
-                    style={styles.profileImage}
+                    style={{
+                        width: responsiveWidth(5),
+                        height: responsiveWidth(5),
+                        borderRadius: responsiveWidth(5),
+                        marginRight: responsiveWidth(1),
+                        marginLeft: responsiveWidth(2),
+                    }}
                 />
                 <View>
-                    <Text style={styles.userName}>Cheyenne Carder</Text>
-                    <Text style={styles.coin}>23567</Text>
+                    <Text style={[styles.userName, { fontSize: responsiveWidth(1.5) }]}>Cheye Carr</Text>
+                    <Text style={[styles.coin, { fontSize: responsiveWidth(1.5) }]}>23567</Text>
                 </View>
             </View>
 
             {/* Logo */}
             <View style={styles.logoContainer}>
-                <Image source={require('../assets/images/logo.png')} style={styles.logo} />
-                </View>
+                <Image source={require('../assets/images/logo.gif')} style={{
+                    width: responsiveWidth(22),
+                    height: responsiveWidth(20),
+                    marginTop: responsiveWidth(3),
+                    zIndex:99,
+                    resizeMode: 'contain'
+                }} />
+            </View>
 
             {/* Icons */}
             <View style={styles.iconsContainer}>
                 <TouchableOpacity>
-                    <Image source={require('../assets/images/h-icon1.png')} style={styles.iconPlaceholder} />
+                    <Image source={require('../assets/images/h-icon1.png')} style={{
+                        width: responsiveWidth(3.5),
+                        height: responsiveWidth(4),
+                        marginHorizontal: responsiveWidth(1.1),
+                    }} />
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Image source={require('../assets/images/h-icon2.png')} style={styles.iconPlaceholder} />
+                    <Image source={require('../assets/images/h-icon2.png')} style={{
+                        width: responsiveWidth(3.5),
+                        height: responsiveWidth(4),
+                        marginHorizontal: responsiveWidth(1.1),
+                    }} />
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Image source={require('../assets/images/h-icon3.png')} style={styles.iconPlaceholder} />
+                    <Image source={require('../assets/images/h-icon3.png')} style={{
+                        width: responsiveWidth(3.5),
+                        height: responsiveWidth(4),
+                        marginHorizontal: responsiveWidth(1.1),
+                        marginRight: responsiveWidth(2),
+                    }} />
                 </TouchableOpacity>
             </View>
         </ImageBackground>
@@ -47,7 +73,6 @@ const Header = () => {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        height: responsiveWidth(7), // Fixed header height
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -55,39 +80,20 @@ const styles = StyleSheet.create({
     userInfo: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingLeft:responsiveWidth(2)
-    },
-    profileImage: {
-        width: responsiveWidth(5), 
-        height: responsiveWidth(5),
-        borderRadius: responsiveWidth(5),
-        marginRight: responsiveWidth(1),
     },
     userName: {
         color: '#fff',
-        fontSize: responsiveWidth(1.5),
         fontWeight: 'bold',
     },
     coin: {
         color: '#FFE650',
-        fontSize: responsiveWidth(1.5),
-    },
-    logo: {
-        width: responsiveWidth(22),
-        height: responsiveWidth(20),
-        resizeMode: 'contain',
     },
     iconsContainer: {
         flexDirection: 'row',
-        paddingRight:responsiveWidth(2)
-    },
-    iconPlaceholder: {
-        width: responsiveWidth(3.5),
-        height: responsiveWidth(4),
-        marginHorizontal: responsiveWidth(1.1),
+        
     },
     logoContainer: {
-        paddingTop: responsiveWidth(2),
+        paddingTop: 10,
     }
 });
 
