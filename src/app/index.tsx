@@ -1,13 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   StyleSheet, Text, View, TextInput, TouchableOpacity,
-  Image, ImageBackground, KeyboardAvoidingView, Platform, Alert,
-  ScrollView
+  Image, ImageBackground, KeyboardAvoidingView, Platform,
+  ScrollView, useWindowDimensions
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import {
-  responsiveWidth, responsiveHeight, responsiveFontSize
-} from 'react-native-responsive-dimensions';
 import { loginUser } from '../api/auth';
 import { useFocusEffect, useRouter } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
@@ -20,11 +17,16 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { width, height } = useWindowDimensions();
+
+  const responsiveWidth = (percentage:number) => (percentage / 100) * width;
+  const responsiveHeight = (percentage:number) => (percentage / 100) * height;
+  const responsiveFontSize = (percentage:number) => (percentage / 100) * Math.sqrt(width * height);
 
   useFocusEffect(
     useCallback(() => {
       const lockOrientation = async () => {
-        await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+        await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
       };
       lockOrientation();
     }, [])
@@ -46,7 +48,6 @@ const LoginScreen = () => {
       });
       return;
     } else {
-
       setLoading(true);
       try {
         const response = await loginUser(username, password);
@@ -74,8 +75,82 @@ const LoginScreen = () => {
         setLoading(false);
       }
     }
-
   };
+
+  const styles = StyleSheet.create({
+    background: {
+      flex: 1,
+      resizeMode: 'cover',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: '100%',
+    },
+    container: {
+      flex: 1,
+    },
+    innerContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      paddingVertical: responsiveHeight(5),
+    },
+    formContainer: {
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      padding: responsiveWidth(5),
+      borderRadius: responsiveWidth(3),
+      width: responsiveWidth(87),
+      alignItems: 'center',
+      elevation: responsiveHeight(5),
+    },
+    logo: {
+      width: responsiveWidth(50),
+      height: responsiveHeight(12),
+      marginBottom: responsiveHeight(2),
+      resizeMode: 'contain',
+    },
+    ladyBackground: {
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      resizeMode: 'cover',
+      zIndex: 1, // Above the bg.png
+    },
+    inputContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      width: '100%',
+      height: responsiveHeight(6),
+      borderColor: '#FFB302',
+      borderWidth: responsiveWidth(0.5),
+      borderRadius: responsiveWidth(20),
+      backgroundColor: 'rgba(0, 0, 0, 0.6)',
+      marginBottom: responsiveWidth(4),
+      paddingHorizontal: responsiveWidth(4),
+    },
+    icon: {
+      width: responsiveWidth(6),
+      height: responsiveHeight(3),
+      marginRight: responsiveWidth(3),
+    },
+    input: {
+      flex: 1,
+      color: '#FFFFFF',
+      fontSize: responsiveFontSize(1.7),
+    },
+    button: {
+      backgroundColor: '#F69E04',
+      paddingVertical: responsiveWidth(3),
+      borderRadius: responsiveWidth(10),
+      width: '100%',
+      alignItems: 'center',
+    },
+    buttonText: {
+      color: '#fff',
+      fontSize: responsiveFontSize(2),
+      fontWeight: 'bold',
+    },
+  });
 
   return (
     <>
@@ -83,7 +158,6 @@ const LoginScreen = () => {
         source={require('../assets/images/bg.png')}
         style={styles.background}
       >
-        {/* Lady Image as Background */}
         <ImageBackground
           source={require('../assets/images/lady.png')}
           style={styles.ladyBackground}
@@ -136,7 +210,6 @@ const LoginScreen = () => {
               </View>
             </ScrollView>
           </KeyboardAvoidingView>
-
         </ImageBackground>
       </ImageBackground>
 
@@ -146,79 +219,3 @@ const LoginScreen = () => {
 };
 
 export default LoginScreen;
-
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
-  },
-  container: {
-    flex: 1,
-  },
-  innerContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: responsiveHeight(5),
-  },
-  formContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    padding: responsiveWidth(5),
-    borderRadius: responsiveWidth(3),
-    width: responsiveWidth(87),
-    alignItems: 'center',
-    elevation: responsiveHeight(5),
-  },
-  logo: {
-    width: responsiveWidth(50),
-    height: responsiveHeight(12),
-    marginBottom: responsiveHeight(2),
-    resizeMode: 'contain',
-  },
-  ladyBackground: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-    zIndex: 1, // Above the bg.png
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    height: responsiveHeight(6),
-    borderColor: '#FFB302',
-    borderWidth: responsiveWidth(0.5),
-    borderRadius: responsiveWidth(20),
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    marginBottom: responsiveWidth(4),
-    paddingHorizontal: responsiveWidth(4),
-  },
-  icon: {
-    width: responsiveWidth(6),
-    height: responsiveHeight(3),
-    marginRight: responsiveWidth(3),
-  },
-  input: {
-    flex: 1,
-    color: '#FFFFFF',
-    fontSize: responsiveFontSize(1.7),
-  },
-  button: {
-    backgroundColor: '#F69E04',
-    paddingVertical: responsiveWidth(3),
-    borderRadius: responsiveWidth(10),
-    width: '100%',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: responsiveFontSize(2),
-    fontWeight: 'bold',
-  },
-
-});
