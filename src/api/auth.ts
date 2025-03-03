@@ -13,8 +13,6 @@ export const loginUser = async (username: string, password: string) => {
         const token = data.token;
         //save the token in secureStore after login
         await saveToken(token);
-        console.log(await isTokenValid());
-
         return data;
     } catch (error: any) {
         console.log(error.message);

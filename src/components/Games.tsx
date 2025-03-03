@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native';
 import GameCard from './GameCard';
+import { fetchGames } from '../api/game';
 
 const Games = () => {
   const { width } = useWindowDimensions();
-
+  const [games, setGames] = useState<any | []>([]);
   // Create an array of 20 game cards
-  const games = Array.from({ length: 20 }, (_, index) => ({ id: index }));
 
+useEffect(()=>{
+  const getGames = async()=>{  
+    const games = await fetchGames();
+    const { others } = games;    
+    setGames(others);
+  }
+getGames();
+}, [])
   return (
     <View style={styles.container}>
       <ScrollView
@@ -18,8 +26,8 @@ const Games = () => {
         decelerationRate="fast"
         pagingEnabled
       >
-        {games.map((game) => (
-          <GameCard key={game.id} />
+        {games?.map((game:any) => (
+          <GameCard key={game._id}  data ={game}/>
         ))}
       </ScrollView>
     </View>
