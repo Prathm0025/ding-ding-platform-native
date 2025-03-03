@@ -1,5 +1,6 @@
 import Constants from "expo-constants";
+import { EXPO_PUBLIC_API_URL } from "@env";
 
 export const config = {
-  server: Constants.expoConfig?.extra?.API_BASE_URL
+  server: EXPO_PUBLIC_API_URL
 };

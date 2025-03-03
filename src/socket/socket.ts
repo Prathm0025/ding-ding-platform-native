@@ -1,7 +1,7 @@
 import { io, Socket } from "socket.io-client";
 import { getAuthToken, getPlatformId } from "../api/auth";
+import { config } from "../utils/config";
 
-const SOCKET_URL = "http://10.0.2.2:5002"; 
 
 let socket: Socket | null = null;
 let isConnecting = false;
@@ -14,10 +14,8 @@ export const connectSocket =async () => {
     isConnecting = true;
    const token =await getAuthToken()
    const platformId = await getPlatformId();
-    console.log(platformId, "platform");
-    
-
-    socket = io(SOCKET_URL, {
+  
+    socket = io(config.server, {
       auth:{token, origin:platformId},  
       transports: ["websocket"],
       reconnection: true, 

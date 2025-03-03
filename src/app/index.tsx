@@ -5,11 +5,11 @@ import {
   ScrollView, useWindowDimensions
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { loginUser } from '../api/auth';
 import { useFocusEffect, useRouter } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import Loader from '../components/Loader';
 import Toast from 'react-native-toast-message';
+import { loginUser } from '../api/auth';
 
 const LoginScreen = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -22,7 +22,6 @@ const LoginScreen = () => {
   const responsiveWidth = (percentage:number) => (percentage / 100) * width;
   const responsiveHeight = (percentage:number) => (percentage / 100) * height;
   const responsiveFontSize = (percentage:number) => (percentage / 100) * Math.sqrt(width * height);
-
   useFocusEffect(
     useCallback(() => {
       const lockOrientation = async () => {
