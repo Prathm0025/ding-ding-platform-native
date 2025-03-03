@@ -41,6 +41,8 @@ if (isAuthenticated === null) {
       <Stack screenOptions={{ statusBarHidden: true }}>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="home" options={{ headerShown: false}} />
+        <Stack.Screen name="game" options={{ headerShown: false}} />
+
       </Stack>
       <Toast />
     </>

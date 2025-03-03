@@ -1,13 +1,26 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useEffect, useState } from 'react';
 import { WebView } from 'react-native-webview';
+import { getAuthToken } from '../api/auth';
 
 const GameScreen = () => {
+  const [authToken, setAuthToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchToken = async () => {
+    
+        const token:any= await getAuthToken();
+        setAuthToken(token);
+    
+    };
+
+    fetchToken();
+  }, []);
   const webViewRef = useRef(null);
-  const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzkxOTI3OTgxYmU0MzlkMjkyYjg4OSIsInVzZXJuYW1lIjoiTWVodWwiLCJyb2xlIjoicGxheWVyIiwiaWF0IjoxNzQwNjQwODA2LCJleHAiOjE3NDEyNDU2MDZ9.mE6MFKJzX_gvnALAiTmXBKk7sXmt0YwEb8oiMhq2hDU";
+
   const socketURL = "https://gl9r1h24-5002.inc1.devtunnels.ms/";
 
   // Use a local server or a service like ngrok to serve your test HTML file
-  const baseGameUrl = "https://cf37-49-205-44-46.ngrok-free.app";
+  const baseGameUrl = "https://slot-cleopatra-dev.vercel.app/";
 
   // Encode the auth token and socket URL
   // const encodedToken = encodeURIComponent(authToken);
