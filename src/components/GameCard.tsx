@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, ImageBackground, useWindowDimensions, Animated, Pressable } from 'react-native';
+import { StyleSheet, View, ImageBackground, Text, useWindowDimensions, Animated, Pressable } from 'react-native';
 
-const GameCard = () => {
+interface GameCardProps {
+  data: {
+    name: string;
+    thumbnail: string;
+  };
+}
+
+const GameCard: React.FC<GameCardProps> = ({ data }) => {
   const { width, height } = useWindowDimensions(); // Get screen dimensions dynamically
 
   // 🔹 Helper functions for responsive scaling
@@ -33,11 +40,11 @@ const GameCard = () => {
         style={[
           styles.cardContainer,
           {
-            width: resWidth(18),
+            width: resWidth(20),
             height: resHeight(53),
             borderRadius: resSize(5),
             borderWidth: resSize(0.4),
-            padding: resSize(.5),
+            padding: resSize(0.5),
             shadowRadius: resSize(1.8),
             shadowOffset: { width: resSize(0.4), height: resSize(0.8) },
             marginHorizontal: resSize(1.5),
@@ -47,10 +54,15 @@ const GameCard = () => {
       >
         {/* Background Image */}
         <ImageBackground
-          source={require('../assets/images/game.png')}
+          source={{ uri: data.thumbnail }}
           style={styles.background}
           imageStyle={{ borderRadius: resSize(4) }}
-        />
+        >
+          {/* Game Name Overlay */}
+          <View style={styles.overlay}>
+            <Text style={styles.gameTitle}>{data.name}</Text>
+          </View>
+        </ImageBackground>
       </Animated.View>
     </Pressable>
   );
@@ -70,5 +82,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
+  },
+  overlay: {
+    width: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: 5,
+    alignItems: 'center',
+  },
+  gameTitle: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
