@@ -4,9 +4,10 @@ import * as SecureStore from 'expo-secure-store';
 
 //axios configure
 //create api base
+
 export const api = axios.create({
-    baseURL:config.server,
-})
+  baseURL:config.server ,
+});
 
 //configure token
 api.interceptors.request.use(async (config) =>{
