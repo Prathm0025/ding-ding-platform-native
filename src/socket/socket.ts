@@ -1,6 +1,7 @@
 import { io, Socket } from "socket.io-client";
 import { getAuthToken, getPlatformId } from "../api/auth";
 import { config } from "../utils/config";
+import { setCredits } from "../utils/utils";
 
 
 let socket: Socket | null = null;
@@ -42,9 +43,13 @@ export const connectSocket =async () => {
       console.log(`[WebSocket] Reconnection attempt #${attempt}`);
     });
 
-    socket.on("message", (data) => {
-      console.log("[WebSocket] Message received:", data);
-    });
+    socket.on("data", (data) => {
+      switch (data?.type) {
+        case "CREDIT":
+          setCredits(data?.data?.credits);
+          break;
+        default:
+      }    });
   }
 };
 
