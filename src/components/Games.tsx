@@ -15,6 +15,8 @@ const Games = () => {
     const getGames = async () => {
       const games = await fetchGames();
       const { others: allGames } = games;
+      console.log("allgames", allGames);
+
 
       const others = allGames.filter((gem: GameAtomType) =>
         gem.slug === "sizzling-moon" ||
@@ -22,7 +24,7 @@ const Games = () => {
         gem.slug === "cleopatra" ||
         gem.slug === "one-of-a-kind"
       );
-      // console.log(others);
+      console.log("others", others);
       setGames(others);
     }
     getGames();

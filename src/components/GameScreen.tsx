@@ -12,7 +12,7 @@ const GameScreen = () => {
   const userState = useRecoilValue(userAtom)
   const authToken = userState?.user?.token;
   const socketURL = config.server;
-  const baseGameUrl = "https://slot-zombieland-dev.vercel.app/";
+  const baseGameUrl = "https://slot-cleopatra-dev.vercel.app/";
   const loaderUrl = "https://loader.dingdinghouse.com";
   const [isGameReady, setIsGameReady] = useState(false);
   const router = useRouter();

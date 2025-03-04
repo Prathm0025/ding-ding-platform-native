@@ -47,9 +47,9 @@ export const connectSocket = async (setUserState: SetterOrUpdater<UserAtomType>)
 
     socket.on("data", (data) => {
       if (data?.type === "CREDIT") {
-        console.log(data?.data?.credits, "Credits");
-        
-        setUserState((prevState) => ({
+        // console.log(data?.data?.credits, "Credits");
+
+        setUserState((prevState: any) => ({
           ...prevState,
           user: { ...prevState.user, credit: data?.data?.credits },
         }));
