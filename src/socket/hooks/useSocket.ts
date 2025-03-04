@@ -9,15 +9,15 @@ export default function useSocket(): Socket | null {
     connectSocket();
     setSocket(getSocket());
 
-    // const handleNewMessage = (message: any) => {
-    //   console.log("New message:", message);
-    // };
+    const handleNewMessage = (message: any) => {
+      console.log("New message:", message);
+    };
 
-    // subscribeToEvent("newMessage", handleNewMessage);
+    subscribeToEvent("newMessage", handleNewMessage);
 
     return () => {
-      // unsubscribeFromEvent("newMessage");
-      disconnectSocket();
+      unsubscribeFromEvent("newMessage");
+      // disconnectSocket();
     };
   }, []);
 
