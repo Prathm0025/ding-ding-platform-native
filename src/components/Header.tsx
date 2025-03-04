@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, useWindowDimensions } from 'react-native';
 import { Image } from 'expo-image';
-import { getUserName, removeToken } from '../api/auth';
+import { getUserName, removeToken, useAuth } from '../api/auth';
 import { useRouter } from 'expo-router';
 import { getCredits } from '../utils/utils'; // Fetch credits from SecureStore
-import { getSocket } from '../socket/socket';
+import { disconnectSocket, getSocket } from '../socket/socket';
 import { useRecoilState } from 'recoil';
 import { userAtom } from '../utils/Atoms';
 
@@ -12,7 +12,7 @@ const Header = () => {
     const router = useRouter();
     const { width } = useWindowDimensions();
     const responsiveWidth = (percentage: any) => (percentage / 100) * width;
-    
+    const {logout} = useAuth();
     const [userState, setUserState] = useRecoilState(userAtom);
     const { credit, name } = userState.user;
     // Fetch initial credits from storage
@@ -39,7 +39,8 @@ const Header = () => {
     }, []);
 
     const handleLogout = async () => {
-        await removeToken();
+        await logout();
+        disconnectSocket()
         router.replace("/");
     };
 

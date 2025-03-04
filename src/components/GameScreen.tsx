@@ -10,9 +10,12 @@ const GameScreen = () => {
   const gameWebViewRef = useRef(null);
   const loaderWebViewRef = useRef(null);
   const userState = useRecoilValue(userAtom)
-  const authToken = userState?.user?.token;
+  const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzZlM2Q4OWViNGExODEzODFkZDljMyIsInVzZXJuYW1lIjoicmFuYS10ZXN0Iiwicm9sZSI6InBsYXllciIsImlhdCI6MTc0MTA5MTIzNSwiZXhwIjoxNzQxNjk2MDM1fQ.nz_KiD8BwtJBhHP34NBOXk74MzFhzmIsA2U92oqXhKE";
+  
   const socketURL = config.server;
-  const baseGameUrl = "https://slot-zombieland-dev.vercel.app/";
+  console.log(authToken);
+
+  const baseGameUrl = "https://slot-cleopatra-dev.vercel.app";
   const loaderUrl = "https://loader.dingdinghouse.com";
   const [isGameReady, setIsGameReady] = useState(false);
   const router = useRouter();
