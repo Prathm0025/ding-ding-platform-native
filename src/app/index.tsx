@@ -9,7 +9,7 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import Loader from '../components/Loader';
 import Toast from 'react-native-toast-message';
-import { loginUser } from '../api/auth';
+import { useAuth } from '../api/auth';
 
 const LoginScreen = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -18,7 +18,7 @@ const LoginScreen = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { width, height } = useWindowDimensions();
-
+const { login } = useAuth();
   const responsiveWidth = (percentage:number) => (percentage / 100) * width;
   const responsiveHeight = (percentage:number) => (percentage / 100) * height;
   const responsiveFontSize = (percentage:number) => (percentage / 100) * Math.sqrt(width * height);
@@ -49,7 +49,7 @@ const LoginScreen = () => {
     } else {
       setLoading(true);
       try {
-        const response = await loginUser(username, password);
+        const response = await login(username, password);
         if (response?.role === 'player' && response?.token) {
           Toast.show({
             text1Style: { fontSize: 16 },

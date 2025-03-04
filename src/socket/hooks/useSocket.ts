@@ -17,7 +17,7 @@ export default function useSocket(): Socket | null {
 
     return () => {
       unsubscribeFromEvent("newMessage");
-      disconnectSocket();
+      // disconnectSocket();
     };
   }, []);
 
