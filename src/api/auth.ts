@@ -72,8 +72,14 @@ export const useAuth = () => {
     // Logout function that updates Recoil state
     const logout = async () => {
       try {
-        await removeToken();
-        resetUserState();
+        const response = await api.post(`/api/users/logout`);
+        const data = response.data;
+        if(response.status===200){
+          await removeToken();
+          resetUserState();
+
+        }
+
         return true;
       } catch (error) {
         console.log("Logout error:", error);
