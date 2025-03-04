@@ -23,4 +23,23 @@ export const userAtom = atom<UserAtomType>({
       platformId: ""
     }
   }
-});
+})
+
+type GameAtomType = {
+  _id: string;
+  category: string;
+  createdAt: string;
+  name: string;
+  order: number;
+  payout: string
+  slug: string;
+  status: string;
+  tagName: string;
+  thumbnail: string;
+  type: string
+}
+
+export const gamesAtom = atom<GameAtomType[]>({
+  key: "games",
+  default: []
+})
