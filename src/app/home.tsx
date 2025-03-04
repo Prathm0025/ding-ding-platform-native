@@ -10,6 +10,8 @@ import { Image, ImageBackground } from 'expo-image';
 import { BlurView } from 'expo-blur';
 
 import useSocket from '../socket/hooks/useSocket';
+import { useRecoilState } from 'recoil';
+import { userAtom } from '../utils/Atoms';
 
 
 const Home = () => {
