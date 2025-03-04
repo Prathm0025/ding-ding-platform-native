@@ -25,7 +25,7 @@ export const userAtom = atom<UserAtomType>({
   }
 })
 
-type GameAtomType = {
+export type GameAtomType = {
   _id: string;
   category: string;
   createdAt: string;

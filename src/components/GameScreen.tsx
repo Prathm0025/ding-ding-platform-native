@@ -2,12 +2,16 @@ import { useRouter } from 'expo-router';
 import React, { useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { WebView } from 'react-native-webview';
+import { useRecoilValue } from 'recoil';
+import { userAtom } from '../utils/Atoms';
+import { config } from '../utils/config';
 
 const GameScreen = () => {
   const gameWebViewRef = useRef(null);
   const loaderWebViewRef = useRef(null);
-  const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzkxOTI3OTgxYmU0MzlkMjkyYjg4OSIsInVzZXJuYW1lIjoiTWVodWwiLCJyb2xlIjoicGxheWVyIiwiaWF0IjoxNzQwNjQwODA2LCJleHAiOjE3NDEyNDU2MDZ9.mE6MFKJzX_gvnALAiTmXBKk7sXmt0YwEb8oiMhq2hDU";
-  const socketURL = "https://gl9r1h24-5002.inc1.devtunnels.ms/";
+  const userState = useRecoilValue(userAtom)
+  const authToken = userState?.user?.token;
+  const socketURL = config.server;
   const baseGameUrl = "https://slot-cleopatra-dev.vercel.app/";
   const loaderUrl = "https://loader.dingdinghouse.com";
   const [isGameReady, setIsGameReady] = useState(false);
@@ -27,6 +31,7 @@ const GameScreen = () => {
           console.log('Message from Unity:', event.nativeEvent.data);
           if (event.nativeEvent.data === 'onExit') {
             router.replace("/home");
+            socketURL
           }
           else if (event.nativeEvent.data === 'authToken') {
             setIsGameReady(true);
