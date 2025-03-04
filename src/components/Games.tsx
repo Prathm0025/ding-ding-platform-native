@@ -2,20 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native';
 import GameCard from './GameCard';
 import { fetchGames } from '../api/game';
+import { useRecoilState } from 'recoil';
+import { gamesAtom } from '../utils/Atoms';
 
 const Games = () => {
   const { width } = useWindowDimensions();
-  const [games, setGames] = useState<any | []>([]);
+  const [games, setGames] = useRecoilState(gamesAtom);
   // Create an array of 20 game cards
 
-useEffect(()=>{
-  const getGames = async()=>{  
-    const games = await fetchGames();
-    const { others } = games;    
-    setGames(others);
-  }
-getGames();
-}, [])
+
+  useEffect(() => {
+    const getGames = async () => {
+      const games = await fetchGames();
+      const { others } = games;
+      // others.filter((gem)=> )
+      setGames(others);
+    }
+    getGames();
+  }, [])
   return (
     <View style={styles.container}>
       <ScrollView
@@ -26,8 +30,8 @@ getGames();
         decelerationRate="fast"
         pagingEnabled
       >
-        {games?.map((game:any) => (
-          <GameCard key={game._id}  data ={game}/>
+        {games?.map((game: any) => (
+          <GameCard key={game._id} data={game} />
         ))}
       </ScrollView>
     </View>

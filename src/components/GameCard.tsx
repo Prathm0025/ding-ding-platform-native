@@ -40,7 +40,11 @@ const GameCard: React.FC<GameCardProps> = ({ data }) => {
     <Pressable
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
-      onPress={() => router.replace("/game")}
+      onPress={() => {
+        setTimeout(() => {
+          router.replace("/game");
+        }, 200);
+      }}
     >
       <Animated.View
         style={[
