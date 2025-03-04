@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, View, ImageBackground, Text, useWindowDimensions, Animated, Pressable } from 'react-native';
 
@@ -16,6 +17,7 @@ const GameCard: React.FC<GameCardProps> = ({ data }) => {
   const resHeight = (percentage: number) => (percentage / 100) * height;
   const resSize = (percentage: number) => (percentage / 100) * Math.min(width, height);
 
+  const router = useRouter();
   const scaleAnim = useState(new Animated.Value(1))[0]; // Animated value for scale
 
   const handlePressIn = () => {
@@ -35,7 +37,11 @@ const GameCard: React.FC<GameCardProps> = ({ data }) => {
   };
 
   return (
-    <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut}>
+    <Pressable
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      onPress={() => router.replace("/game")}
+    >
       <Animated.View
         style={[
           styles.cardContainer,
