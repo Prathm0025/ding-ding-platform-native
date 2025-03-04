@@ -17,12 +17,12 @@ const Games = () => {
       const { others: allGames } = games;
 
       const others = allGames.filter((gem: GameAtomType) =>
-        gem.tagName === "sizzling-moon" ||
-        gem.tagName === "zombieland" ||
-        gem.tagName === "cleopatra" ||
-        gem.tagName === "one-of-a-kind"
+        gem.slug === "sizzling-moon" ||
+        gem.slug === "zombieland" ||
+        gem.slug === "cleopatra" ||
+        gem.slug === "one-of-a-kind"
       );
-      console.log(others);
+      // console.log(others);
       setGames(others);
     }
     getGames();
