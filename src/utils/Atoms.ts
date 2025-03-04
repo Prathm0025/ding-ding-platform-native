@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-type UserAtomType = {
+export type UserAtomType = {
   isAuthenticated: boolean;
   user: {
     token: string,

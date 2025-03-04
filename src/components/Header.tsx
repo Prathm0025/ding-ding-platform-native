@@ -5,27 +5,18 @@ import { getUserName, removeToken } from '../api/auth';
 import { useRouter } from 'expo-router';
 import { getCredits } from '../utils/utils'; // Fetch credits from SecureStore
 import { getSocket } from '../socket/socket';
+import { useRecoilState } from 'recoil';
+import { userAtom } from '../utils/Atoms';
 
 const Header = () => {
     const router = useRouter();
     const { width } = useWindowDimensions();
     const responsiveWidth = (percentage: any) => (percentage / 100) * width;
     
-    const [credits, setCredits] = useState<number | null>(null);
-    const [user , setUsername] = useState<string|null>(null);
+    const [userState, setUserState] = useRecoilState(userAtom);
+    const { credit, name } = userState.user;
     // Fetch initial credits from storage
-    useEffect(() => {
-        const fetchCredits = async () => {
-            const userName:string = await getUserName()||"User";
-            setUsername(userName);
-            const storedCredits = await getCredits();
-            if (storedCredits !== null) {
-                setCredits(storedCredits);
-            }
-        };
-
-        fetchCredits();
-    }, []);
+  
 
     // Listen for real-time credit updates
     useEffect(() => {
@@ -34,8 +25,10 @@ const Header = () => {
         if (socket) {
             socket.on("data", (data) => {
                 if (data?.type === "CREDIT") {
-                    setCredits(data?.data?.credits);
-                }
+                    setUserState(prevState => ({
+                        ...prevState,
+                        user: { ...prevState.user, credit: data?.data?.credits }
+                    }));                }
             });
 
             // Cleanup listener when component unmounts
@@ -69,9 +62,9 @@ const Header = () => {
                     }}
                 />
                 <View>
-                    <Text style={[styles.userName, { fontSize: responsiveWidth(1.5) }]}>{user}</Text>
+                    <Text style={[styles.userName, { fontSize: responsiveWidth(1.5) }]}>{name}</Text>
                     <Text style={[styles.coin, { fontSize: responsiveWidth(1.5) }]}>
-                        {credits !== null ? credits.toLocaleString() : "Loading..."}
+                        {credit !== null ? credit?.toLocaleString() : "Loading..."}
                     </Text>
                 </View>
             </View>

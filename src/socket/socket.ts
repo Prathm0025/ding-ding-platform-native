@@ -2,6 +2,8 @@ import { io, Socket } from "socket.io-client";
 import { getAuthToken, getPlatformId } from "../api/auth";
 import { config } from "../utils/config";
 import { setCredits } from "../utils/utils";
+import { SetterOrUpdater } from "recoil";
+import { userAtom, UserAtomType } from "../utils/Atoms";
 
 
 let socket: Socket | null = null;
@@ -10,18 +12,18 @@ let isConnecting = false;
 /**
  * Connects to the WebSocket server if not already connected.
  */
-export const connectSocket =async () => {
+export const connectSocket = async (setUserState: SetterOrUpdater<UserAtomType>) => {
   if (!socket && !isConnecting) {
     isConnecting = true;
-   const token =await getAuthToken()
-   const platformId = await getPlatformId();
-  
+    const token = await getAuthToken();
+    const platformId = await getPlatformId();
+
     socket = io(config.server, {
-      auth:{token, origin:platformId},  
+      auth: { token, origin: platformId },
       transports: ["websocket"],
-      reconnection: true, 
-      reconnectionAttempts: 5, 
-      reconnectionDelay: 2000, 
+      reconnection: true,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 2000,
     });
 
     socket.on("connect", () => {
@@ -44,14 +46,19 @@ export const connectSocket =async () => {
     });
 
     socket.on("data", (data) => {
-      switch (data?.type) {
-        case "CREDIT":
-          setCredits(data?.data?.credits);
-          break;
-        default:
-      }    });
+      if (data?.type === "CREDIT") {
+        console.log(data?.data?.credits, "Credits");
+        
+        setUserState((prevState) => ({
+          ...prevState,
+          user: { ...prevState.user, credit: data?.data?.credits },
+        }));
+      }
+    });
   }
 };
+
+
 
 /**
  * Disconnects the WebSocket connection safely.
