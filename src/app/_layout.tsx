@@ -1,40 +1,41 @@
 import { Stack, useRouter, useSegments } from "expo-router";
 import Toast from 'react-native-toast-message';
-import { RecoilRoot } from 'recoil';
+import { RecoilRoot, useRecoilState } from 'recoil';
 
 import { useEffect, useState } from "react";
 import { isTokenValid } from "../api/auth";
+import { userAtom } from "../utils/Atoms";
 
 export default function RootLayout() {
   const router = useRouter();
   const segments = useSegments() as string[];
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [userState, setUserState] = useRecoilState(userAtom);
 
   useEffect(() => {
-    const checkAuth = async () => {
+    const initializeAuth = async () => {
       const isValid: boolean = await isTokenValid() || false;
-      setIsAuthenticated(isValid);
+      setUserState(prevState => ({
+        ...prevState,
+        isAuthenticated: isValid,
+      }));
+    };
 
-      // if the user is not authenticated and not on the login page (index.tsx)
-      if (!isValid && segments.length > 0) {
-        router.replace("/");
-      }
+    initializeAuth();
+  }, []);
 
-      //if authenticated user is on login page
-      if (isValid && segments.length === 0) {
-        router.replace("/home");
-      }
+  useEffect(() => {
+    if (userState.isAuthenticated === null) return;
+    if (!userState.isAuthenticated && segments.length > 0) {
+      router.replace("/");
     }
+    if (userState.isAuthenticated && segments.length === 0) {
+      router.replace("/home");
+    }
+  }, [segments, userState.isAuthenticated]);
 
-    checkAuth();
-  }, [segments])
-
-
-
-  if (isAuthenticated === null) {
+  if (userState.isAuthenticated === null) {
     return null; // Prevent flickering while checking auth
   }
-
 
 
   return (
