@@ -7,15 +7,16 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "orientation":"default",
+    "orientation": "default",
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./src/assets/images/adp.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.underpin.dingding"
     },
     "web": {
       "bundler": "metro",
@@ -36,6 +37,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "b621cdd1-6cf8-4c72-ba18-d2794c8f9e0c"
+      }
     }
   }
 }
