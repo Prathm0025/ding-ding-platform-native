@@ -10,8 +10,8 @@ const GameScreen = () => {
   const gameWebViewRef = useRef(null);
   const loaderWebViewRef = useRef(null);
   const userState = useRecoilValue(userAtom)
-  const authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzZlM2Q4OWViNGExODEzODFkZDljMyIsInVzZXJuYW1lIjoicmFuYS10ZXN0Iiwicm9sZSI6InBsYXllciIsImlhdCI6MTc0MTA5MTIzNSwiZXhwIjoxNzQxNjk2MDM1fQ.nz_KiD8BwtJBhHP34NBOXk74MzFhzmIsA2U92oqXhKE";
-  
+  const authToken = userState?.user?.token;
+
   const socketURL = config.server;
   console.log(authToken);
 
@@ -34,7 +34,6 @@ const GameScreen = () => {
           console.log('Message from Unity:', event.nativeEvent.data);
           if (event.nativeEvent.data === 'onExit') {
             router.replace("/home");
-            socketURL
           }
           else if (event.nativeEvent.data === 'authToken') {
             setIsGameReady(true);
