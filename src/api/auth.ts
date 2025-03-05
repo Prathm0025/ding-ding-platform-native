@@ -74,7 +74,7 @@ export const useAuth = () => {
       try {
         const response = await api.post(`/api/users/logout`);
         const data = response.data;
-        if(response.status===200){
+        if(response.status===200){          
           await removeToken();
           resetUserState();
 
@@ -142,8 +142,10 @@ export const useAuth = () => {
   //function to remove token from SecureStore
   export const removeToken = async () => {
     try {
+      
       await SecureStore.deleteItemAsync('userToken');
       await SecureStore.deleteItemAsync('name');
+
     } catch (error) {
       console.log(error);
     }
