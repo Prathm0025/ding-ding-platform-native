@@ -1,29 +1,38 @@
 import { useRouter } from 'expo-router';
 import React, { useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useRecoilValue } from 'recoil';
-import { userAtom } from '../utils/Atoms';
+import { selectedGameAtom, userAtom } from '../utils/Atoms';
 import { config } from '../utils/config';
+import Loader from './Loader';
 
 const GameScreen = () => {
   const gameWebViewRef = useRef(null);
   const loaderWebViewRef = useRef(null);
-  const userState = useRecoilValue(userAtom)
+  const userState = useRecoilValue(userAtom);
   const authToken = userState?.user?.token;
 
   const socketURL = config.server;
 
-  const baseGameUrl = "https://slot-cleopatra-dev.vercel.app";
-  const loaderUrl = "https://loader.dingdinghouse.com";
+
+  // Loader is visible initially
   const [isGameReady, setIsGameReady] = useState(false);
   const router = useRouter();
+  console.log(isGameReady, "asdhajksd")
+  const { width, height } = useWindowDimensions();
+  const selectedUrl = useRecoilValue(selectedGameAtom)
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { width, height }]}>
+      {/* Loader WebView - Visible until the game is ready */}
+      {!isGameReady && (
+        <Loader />
+      )}
+
       <WebView
         ref={gameWebViewRef}
-        source={{ uri: baseGameUrl }}
+        source={{ uri: selectedUrl }}
         injectedJavaScriptObject={{
           socketURL,
           token: authToken,
@@ -33,21 +42,17 @@ const GameScreen = () => {
           console.log('Message from Unity:', event.nativeEvent.data);
           if (event.nativeEvent.data === 'onExit') {
             router.replace("/home");
-          }
-          else if (event.nativeEvent.data === 'authToken') {
+          } else if (event.nativeEvent.data === 'authToken') {
             setIsGameReady(true);
           }
         }}
-        style={styles.game}
+        style={[
+          styles.game,
+          !isGameReady
+            ? { width: 0, height: 0, opacity: 0, position: 'absolute' } // Load in background
+            : { width, height } // Show full screen when ready
+        ]}
       />
-
-      {!isGameReady && (
-        <WebView
-          ref={loaderWebViewRef}
-          source={{ uri: loaderUrl }}
-          style={styles.loader}
-        />
-      )}
     </View>
   );
 };
@@ -63,14 +68,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
+    flex: 1,
     width: '100%',
     height: '100%',
-    backgroundColor: 'white',
-    zIndex: 10, // Increased zIndex to ensure loader appears on top
+    zIndex: 20,
   },
   game: {
-    width: '100%',
-    height: '100%',
+    flex: 1,
     zIndex: 1,
   }
 });

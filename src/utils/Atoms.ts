@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+import { Socket } from "socket.io-client";
 
 export type UserAtomType = {
   isAuthenticated: boolean;
@@ -37,9 +38,20 @@ export type GameAtomType = {
   tagName: string;
   thumbnail: string;
   type: string
+  url: null | string
 }
 
 export const gamesAtom = atom<GameAtomType[]>({
   key: "games",
   default: []
 })
+
+export const selectedGameAtom = atom<string>({
+  key: "selectedGame",
+  default: ""
+})
+
+// export const socketAtom = atom<Socket | null>({
+//   key: "socketAtom",
+//   default: null,
+// });

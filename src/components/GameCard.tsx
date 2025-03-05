@@ -1,11 +1,14 @@
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, View, ImageBackground, Text, useWindowDimensions, Animated, Pressable } from 'react-native';
+import { useRecoilState } from 'recoil';
+import { selectedGameAtom } from '../utils/Atoms';
 
 interface GameCardProps {
   data: {
     name: string;
     thumbnail: string;
+    url: string
   };
 }
 
@@ -16,6 +19,8 @@ const GameCard: React.FC<GameCardProps> = ({ data }) => {
   const resWidth = (percentage: number) => (percentage / 100) * width;
   const resHeight = (percentage: number) => (percentage / 100) * height;
   const resSize = (percentage: number) => (percentage / 100) * Math.min(width, height);
+
+  const [selectedGame, setSelectedGame] = useRecoilState(selectedGameAtom)
 
   const router = useRouter();
   const scaleAnim = useState(new Animated.Value(1))[0]; // Animated value for scale
@@ -41,6 +46,7 @@ const GameCard: React.FC<GameCardProps> = ({ data }) => {
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       onPress={() => {
+        setSelectedGame(data.url)
         setTimeout(() => {
           router.replace("/game");
         }, 200);

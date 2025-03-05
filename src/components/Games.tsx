@@ -15,16 +15,35 @@ const Games = () => {
     const getGames = async () => {
       const games = await fetchGames();
       const { others: allGames } = games;
-      console.log("allgames", allGames);
 
-
-      const others = allGames.filter((gem: GameAtomType) =>
+      let others = allGames.filter((gem: GameAtomType) =>
         gem.slug === "sizzling-moon" ||
         gem.slug === "zombieland" ||
         gem.slug === "cleopatra" ||
         gem.slug === "one-of-a-kind"
       );
-      console.log("others", others);
+
+      others = others.map((game: GameAtomType) => {
+        switch (game.slug) {
+          case "sizzling-moon":
+            game.url = "https://slot-bp-sizzling-moon-dev.vercel.app/";
+            break;
+          case "zombieland":
+            game.url = "https://slot-zombieland-dev.vercel.app/";
+            break;
+          case "cleopatra":
+            game.url = "https://slot-cleopatra-dev.vercel.app/";
+            break;
+          case "one-of-a-kind":
+            game.url = "https://slot-mp-one-of-a-kind-dev.vercel.app/";
+            break;
+          default:
+            console.log("No game found");
+            break;
+        }
+        return game;
+      });
+
       setGames(others);
     }
     getGames();
