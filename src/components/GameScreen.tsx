@@ -13,7 +13,6 @@ const GameScreen = () => {
   const authToken = userState?.user?.token;
 
   const socketURL = config.server;
-  console.log(authToken);
 
   const baseGameUrl = "https://slot-zombieland-dev.vercel.app";
   const loaderUrl = "https://loader.dingdinghouse.com";

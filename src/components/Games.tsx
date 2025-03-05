@@ -24,7 +24,6 @@ const Games = () => {
         gem.slug === "cleopatra" ||
         gem.slug === "one-of-a-kind"
       );
-      console.log("others", others);
       setGames(others);
     }
     getGames();
