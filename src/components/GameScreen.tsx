@@ -15,12 +15,6 @@ const GameScreen = () => {
 
   const socketURL = config.server;
 
-  // const baseGameUrl = "https://slot-bp-sizzling-moon-dev.vercel.app/";
-  // const baseGameUrl = "https://slot-mp-one-of-a-kind-dev.vercel.app/";
-  // const baseGameUrl = "https://slot-zombieland-dev.vercel.app";
-  // const baseGameUrl = "https://slot-cleopatra-dev.vercel.app/";
-  // const baseGameUrl = "https://slot-cleopatra-dev.vercel.app/";
-  const loaderUrl = "https://loader.dingdinghouse.com";
 
   // Loader is visible initially
   const [isGameReady, setIsGameReady] = useState(false);
@@ -33,7 +27,7 @@ const GameScreen = () => {
     <View style={[styles.container, { width, height }]}>
       {/* Loader WebView - Visible until the game is ready */}
       {!isGameReady && (
-        <Loader/>
+        <Loader />
       )}
 
       <WebView
@@ -82,7 +76,5 @@ const styles = StyleSheet.create({
   game: {
     flex: 1,
     zIndex: 1,
-   
   }
-
 });
