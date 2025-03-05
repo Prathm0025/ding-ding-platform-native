@@ -38,6 +38,7 @@ export type GameAtomType = {
   tagName: string;
   thumbnail: string;
   type: string
+  url: null | string
 }
 
 export const gamesAtom = atom<GameAtomType[]>({
@@ -45,6 +46,10 @@ export const gamesAtom = atom<GameAtomType[]>({
   default: []
 })
 
+export const selectedGameAtom = atom<string>({
+  key: "selectedGame",
+  default: ""
+})
 
 // export const socketAtom = atom<Socket | null>({
 //   key: "socketAtom",

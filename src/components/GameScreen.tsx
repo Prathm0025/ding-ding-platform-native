@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useRecoilValue } from 'recoil';
-import { userAtom } from '../utils/Atoms';
+import { selectedGameAtom, userAtom } from '../utils/Atoms';
 import { config } from '../utils/config';
 
 const GameScreen = () => {
@@ -14,16 +14,21 @@ const GameScreen = () => {
 
   const socketURL = config.server;
 
-  const baseGameUrl = "https://slot-zombieland-dev.vercel.app";
+  // const baseGameUrl = "https://slot-bp-sizzling-moon-dev.vercel.app/";
+  // const baseGameUrl = "https://slot-mp-one-of-a-kind-dev.vercel.app/";
+  // const baseGameUrl = "https://slot-zombieland-dev.vercel.app";
+  // const baseGameUrl = "https://slot-cleopatra-dev.vercel.app/";
+  // const baseGameUrl = "https://slot-cleopatra-dev.vercel.app/";
   const loaderUrl = "https://loader.dingdinghouse.com";
   const [isGameReady, setIsGameReady] = useState(false);
   const router = useRouter();
+  const selectedUrl = useRecoilValue(selectedGameAtom)
 
   return (
     <View style={styles.container}>
       <WebView
         ref={gameWebViewRef}
-        source={{ uri: baseGameUrl }}
+        source={{ uri: selectedUrl }}
         injectedJavaScriptObject={{
           socketURL,
           token: authToken,
