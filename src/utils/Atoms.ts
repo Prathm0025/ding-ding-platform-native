@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-type UserAtomType = {
+export type UserAtomType = {
   isAuthenticated: boolean;
   user: {
     token: string,
@@ -25,7 +25,7 @@ export const userAtom = atom<UserAtomType>({
   }
 })
 
-type GameAtomType = {
+export type GameAtomType = {
   _id: string;
   category: string;
   createdAt: string;

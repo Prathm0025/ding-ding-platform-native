@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native'
 import GameCard from './GameCard';
 import { fetchGames } from '../api/game';
 import { useRecoilState } from 'recoil';
-import { gamesAtom } from '../utils/Atoms';
+import { GameAtomType, gamesAtom } from '../utils/Atoms';
 
 const Games = () => {
   const { width } = useWindowDimensions();
@@ -14,8 +14,17 @@ const Games = () => {
   useEffect(() => {
     const getGames = async () => {
       const games = await fetchGames();
-      const { others } = games;
-      // others.filter((gem)=> )
+      const { others: allGames } = games;
+      console.log("allgames", allGames);
+
+
+      const others = allGames.filter((gem: GameAtomType) =>
+        gem.slug === "sizzling-moon" ||
+        gem.slug === "zombieland" ||
+        gem.slug === "cleopatra" ||
+        gem.slug === "one-of-a-kind"
+      );
+      console.log("others", others);
       setGames(others);
     }
     getGames();
