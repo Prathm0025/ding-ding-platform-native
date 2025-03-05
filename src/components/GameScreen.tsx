@@ -15,7 +15,7 @@ const GameScreen = () => {
   const socketURL = config.server;
   console.log(authToken);
 
-  const baseGameUrl = "https://slot-cleopatra-dev.vercel.app";
+  const baseGameUrl = "https://slot-zombieland-dev.vercel.app";
   const loaderUrl = "https://loader.dingdinghouse.com";
   const [isGameReady, setIsGameReady] = useState(false);
   const router = useRouter();
