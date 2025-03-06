@@ -1,11 +1,12 @@
 import { useRouter } from 'expo-router';
-import React, { useRef, useState } from 'react';
-import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { BackHandler, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useRecoilValue } from 'recoil';
 import { selectedGameAtom, userAtom } from '../utils/Atoms';
 import { config } from '../utils/config';
 import Loader from './Loader';
+import GameLoader from './GameLoader';
 
 const GameScreen = () => {
   const gameWebViewRef = useRef(null);
@@ -19,15 +20,29 @@ const GameScreen = () => {
   // Loader is visible initially
   const [isGameReady, setIsGameReady] = useState(false);
   const router = useRouter();
-  console.log(isGameReady, "asdhajksd")
   const { width, height } = useWindowDimensions();
   const selectedUrl = useRecoilValue(selectedGameAtom)
+
+  useEffect(() => {
+    const backAction = () => {
+      return true;
+    };
+
+    // Add back button listener
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    // Cleanup the listener when component unmounts
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <View style={[styles.container, { width, height }]}>
       {/* Loader WebView - Visible until the game is ready */}
       {!isGameReady && (
-        <Loader />
+        <GameLoader />
       )}
 
       <WebView
@@ -42,7 +57,7 @@ const GameScreen = () => {
           console.log('Message from Unity:', event.nativeEvent.data);
           if (event.nativeEvent.data === 'onExit') {
             router.replace("/home");
-          } else if (event.nativeEvent.data === 'authToken') {
+          } else if (event.nativeEvent.data === 'OnEnter') {
             setIsGameReady(true);
           }
         }}
