@@ -1,6 +1,6 @@
 import { Image, ImageBackground } from 'expo-image';
 import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, useWindowDimensions, Animated, Easing } from 'react-native';
+import { View, StyleSheet, useWindowDimensions, Animated, Easing, StatusBar } from 'react-native';
 
 const GameLoader = () => {
   const { width, height } = useWindowDimensions();
@@ -34,8 +34,8 @@ const GameLoader = () => {
       backgroundColor: 'rgba(0, 0, 0, 0.8)', // Semi-transparent black overlay
       justifyContent: 'center',
       alignItems: 'center',
-      width,
-      height,
+      width:'100%',
+      height:'100%',
       zIndex: 20,
     },
     loader: {
@@ -57,6 +57,10 @@ const GameLoader = () => {
   });
 
   return (
+    <>
+       <StatusBar
+        hidden
+      />
     <ImageBackground
       source={require('../assets/images/game-loader-bg.png')}  // Replace with your background image path
       style={styles.overlay}
@@ -66,7 +70,8 @@ const GameLoader = () => {
       <View style={styles.progressBarContainer}>
         <Animated.View style={[styles.progressBar, { width: progressWidth }]} />
       </View>
-    </ImageBackground>
+      </ImageBackground>
+      </>
   );
 };
 

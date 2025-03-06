@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import React, { useEffect, useRef } from 'react';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { useFocusEffect } from '@react-navigation/native';
@@ -50,6 +50,10 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
+      <StatusBar
+        translucent
+    
+      />
       <ImageBackground
         source={require('../assets/images/whole-bg.png')}
         style={styles.background}

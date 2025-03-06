@@ -4,6 +4,7 @@ import { RecoilRoot } from 'recoil';
 
 import { useEffect, useState } from "react";
 import { isTokenValid } from "../api/auth";
+import { StatusBar } from "react-native";
 
 export default function RootLayout() {
   const router = useRouter();
@@ -39,6 +40,8 @@ export default function RootLayout() {
 
   return (
     <>
+   
+
       <RecoilRoot>
         <Stack screenOptions={{ statusBarHidden: true ,gestureEnabled:false}}>
           <Stack.Screen name="index" options={{ headerShown: false }} />

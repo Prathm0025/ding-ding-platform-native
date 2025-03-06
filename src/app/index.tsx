@@ -83,7 +83,7 @@ const { login } = useAuth();
       justifyContent: 'center',
       alignItems: 'center',
       width: '100%',
-      height: '100%',
+      height: '100%'
     },
     container: {
       flex: 1,
@@ -211,7 +211,6 @@ const { login } = useAuth();
           </KeyboardAvoidingView>
         </ImageBackground>
       </ImageBackground>
-
       {loading && <Loader />}
     </>
   );
