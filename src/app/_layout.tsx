@@ -40,7 +40,7 @@ export default function RootLayout() {
   return (
     <>
       <RecoilRoot>
-        <Stack screenOptions={{ statusBarHidden: true }}>
+        <Stack screenOptions={{ statusBarHidden: true ,gestureEnabled:false}}>
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="home" options={{ headerShown: false }} />
           <Stack.Screen name="game" options={{ headerShown: false }} />
