@@ -171,7 +171,7 @@ const { login } = useAuth();
             >
               <View style={styles.innerContainer}>
                 <View style={styles.formContainer}>
-                  <Image source={require('../assets/images/logo.png')} style={styles.logo} />
+                  <Image source={require('../assets/images/logoDingDing.png')} style={styles.logo} />
 
                   {/* Username Input */}
                   <View style={styles.inputContainer}>
