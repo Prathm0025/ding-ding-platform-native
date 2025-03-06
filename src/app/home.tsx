@@ -7,14 +7,13 @@ import Games from '../components/Games';
 import Footer from '../components/Footer';
 import { Image, ImageBackground } from 'expo-image';
 import { BlurView } from 'expo-blur';
-import { WebView } from 'react-native-webview';
-import { Asset } from 'expo-asset';  // Import Asset to handle local files
+import { Asset } from 'expo-asset';
+import { Audio } from 'expo-av';  // Import Audio from expo-av
 import useSocket from '../socket/hooks/useSocket';
 
 const Home = () => {
   const socket = useSocket();
-  const audioRef: any = useRef(null);
-  const [audioUri, setAudioUri] = React.useState<string | null>(null);
+  const audioRef = useRef<Audio.Sound | null>(null);  // Use Audio.Sound for audioRef
 
   useFocusEffect(
     React.useCallback(() => {
@@ -23,10 +22,11 @@ const Home = () => {
       };
       lockOrientation();
 
-      // Cleanup function to stop audio when leaving Home page
+      // Cleanup function to stop and unload audio when leaving Home page
       return () => {
         if (audioRef.current) {
-          audioRef.current.injectJavaScript('document.getElementById("bg-audio").pause();');
+          audioRef.current.stopAsync();
+          audioRef.current.unloadAsync();
         }
       };
     }, [])
@@ -38,22 +38,37 @@ const Home = () => {
     }
   }, [socket]);
 
-  // Load audio file on mount
+  // Load and play audio file on mount
   useEffect(() => {
-    const loadAudio = async () => {
-      const asset = Asset.fromModule(require('../assets/music/bg-audio.wav'));
-      await asset.downloadAsync();
-      setAudioUri(asset.uri);
+    const loadAndPlayAudio = async () => {
+      try {
+        const asset = Asset.fromModule(require('../assets/music/bg-audio.wav'));
+        await asset.downloadAsync();
+
+        const { sound } = await Audio.Sound.createAsync(
+          { uri: asset.localUri || asset.uri },
+          { isLooping: true, volume: 1.0 }
+        );
+        audioRef.current = sound;
+        await sound.playAsync();
+      } catch (error) {
+        console.error('Failed to load or play audio:', error);
+      }
     };
-    loadAudio();
+
+    loadAndPlayAudio();
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.stopAsync();
+        audioRef.current.unloadAsync();
+      }
+    };
   }, []);
 
   return (
     <View style={styles.container}>
-      <StatusBar
-        translucent
-    
-      />
+      <StatusBar translucent />
       <ImageBackground
         source={require('../assets/images/whole-bg.png')}
         style={styles.background}
@@ -69,26 +84,6 @@ const Home = () => {
           <Games />
           <Footer />
         </View>
-
-        {/* WebView to play audio without external packages */}
-        {audioUri && (
-          <WebView
-            ref={audioRef}
-            source={{
-              html: `
-                <audio id="bg-audio" autoplay loop>
-                  <source src="${audioUri}" type="audio/wav" />
-                </audio>
-                <script>
-                  document.getElementById("bg-audio").volume = 1.0;
-                </script>
-              `,
-            }}
-            style={styles.audioPlayer}
-            mediaPlaybackRequiresUserAction={false}
-            javaScriptEnabled
-          />
-        )}
       </ImageBackground>
     </View>
   );
@@ -135,9 +130,5 @@ const styles = StyleSheet.create({
     width: '80%',
     height: '80%',
     opacity: 0.7,
-  },
-  audioPlayer: {
-    width: 0,
-    height: 0,
   },
 });
