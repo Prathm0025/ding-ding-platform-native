@@ -83,7 +83,7 @@ const { login } = useAuth();
       justifyContent: 'center',
       alignItems: 'center',
       width: '100%',
-      height: '100%',
+      height: '100%'
     },
     container: {
       flex: 1,
@@ -113,7 +113,7 @@ const { login } = useAuth();
       width: '100%',
       height: '100%',
       resizeMode: 'cover',
-      zIndex: 1, // Above the bg.png
+      zIndex: 1, 
     },
     inputContainer: {
       flexDirection: 'row',
@@ -154,11 +154,11 @@ const { login } = useAuth();
   return (
     <>
       <ImageBackground
-        source={require('../assets/images/bg.png')}
+        source={require('../assets/images/bg.webp')}
         style={styles.background}
       >
         <ImageBackground
-          source={require('../assets/images/lady.png')}
+          source={require('../assets/images/lady.webp')}
           style={styles.ladyBackground}
         >
           <KeyboardAvoidingView
@@ -171,11 +171,11 @@ const { login } = useAuth();
             >
               <View style={styles.innerContainer}>
                 <View style={styles.formContainer}>
-                  <Image source={require('../assets/images/logo.png')} style={styles.logo} />
+                  <Image source={require('../assets/images/logo.webp')} style={styles.logo} />
 
                   {/* Username Input */}
                   <View style={styles.inputContainer}>
-                    <Image source={require('../assets/images/user.png')} style={styles.icon} />
+                    <Image source={require('../assets/images/user.webp')} style={styles.icon} />
                     <TextInput
                       placeholder="Username"
                       style={styles.input}
@@ -187,7 +187,7 @@ const { login } = useAuth();
 
                   {/* Password Input */}
                   <View style={styles.inputContainer}>
-                    <Image source={require('../assets/images/lock.png')} style={styles.icon} />
+                    <Image source={require('../assets/images/lock.webp')} style={styles.icon} />
                     <TextInput
                       placeholder="Password"
                       style={styles.input}
@@ -211,7 +211,6 @@ const { login } = useAuth();
           </KeyboardAvoidingView>
         </ImageBackground>
       </ImageBackground>
-
       {loading && <Loader />}
     </>
   );

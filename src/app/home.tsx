@@ -1,63 +1,35 @@
-import { StyleSheet, View } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import { StatusBar, StyleSheet, View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { useFocusEffect } from '@react-navigation/native';
-import { Audio } from 'expo-av';
 import Header from '../components/Header';
 import Games from '../components/Games';
 import Footer from '../components/Footer';
 import { Image, ImageBackground } from 'expo-image';
 import { BlurView } from 'expo-blur';
+import { Asset } from 'expo-asset';
+import { Audio } from 'expo-av';  // Import Audio from expo-av
 import useSocket from '../socket/hooks/useSocket';
 
 const Home = () => {
   const socket = useSocket();
-  const [sound, setSound] = useState<Audio.Sound | null>(null);
+  const audioRef = useRef<Audio.Sound | null>(null);  // Use Audio.Sound for audioRef
 
   useFocusEffect(
-    useCallback(() => {
+    React.useCallback(() => {
       const lockOrientation = async () => {
         await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
       };
       lockOrientation();
 
-      const configureAudio = async () => {
-        try {
-          await Audio.setAudioModeAsync({
-            allowsRecordingIOS: false,
-            staysActiveInBackground: true,
-            playsInSilentModeIOS: true,
-            shouldDuckAndroid: false,
-            playThroughEarpieceAndroid: false,
-          });
-
-          const { sound } = await Audio.Sound.createAsync(
-            require('../assets/music/bg-audio.wav'),
-            {
-              shouldPlay: true,
-              isLooping: true,
-              volume: 1.0,
-              rate: 1.0,
-            }
-          );
-
-          setSound(sound);
-          await sound.setVolumeAsync(1.0); // Max volume
-          await sound.playAsync();
-        } catch (error) {
-          console.log('Error playing sound:', error);
-        }
-      };
-
-      configureAudio();
-
-      // Cleanup function to stop and unload sound when leaving Home page
+      // Cleanup function to stop and unload audio when leaving Home page
       return () => {
-        if (sound) {
-          sound.stopAsync().then(() => sound.unloadAsync());
+        if (audioRef.current) {
+          audioRef.current.stopAsync();
+          audioRef.current.unloadAsync();
         }
       };
-    }, [sound])
+    }, [])
   );
 
   useEffect(() => {
@@ -66,10 +38,39 @@ const Home = () => {
     }
   }, [socket]);
 
+  // Load and play audio file on mount
+  useEffect(() => {
+    const loadAndPlayAudio = async () => {
+      try {
+        const asset = Asset.fromModule(require('../assets/music/bg-audio.wav'));
+        await asset.downloadAsync();
+
+        const { sound } = await Audio.Sound.createAsync(
+          { uri: asset.localUri || asset.uri },
+          { isLooping: true, volume: 1.0 }
+        );
+        audioRef.current = sound;
+        await sound.playAsync();
+      } catch (error) {
+        console.error('Failed to load or play audio:', error);
+      }
+    };
+
+    loadAndPlayAudio();
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.stopAsync();
+        audioRef.current.unloadAsync();
+      }
+    };
+  }, []);
+
   return (
     <View style={styles.container}>
+      <StatusBar translucent />
       <ImageBackground
-        source={require('../assets/images/whole-bg.png')}
+        source={require('../assets/images/whole-bg.webp')}
         style={styles.background}
         resizeMode="cover"
       >
@@ -130,4 +131,4 @@ const styles = StyleSheet.create({
     height: '80%',
     opacity: 0.7,
   },
-}); 
+});
