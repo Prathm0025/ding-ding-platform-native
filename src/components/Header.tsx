@@ -47,14 +47,14 @@ const Header = () => {
     return (
         <>
             <ImageBackground
-                source={require('../assets/images/header-bg.png')}
+                source={require('../assets/images/header-bg.webp')}
                 style={[styles.container, { height: responsiveWidth(7) }]}
                 resizeMode="cover"
             >
                 {/* User Info */}
                 <View style={styles.userInfo}>
                     <Image
-                        source={require('../assets/images/profile.png')}
+                        source={require('../assets/images/profile.webp')}
                         style={{
                             width: responsiveWidth(5),
                             height: responsiveWidth(5),
@@ -85,21 +85,21 @@ const Header = () => {
                 {/* Icons */}
                 <View style={styles.iconsContainer}>
                     <TouchableOpacity onPress={handleLogout}>
-                        <Image source={require('../assets/images/h-icon1.png')} style={{
+                        <Image source={require('../assets/images/h-icon1.webp')} style={{
                             width: responsiveWidth(3.5),
                             height: responsiveWidth(4),
                             marginHorizontal: responsiveWidth(1.1),
                         }} />
                     </TouchableOpacity>
                     <TouchableOpacity>
-                        <Image source={require('../assets/images/h-icon2.png')} style={{
+                        <Image source={require('../assets/images/h-icon2.webp')} style={{
                             width: responsiveWidth(3.5),
                             height: responsiveWidth(4),
                             marginHorizontal: responsiveWidth(1.1),
                         }} />
                     </TouchableOpacity>
                     <TouchableOpacity>
-                        <Image source={require('../assets/images/h-icon3.png')} style={{
+                        <Image source={require('../assets/images/h-icon3.webp')} style={{
                             width: responsiveWidth(3.5),
                             height: responsiveWidth(4),
                             marginHorizontal: responsiveWidth(1.1),

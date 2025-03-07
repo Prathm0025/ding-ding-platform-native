@@ -3,7 +3,7 @@
     "name": "ding-ding",
     "slug": "ding-ding",
     "version": "1.0.0",
-    "icon": "./src/assets/images/icon.png",
+    "icon": "./src/assets/images/icon.webp",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -14,7 +14,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/adp.png",
+        "foregroundImage": "./src/assets/images/adp.webp",
         "backgroundColor": "#ffffff"
       },
       "package": "com.underpin.dingding"
@@ -22,7 +22,7 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./src/assets/images/favicon.png"
+      "favicon": "./src/assets/images/favicon.webp"
     },
     "plugins": [
       "expo-router",

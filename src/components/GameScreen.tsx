@@ -29,6 +29,7 @@ const GameScreen = () => {
       "hardwareBackPress",
       backAction
     );
+
   
     return () => backHandler.remove();
   }, [isGameReady, router]);

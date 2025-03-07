@@ -70,7 +70,7 @@ const Home = () => {
     <View style={styles.container}>
       <StatusBar translucent />
       <ImageBackground
-        source={require('../assets/images/whole-bg.png')}
+        source={require('../assets/images/whole-bg.webp')}
         style={styles.background}
         resizeMode="cover"
       >

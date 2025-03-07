@@ -88,18 +88,18 @@ const ModalPopup: React.FC<ModalPopupProps> = ({ visible, onClose, children }) =
             <View style={styles.overlay}>
                 <View style={styles.popup}>
                     <Image
-                        source={require('../assets/images/popup-bg.png')}
+                        source={require('../assets/images/popup-bg.webp')}
                         style={styles.popupBackground}
                     />
 
                     {/* Close Button */}
                     <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-                        <Image source={require('../assets/images/close.png')} style={styles.icon} />
+                        <Image source={require('../assets/images/close.webp')} style={styles.icon} />
                     </TouchableOpacity>
 
                     {/* Title */}
                     <Image
-                        source={require('../assets/images/setting.png')}
+                        source={require('../assets/images/setting.webp')}
                         style={styles.title}
                     />
 
@@ -112,14 +112,14 @@ const ModalPopup: React.FC<ModalPopupProps> = ({ visible, onClose, children }) =
                                 <TouchableOpacity style={styles.option}>
                                     <Text style={styles.optionText}>Share</Text>
                                     <Image
-                                        source={require('../assets/images/Share.png')}
+                                        source={require('../assets/images/Share.webp')}
                                         style={styles.optionIcon}
                                     />
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.option}>
                                     <Text style={styles.optionText}>Announcement</Text>
                                     <Image
-                                        source={require('../assets/images/Announce.png')}
+                                        source={require('../assets/images/Announce.webp')}
                                         style={styles.optionIcon}
                                     />
                                 </TouchableOpacity>
@@ -128,14 +128,14 @@ const ModalPopup: React.FC<ModalPopupProps> = ({ visible, onClose, children }) =
                                 <TouchableOpacity style={styles.option}>
                                     <Text style={styles.optionText}>Password</Text>
                                     <Image
-                                        source={require('../assets/images/Password.png')}
+                                        source={require('../assets/images/Password.webp')}
                                         style={styles.optionIcon}
                                     />
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.option}>
                                     <Text style={styles.optionText}>Sound</Text>
                                     <Image
-                                        source={require('../assets/images/Sound.png')}
+                                        source={require('../assets/images/Sound.webp')}
                                         style={styles.optionIcon}
                                     />
                                 </TouchableOpacity>

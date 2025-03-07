@@ -7,10 +7,10 @@ const Footer = () => {
   const { width, height } = useWindowDimensions(); // Get screen dimensions dynamically
 
   const menuImages: Record<string, any> = {
-    ALL: require('../assets/images/ALL.png'),
-    SLOT: require('../assets/images/SLOT.png'),
-    KENO: require('../assets/images/KENO.png'),
-    OTHER: require('../assets/images/OTHER.png'),
+    ALL: require('../assets/images/ALL.webp'),
+    SLOT: require('../assets/images/SLOT.webp'),
+    KENO: require('../assets/images/KENO.webp'),
+    OTHER: require('../assets/images/OTHER.webp'),
   };
 
   const handleMenuPress = (menu: string) => {
@@ -53,7 +53,7 @@ const Footer = () => {
       />
 
       <ImageBackground
-        source={require('../assets/images/footer-bg.png')}
+        source={require('../assets/images/footer-bg.webp')}
         style={[styles.container, { height: resHeight(14)}]}
         resizeMode="stretch"
       >

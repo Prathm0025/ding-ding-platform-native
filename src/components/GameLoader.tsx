@@ -62,7 +62,7 @@ const GameLoader = () => {
         hidden
       />
     <ImageBackground
-      source={require('../assets/images/game-loader-bg.png')}  // Replace with your background image path
+      source={require('../assets/images/game-loader-bg.webp')}  // Replace with your background image path
       style={styles.overlay}
       resizeMode="cover"
     >
