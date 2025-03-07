@@ -3,7 +3,7 @@
     "name": "ding-ding",
     "slug": "ding-ding",
     "version": "1.0.0",
-    "icon": "./src/assets/images/icon.png",
+    "icon": "./src/assets/images/applogo.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -14,8 +14,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/adp.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./src/assets/images/applogo.png",
+        "backgroundColor": "#FFB302"
       },
       "package": "com.underpin.dingding"
     },
@@ -29,7 +29,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./src/assets/images/splash.jpg",
+          "image": "./src/assets/images/splash.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"

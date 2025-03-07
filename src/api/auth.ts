@@ -109,10 +109,7 @@ export const useAuth = () => {
   //function to save token in SecureStore
   export const saveToken = async (token: string) => {
     try {
-      await SecureStore.setItemAsync('userToken', token, {
-        // only accessible when device in unlocked
-        keychainAccessible: SecureStore.WHEN_UNLOCKED
-      });
+      await SecureStore.setItemAsync('userToken', token);
       const decoded: any = jwtDecode(token);
       let platformId = await generateUUID();
       console.log(platformId);

@@ -36,7 +36,7 @@ const Home = () => {
     if (socket) {
       // Update credit logic here
     }
-  }, [socket]);
+  }, []);
 
   // Load audio file on mount
   useEffect(() => {
