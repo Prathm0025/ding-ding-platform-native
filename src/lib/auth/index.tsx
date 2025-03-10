@@ -7,7 +7,6 @@ import { createSelectors } from '../utils';
 import type { TokenType } from './utils';
 import { getToken, removeName, removePlatformId, removeToken, setName, setPlatformId, setToken } from './utils';
 import { client } from '@/api';
-import { useRouter } from 'expo-router';
 
 interface AuthState {
   token: TokenType | null;
@@ -20,7 +19,6 @@ interface AuthState {
   hydrate: () => void;
 }
 
-const router = useRouter()
 
 const _useAuth = create<AuthState>((set, get) => ({
   status: 'idle' as 'idle' | 'signOut' | 'signIn',
@@ -47,7 +45,6 @@ const _useAuth = create<AuthState>((set, get) => ({
     setName(decoded.username);
     setPlatformId(platformId);
     set({ status: 'signIn', token, platformId, name: decoded.username });
-    router.push('/')
   },
   signOut: () => {
     removeToken();

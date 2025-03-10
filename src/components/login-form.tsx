@@ -11,16 +11,10 @@ const schema = z.object({
   username: z.string({
     required_error: 'Name is required',
   }),
-  // email: z
-  //   .string({
-  //     required_error: 'Email is required',
-  //   })
-  //   .email('Invalid email format'),
-  password: z
-    .string({
-      required_error: 'Password is required',
-    })
-    .min(6, 'Password must be at least 6 characters'),
+  password: z.string({
+    required_error: 'Password is required',
+  })
+  // .min(6, 'Password must be at least 6 characters'),
 });
 
 export type FormType = z.infer<typeof schema>;
@@ -49,8 +43,7 @@ export const LoginForm = ({ onSubmit = () => { } }: LoginFormProps) => {
           </Text>
 
           <Text className="mb-6 max-w-xs text-center text-gray-500">
-            Welcome! 👋 This is a demo login screen! Feel free to use any email
-            and password to sign in and try it out.
+            Welcome! 👋 This is a login screen!
           </Text>
         </View>
 
@@ -61,18 +54,12 @@ export const LoginForm = ({ onSubmit = () => { } }: LoginFormProps) => {
           label="Username"
         />
 
-        {/* <ControlledInput */}
-        {/*   testID="email-input" */}
-        {/*   control={control} */}
-        {/*   name="email" */}
-        {/*   label="Email" */}
-        {/* /> */}
         <ControlledInput
           testID="password-input"
           control={control}
           name="password"
           label="Password"
-          placeholder="***"
+          placeholder="**********"
           secureTextEntry={true}
         />
         <Button

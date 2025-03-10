@@ -21,23 +21,23 @@ export default function Onboarding() {
       </View>
       <View className="justify-end ">
         <Text className="my-3 text-center text-5xl font-bold">
-          Obytes Starter
+          DINGDING
         </Text>
         <Text className="mb-2 text-center text-lg text-gray-600">
-          The right way to build your mobile app
+          Only Casino Platform you need
         </Text>
 
         <Text className="my-1 pt-6 text-left text-lg">
-          🚀 Production-ready{' '}
+          🚀 ready to go{' '}
         </Text>
         <Text className="my-1 text-left text-lg">
-          🥷 Developer experience + Productivity
+          🥷 Unparallel experience
         </Text>
         <Text className="my-1 text-left text-lg">
-          🧩 Minimal code and dependencies
+          🧩 Minimal clutter & distraction
         </Text>
         <Text className="my-1 text-left text-lg">
-          💪 well maintained third-party libraries
+          💪 well maintained
         </Text>
       </View>
       <SafeAreaView className="mt-6">
