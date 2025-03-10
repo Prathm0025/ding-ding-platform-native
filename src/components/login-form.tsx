@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useEffect } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
@@ -24,9 +24,15 @@ export type LoginFormProps = {
 };
 
 export const LoginForm = ({ onSubmit = () => { } }: LoginFormProps) => {
-  const { handleSubmit, control } = useForm<FormType>({
+  const { handleSubmit, control, formState } = useForm<FormType>({
     resolver: zodResolver(schema),
   });
+  const { isSubmitting } = formState
+
+  useEffect(() => {
+    console.log("isSubmitting", isSubmitting);
+  }, [isSubmitting])
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -52,6 +58,7 @@ export const LoginForm = ({ onSubmit = () => { } }: LoginFormProps) => {
           control={control}
           name="username"
           label="Username"
+          disabled={isSubmitting}
         />
 
         <ControlledInput
@@ -61,11 +68,13 @@ export const LoginForm = ({ onSubmit = () => { } }: LoginFormProps) => {
           label="Password"
           placeholder="**********"
           secureTextEntry={true}
+          disabled={isSubmitting}
         />
         <Button
           testID="login-button"
           label="Login"
           onPress={handleSubmit(onSubmit)}
+          loading={isSubmitting}
         />
       </View>
     </KeyboardAvoidingView>
