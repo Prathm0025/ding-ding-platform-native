@@ -1,20 +1,23 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
 import * as React from 'react';
 
-import { usePost } from '@/api';
+// import { usePost } from '@/api';
 import {
   ActivityIndicator,
   FocusAwareStatusBar,
   Text,
   View,
 } from '@/components/ui';
+import { useGame } from '@/api';
+import { useAuth } from '@/lib';
 
 export default function Post() {
-  const local = useLocalSearchParams<{ id: string }>();
+  const local = useLocalSearchParams<{ slug: string }>();
+  const token = useAuth.use.token()
 
-  const { data, isPending, isError } = usePost({
+  const { data, isPending, isError } = useGame({
     //@ts-ignore
-    variables: { id: local.id },
+    variables: { slug: local.slug, token },
   });
 
   if (isPending) {
@@ -40,8 +43,8 @@ export default function Post() {
     <View className="flex-1 p-3 ">
       <Stack.Screen options={{ title: 'Post', headerBackTitle: 'Feed' }} />
       <FocusAwareStatusBar />
-      <Text className="text-xl">{data.title}</Text>
-      <Text>{data.body} </Text>
+      <Text className="text-xl">{data}</Text>
+      <Text>{data} </Text>
     </View>
   );
 }

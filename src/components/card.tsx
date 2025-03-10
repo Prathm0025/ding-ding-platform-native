@@ -1,10 +1,10 @@
 import { Link } from 'expo-router';
 import React from 'react';
 
-import type { Post } from '@/api';
+import type { Game } from '@/api';
 import { Image, Pressable, Text, View } from '@/components/ui';
 
-type Props = Post;
+type Props = Game;
 
 const images = [
   'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?auto=format&fit=crop&w=800&q=80',
@@ -14,9 +14,9 @@ const images = [
   'https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?auto=format&fit=crop&w=800&q=80',
 ];
 
-export const Card = ({ name: title, _id, thumbnail }: Props) => {
+export const Card = ({ name: title, _id, thumbnail, slug }: Props) => {
   return (
-    <Link href={`/feed/${_id}`} asChild>
+    <Link href={`/feed/${slug}`} asChild>
       <Pressable>
         <View className="m-2 overflow-hidden rounded-xl  border border-neutral-300 bg-white  dark:bg-neutral-900">
           <Image

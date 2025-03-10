@@ -1,4 +1,4 @@
-export type Post = {
+export type Game = {
   category: "string",
   createdAt: "Date",
   name: "string",
