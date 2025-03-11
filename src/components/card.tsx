@@ -16,7 +16,7 @@ const images = [
 
 export const Card = ({ name: title, _id, thumbnail, slug }: Props) => {
   return (
-    <Link href={`/feed/${slug}`} asChild>
+    <Link href={`/games/${slug}`} asChild>
       <Pressable>
         <View className="m-2 overflow-hidden rounded-xl  border border-neutral-300 bg-white  dark:bg-neutral-900">
           <Image

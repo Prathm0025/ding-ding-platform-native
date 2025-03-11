@@ -2,13 +2,15 @@
 import { Link, Redirect, SplashScreen, Tabs } from 'expo-router';
 import React, { useCallback, useEffect } from 'react';
 
-import { Pressable, Text } from '@/components/ui';
+import { Pressable, Text, View } from '@/components/ui';
 import {
   Feed as FeedIcon,
   Settings as SettingsIcon,
   Style as StyleIcon,
 } from '@/components/ui/icons';
-import { useAuth, useIsFirstTime } from '@/lib';
+import { signOut, useAuth, useIsFirstTime } from '@/lib';
+import { ItemsContainer } from '@/components/settings/items-container';
+import { Item } from '@/components/settings/item';
 
 export default function TabLayout() {
   const status = useAuth.use.status();
@@ -35,22 +37,22 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Feed',
+          title: 'Games',
           tabBarIcon: ({ color }) => <FeedIcon color={color} />,
-          headerRight: () => <CreateNewPostLink />,
+          headerRight: () => < LogoutItem />,
           tabBarButtonTestID: 'feed-tab',
         }}
       />
 
-      <Tabs.Screen
-        name="style"
-        options={{
-          title: 'Style',
-          headerShown: false,
-          tabBarIcon: ({ color }) => <StyleIcon color={color} />,
-          tabBarButtonTestID: 'style-tab',
-        }}
-      />
+      {/* <Tabs.Screen */}
+      {/*   name="style" */}
+      {/*   options={{ */}
+      {/*     title: 'Style', */}
+      {/*     headerShown: false, */}
+      {/*     tabBarIcon: ({ color }) => <StyleIcon color={color} />, */}
+      {/*     tabBarButtonTestID: 'style-tab', */}
+      {/*   }} */}
+      {/* /> */}
       <Tabs.Screen
         name="settings"
         options={{
@@ -64,12 +66,21 @@ export default function TabLayout() {
   );
 }
 
-const CreateNewPostLink = () => {
+// const CreateNewPostLink = () => {
+//   return (
+//     <Link href="/feed/add-post" asChild>
+//       <Pressable>
+//         <Text className="px-3 text-primary-300">Create</Text>
+//       </Pressable>
+//     </Link>
+//   );
+// };
+const LogoutItem = () => {
   return (
-    <Link href="/feed/add-post" asChild>
-      <Pressable>
-        <Text className="px-3 text-primary-300">Create</Text>
-      </Pressable>
-    </Link>
-  );
-};
+    <View className="m-4">
+      <ItemsContainer>
+        <Item text="settings.logout" onPress={signOut} />
+      </ItemsContainer>
+    </View>
+  )
+}

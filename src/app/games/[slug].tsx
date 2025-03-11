@@ -1,7 +1,6 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
 import * as React from 'react';
 
-// import { usePost } from '@/api';
 import {
   ActivityIndicator,
   FocusAwareStatusBar,
@@ -23,7 +22,7 @@ export default function Post() {
   if (isPending) {
     return (
       <View className="flex-1 justify-center  p-3">
-        <Stack.Screen options={{ title: 'Post', headerBackTitle: 'Feed' }} />
+        <Stack.Screen options={{ title: local.slug, headerBackTitle: "Games" }} />
         <FocusAwareStatusBar />
         <ActivityIndicator />
       </View>
@@ -32,7 +31,7 @@ export default function Post() {
   if (isError) {
     return (
       <View className="flex-1 justify-center p-3">
-        <Stack.Screen options={{ title: 'Post', headerBackTitle: 'Feed' }} />
+        <Stack.Screen options={{ title: local.slug, headerBackTitle: 'Games' }} />
         <FocusAwareStatusBar />
         <Text className="text-center">Error loading post</Text>
       </View>
