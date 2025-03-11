@@ -3,7 +3,7 @@
 
 import { Stack, useLocalSearchParams } from 'expo-router';
 
-import { useGame } from '@/api';
+import { useGame } from '@/api/games/use-game';
 import {
   ActivityIndicator,
   FocusAwareStatusBar,
