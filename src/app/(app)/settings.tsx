@@ -1,4 +1,4 @@
-/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable max-lines-per-function */
 import { Env } from '@env';
 import { useColorScheme } from 'nativewind';
 
@@ -15,12 +15,19 @@ import {
 } from '@/components/ui';
 import { Github, Rate, Share, Support, Website } from '@/components/ui/icons';
 import { translate, useAuth } from '@/lib';
+import { useSocket } from '@/lib/socket/socket';
 
 export default function Settings() {
   const signOut = useAuth.use.signOut();
   const { colorScheme } = useColorScheme();
   const iconColor =
     colorScheme === 'dark' ? colors.neutral[400] : colors.neutral[500];
+  const { disconnect } = useSocket();
+
+  const handleLogout = () => {
+    disconnect();
+    signOut();
+  };
   return (
     <>
       <FocusAwareStatusBar />
@@ -75,7 +82,7 @@ export default function Settings() {
 
           <View className="my-8">
             <ItemsContainer>
-              <Item text="settings.logout" onPress={signOut} />
+              <Item text="settings.logout" onPress={handleLogout} />
             </ItemsContainer>
           </View>
         </View>

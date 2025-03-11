@@ -1,18 +1,20 @@
-import { Stack, useLocalSearchParams } from 'expo-router';
-import * as React from 'react';
+// import { Stack, useLocalSearchParams } from 'expo-router';
+// import * as React from 'react';
 
+import { Stack, useLocalSearchParams } from 'expo-router';
+
+import { useGame } from '@/api';
 import {
   ActivityIndicator,
   FocusAwareStatusBar,
   Text,
   View,
 } from '@/components/ui';
-import { useGame } from '@/api';
 import { useAuth } from '@/lib';
 
 export default function Post() {
   const local = useLocalSearchParams<{ slug: string }>();
-  const token = useAuth.use.token()
+  const token = useAuth.use.token();
 
   const { data, isPending, isError } = useGame({
     //@ts-ignore
@@ -22,7 +24,9 @@ export default function Post() {
   if (isPending) {
     return (
       <View className="flex-1 justify-center  p-3">
-        <Stack.Screen options={{ title: local.slug, headerBackTitle: "Games" }} />
+        <Stack.Screen
+          options={{ title: local.slug, headerBackTitle: 'Games' }}
+        />
         <FocusAwareStatusBar />
         <ActivityIndicator />
       </View>
@@ -31,7 +35,9 @@ export default function Post() {
   if (isError) {
     return (
       <View className="flex-1 justify-center p-3">
-        <Stack.Screen options={{ title: local.slug, headerBackTitle: 'Games' }} />
+        <Stack.Screen
+          options={{ title: local.slug, headerBackTitle: 'Games' }}
+        />
         <FocusAwareStatusBar />
         <Text className="text-center">Error loading post</Text>
       </View>
