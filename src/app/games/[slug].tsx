@@ -21,6 +21,8 @@ export default function Post() {
     variables: { slug: local.slug, token },
   });
 
+  console.log(data, 'data', isPending, isError);
+
   if (isPending) {
     return (
       <View className="flex-1 justify-center  p-3">
@@ -48,8 +50,8 @@ export default function Post() {
     <View className="flex-1 p-3 ">
       <Stack.Screen options={{ title: 'Post', headerBackTitle: 'Feed' }} />
       <FocusAwareStatusBar />
-      <Text className="text-xl">{data}</Text>
-      <Text>{data} </Text>
+      <Text className="text-center text-lg font-bold">{data?.url}</Text>
+      <Text>{data?.url} </Text>
     </View>
   );
 }
