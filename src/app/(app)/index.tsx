@@ -8,7 +8,7 @@ import { EmptyList, FocusAwareStatusBar, Text, View } from '@/components/ui';
 
 export default function Feed() {
   const { data, isPending, isError } = useGames();
-  console.log("data", data);
+  // console.log("data", data);
 
   const renderItem = React.useCallback(
     ({ item }: { item: Game }) => <Card {...item} />,
