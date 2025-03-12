@@ -1,4 +1,5 @@
 /* eslint-disable max-lines-per-function */
+import { Env } from '@env';
 import React, {
   createContext,
   useContext,
@@ -35,7 +36,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     console.log('[WebSocket] Connecting...');
-    const newSocket = io('https://gl9r1h24-5001.inc1.devtunnels.ms/', {
+    const newSocket = io(Env.API_URL, {
       auth: { token, origin: platformId },
       transports: ['websocket'],
       reconnection: false,

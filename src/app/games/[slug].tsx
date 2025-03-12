@@ -2,6 +2,7 @@
 // import * as React from 'react';
 
 import { Stack, useLocalSearchParams } from 'expo-router';
+import { useEffect } from 'react';
 
 import { useGame } from '@/api/games/use-game';
 import {
@@ -20,6 +21,9 @@ export default function Post() {
     //@ts-ignore
     variables: { slug: local.slug, token },
   });
+  useEffect(() => {
+    console.log('gameurl', data);
+  }, [data]);
 
   if (isPending) {
     return (
