@@ -1,40 +1,88 @@
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 import React from 'react';
+import {
+  ImageBackground,
+  Pressable,
+  Text,
+  useWindowDimensions,
+  View,
+} from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
 import type { Game } from '@/api';
-import { Image, Pressable, Text, View } from '@/components/ui';
 
 type Props = Game;
 
-const images = [
-  'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?auto=format&fit=crop&w=800&q=80',
-  'https://images.unsplash.com/photo-1564507004663-b6dfb3c824d5?auto=format&fit=crop&w=800&q=80',
-  'https://images.unsplash.com/photo-1515386474292-47555758ef2e?auto=format&fit=crop&w=800&q=80',
-  'https://plus.unsplash.com/premium_photo-1666815503002-5f07a44ac8fb?auto=format&fit=crop&w=800&q=80',
-  'https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?auto=format&fit=crop&w=800&q=80',
-];
-
 export const Card = ({ name: title, _id, thumbnail, slug }: Props) => {
-  return (
-    <Link href={`/games/${slug}`} asChild>
-      <Pressable>
-        <View className="m-2 overflow-hidden rounded-xl  border border-neutral-300 bg-white  dark:bg-neutral-900">
-          <Image
-            className="h-56 w-full overflow-hidden rounded-t-xl"
-            contentFit="cover"
-            source={{
-              uri: thumbnail,
-            }}
-          />
+  const { width, height } = useWindowDimensions();
 
-          <View className="p-2">
-            <Text className="py-3 text-2xl ">{title}</Text>
-            {/* <Text numberOfLines={3} className="leading-snug text-gray-600"> */}
-            {/*   {body} */}
-            {/* </Text> */}
+  // Responsive helper functions
+  const resWidth = (percentage: number) => (percentage / 100) * width;
+  const resHeight = (percentage: number) => (percentage / 100) * height;
+  const resSize = (percentage: number) =>
+    (percentage / 100) * Math.min(width, height);
+
+  const router = useRouter();
+
+  // Shared value for scale animation using reanimated
+  const scale = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  const handlePressIn = () => {
+    scale.value = withTiming(0.95, { duration: 150 });
+  };
+
+  const handlePressOut = () => {
+    scale.value = withTiming(1, { duration: 150 });
+  };
+
+  return (
+    <Pressable
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      onPress={() => {
+        setTimeout(() => {
+          router.replace(`/games/${slug}`);
+        }, 200);
+      }}
+    >
+      <Animated.View
+        className="overflow-hidden border border-yellow-500 bg-red-500 shadow-lg"
+        style={[
+          {
+            width: resWidth(20),
+            height: resHeight(53),
+            borderRadius: resSize(5),
+            borderWidth: resSize(0.4),
+            padding: resSize(0.5),
+            marginHorizontal: resSize(1.5),
+            shadowRadius: resSize(1.8),
+            shadowOffset: { width: resSize(0.4), height: resSize(0.8) },
+          },
+          animatedStyle,
+        ]}
+      >
+        <ImageBackground
+          source={{ uri: thumbnail }}
+          className="flex-1 items-center justify-end"
+          imageStyle={{ borderRadius: resSize(40) }}
+        >
+          <View className="w-full items-center bg-black bg-opacity-50 p-1">
+            <Text className="text-center text-sm font-bold text-white">
+              {title}
+            </Text>
           </View>
-        </View>
-      </Pressable>
-    </Link>
+        </ImageBackground>
+      </Animated.View>
+    </Pressable>
   );
 };
+
+export default Card;

@@ -1,16 +1,15 @@
 /* eslint-disable react/no-unstable-nested-components */
-import { Link, Redirect, SplashScreen, Tabs } from 'expo-router';
+import { Redirect, SplashScreen, Tabs } from 'expo-router';
 import React, { useCallback, useEffect } from 'react';
 
-import { Pressable, Text, View } from '@/components/ui';
+import { Item } from '@/components/settings/item';
+import { ItemsContainer } from '@/components/settings/items-container';
+import { View } from '@/components/ui';
 import {
   Feed as FeedIcon,
   Settings as SettingsIcon,
-  Style as StyleIcon,
 } from '@/components/ui/icons';
 import { signOut, useAuth, useIsFirstTime } from '@/lib';
-import { ItemsContainer } from '@/components/settings/items-container';
-import { Item } from '@/components/settings/item';
 
 export default function TabLayout() {
   const status = useAuth.use.status();
@@ -39,8 +38,8 @@ export default function TabLayout() {
         options={{
           title: 'Games',
           tabBarIcon: ({ color }) => <FeedIcon color={color} />,
-          headerRight: () => < LogoutItem />,
-          tabBarButtonTestID: 'feed-tab',
+          headerRight: () => <LogoutItem />,
+          tabBarButtonTestID: 'games-tab',
         }}
       />
 
@@ -82,5 +81,5 @@ const LogoutItem = () => {
         <Item text="settings.logout" onPress={signOut} />
       </ItemsContainer>
     </View>
-  )
-}
+  );
+};
