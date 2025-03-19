@@ -1,5 +1,8 @@
+/* eslint-disable max-lines-per-function */
+
 import { Env } from '@env';
 import { useRouter } from 'expo-router';
+import * as ScreenOrientation from 'expo-screen-orientation';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   BackHandler,
@@ -14,6 +17,8 @@ import { useAuth } from '@/lib';
 import GameLoader from './game-loader';
 
 const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
+  console.log(gameUrl, 'gameUrl');
+
   const gameWebViewRef = useRef(null);
   const authToken = useAuth.use.token();
 
@@ -26,6 +31,13 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
   // const selectedUrl = useRecoilValue(selectedGameAtom)
 
   useEffect(() => {
+    const lockOrientation = async () => {
+      await ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.LANDSCAPE
+      );
+    };
+
+    lockOrientation();
     const backAction = () => {
       return true;
     };
@@ -37,7 +49,10 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
     );
 
     // Cleanup the listener when component unmounts
-    return () => backHandler.remove();
+    return () => {
+      backHandler.remove();
+      ScreenOrientation.unlockAsync();
+    };
   }, []);
 
   return (
@@ -51,6 +66,7 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
         injectedJavaScriptObject={{
           socketURL,
           token: authToken,
+          nameSpace: 'game',
         }}
         javaScriptEnabled={true}
         onMessage={(event) => {
@@ -64,8 +80,8 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
         style={[
           styles.game,
           !isGameReady
-            ? { width: 0, height: 0, opacity: 0, position: 'absolute' } // Load in background
-            : { width, height }, // Show full screen when ready
+            ? { width: 0, height: 0, opacity: 0, position: 'absolute' }
+            : { width, height },
         ]}
       />
     </View>

@@ -1,8 +1,20 @@
-import { ImageBackground } from 'expo-image';
+/* eslint-disable max-lines-per-function */
+
+import { Image, ImageBackground } from 'expo-image';
 import React, { useEffect, useRef } from 'react';
-import { Animated, Easing } from 'react-native';
+import {
+  Animated,
+  Easing,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 
 const GameLoader = () => {
+  const { width, height } = useWindowDimensions();
+  const resSize = (percentage: number) =>
+    (percentage / 100) * Math.min(width, height);
+
   // Progress bar animation
   const progressAnim = useRef(new Animated.Value(0)).current;
 
@@ -18,31 +30,53 @@ const GameLoader = () => {
     };
 
     loopAnimation();
-  }, [progressAnim]);
+  }, []);
+
+  const progressWidth = progressAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0%', '100%'],
+  });
+
+  const styles = StyleSheet.create({
+    overlay: {
+      position: 'absolute',
+      backgroundColor: 'rgba(0, 0, 0, 0.8)', // Semi-transparent black overlay
+      justifyContent: 'center',
+      alignItems: 'center',
+      width,
+      height,
+      zIndex: 20,
+    },
+    loader: {
+      width: resSize(55), // Adjust size as needed
+      height: resSize(25), // Adjust size as needed
+    },
+    progressBarContainer: {
+      width: resSize(50),
+      height: resSize(2),
+      backgroundColor: '#fff',
+      borderRadius: resSize(5),
+      overflow: 'hidden',
+      marginTop: resSize(3),
+    },
+    progressBar: {
+      height: '100%',
+      backgroundColor: '#F49F2D', // Yellow theme
+    },
+  });
 
   return (
     <ImageBackground
-      // source={uri: "https://images.unsplash.com/photo-1535376472810-5d229c65da09?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" }
-      source={
-        'https://images.unsplash.com/photo-1535376472810-5d229c65da09?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-      }
-      className="absolute z-20 size-full items-center justify-center bg-black/80"
-      contentFit="cover"
-    ></ImageBackground>
+      source={require('../../assets/game-loader-bg.png')} // Replace with your background image path
+      style={styles.overlay}
+      resizeMode="cover"
+    >
+      <Image source={require('../../assets/logo.gif')} style={styles.loader} />
+      <View style={styles.progressBarContainer}>
+        <Animated.View style={[styles.progressBar, { width: progressWidth }]} />
+      </View>
+    </ImageBackground>
   );
 };
-
-// const ProgressBar = ({
-//   progressWidth,
-// }: {
-//   progressWidth: Animated.AnimatedInterpolation<string | number>;
-// }) => (
-//   <View className="mt-[3%] h-[2%] w-[50%] overflow-hidden rounded-[5%] bg-white">
-//     <Animated.View
-//       style={{ width: progressWidth }}
-//       className="h-full bg-yellow-500"
-//     />
-//   </View>
-// );
 
 export default GameLoader;
