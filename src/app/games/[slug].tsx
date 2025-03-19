@@ -53,7 +53,7 @@ export default function Game() {
 
   return (
     <View className="flex-1 p-3 ">
-      {/* <Stack.Screen options={{ title: local.slug, headerBackTitle: 'Games' }} /> */}
+      <Stack.Screen options={{ title: local.slug, headerBackTitle: 'Games' }} />
       {/* <FocusAwareStatusBar /> */}
       <Text className="text-center text-lg font-bold">{data?.url}</Text>
 
