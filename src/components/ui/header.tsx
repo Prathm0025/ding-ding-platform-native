@@ -38,22 +38,18 @@ const Header = React.memo(() => {
     fetchInitialCredits();
   }, []);
 
-  // ✅ Use useMemo to avoid recalculations
   const credits = useMemo(() => {
     const newCredit = data?.data?.credits;
 
-    if (
-      newCredit !== undefined &&
-      newCredit !== lastCreditRef.current // ✅ Only update if different
-    ) {
+    if (newCredit !== undefined && newCredit !== lastCreditRef.current) {
       lastCreditRef.current = newCredit;
-      console.log('Updating credit:', newCredit);
+      // console.log('Updating credit:', newCredit);
       setCredits(newCredit);
       return newCredit;
     }
 
     return lastCreditRef.current;
-  }, [data?.data?.credits]); // ✅ Only re-evaluate when data changes
+  }, [data?.data?.credits]);
 
   return (
     <ImageBackground
