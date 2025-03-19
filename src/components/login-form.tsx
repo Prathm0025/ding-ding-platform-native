@@ -10,7 +10,6 @@ import {
   ImageBackground,
   KeyboardAvoidingView,
   Platform,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -32,13 +31,9 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
     resolver: zodResolver(schema),
     defaultValues: { username: '', password: '' },
   });
-  const { isSubmitting } = formState;
+  const { errors, isSubmitting } = formState;
   const [passwordVisible, setPasswordVisible] = useState(false);
   const { width, height } = useWindowDimensions();
-
-  useEffect(() => {
-    console.log('isSubmitting', isSubmitting);
-  }, [isSubmitting]);
 
   useEffect(() => {
     const lockOrientation = async () => {
@@ -57,56 +52,54 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
   return (
     <ImageBackground
       source={require('../../assets/bg.png')}
-      style={styles.background}
+      className="size-full flex-1 items-center justify-center"
     >
       <ImageBackground
         source={require('../../assets/lady.png')}
-        style={styles.ladyBackground}
+        className="absolute z-10 size-full"
       >
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.container}
+          className="flex-1"
         >
           <View
-            style={[
-              styles.innerContainer,
-              { paddingVertical: responsiveHeight(5) },
-            ]}
+            className="flex-1 items-center justify-center"
+            style={{ paddingVertical: responsiveHeight(5) }}
           >
             <View
-              style={[
-                styles.formContainer,
-                {
-                  padding: responsiveWidth(5),
-                  borderRadius: responsiveWidth(3),
-                },
-              ]}
+              className="w-[85%] items-center bg-black/50"
+              style={{
+                padding: responsiveWidth(5),
+                borderRadius: responsiveWidth(3),
+              }}
             >
               <Image
                 source={require('../../assets/logoDingDing.png')}
-                style={[
-                  styles.logo,
-                  { width: responsiveWidth(50), height: responsiveHeight(12) },
-                ]}
+                className="mb-5"
+                style={{
+                  width: responsiveWidth(50),
+                  height: responsiveHeight(12),
+                }}
               />
 
               {/* Username Input */}
               <View
-                style={[
-                  styles.inputContainer,
-                  {
-                    height: responsiveHeight(6),
-                    borderRadius: responsiveWidth(20),
-                    paddingHorizontal: responsiveWidth(4),
-                  },
-                ]}
+                className={`mb-4 w-full flex-row items-center border bg-black/60 ${
+                  errors.username ? 'border-red-500' : 'border-[#FFB302]'
+                }`}
+                style={{
+                  height: responsiveHeight(6),
+                  borderRadius: responsiveWidth(20),
+                  paddingHorizontal: responsiveWidth(4),
+                }}
               >
                 <Image
                   source={require('../../assets/user.png')}
-                  style={[
-                    styles.icon,
-                    { width: responsiveWidth(6), height: responsiveHeight(3) },
-                  ]}
+                  className="mr-2.5"
+                  style={{
+                    width: responsiveWidth(6),
+                    height: responsiveHeight(3),
+                  }}
                 />
                 <Controller
                   control={control}
@@ -114,10 +107,8 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
                   render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                       placeholder="Username"
-                      style={[
-                        styles.input,
-                        { fontSize: responsiveFontSize(1.7) },
-                      ]}
+                      className="flex-1 text-white"
+                      style={{ fontSize: responsiveFontSize(1.7) }}
                       placeholderTextColor="#FFFFFF"
                       onBlur={onBlur}
                       onChangeText={onChange}
@@ -126,24 +117,30 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
                   )}
                 />
               </View>
+              {/* {errors.username && (
+                <Text className="mb-2 text-sm text-red-500">
+                  {errors.username.message}
+                </Text>
+              )} */}
 
               {/* Password Input */}
               <View
-                style={[
-                  styles.inputContainer,
-                  {
-                    height: responsiveHeight(6),
-                    borderRadius: responsiveWidth(20),
-                    paddingHorizontal: responsiveWidth(4),
-                  },
-                ]}
+                className={`mb-4 w-full flex-row items-center border bg-black/60 ${
+                  errors.password ? 'border-red-500' : 'border-[#FFB302]'
+                }`}
+                style={{
+                  height: responsiveHeight(6),
+                  borderRadius: responsiveWidth(20),
+                  paddingHorizontal: responsiveWidth(4),
+                }}
               >
                 <Image
                   source={require('../../assets/lock.png')}
-                  style={[
-                    styles.icon,
-                    { width: responsiveWidth(6), height: responsiveHeight(3) },
-                  ]}
+                  className="mr-2.5"
+                  style={{
+                    width: responsiveWidth(6),
+                    height: responsiveHeight(3),
+                  }}
                 />
                 <Controller
                   control={control}
@@ -151,10 +148,8 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
                   render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                       placeholder="Password"
-                      style={[
-                        styles.input,
-                        { fontSize: responsiveFontSize(1.7) },
-                      ]}
+                      className="flex-1 text-white"
+                      style={{ fontSize: responsiveFontSize(1.7) }}
                       placeholderTextColor="#FFFFFF"
                       secureTextEntry={!passwordVisible}
                       onBlur={onBlur}
@@ -173,26 +168,27 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
                   />
                 </TouchableOpacity>
               </View>
+              {/* {errors.password && (
+                <Text className="mb-2 text-sm text-red-500">
+                  {errors.password.message}
+                </Text>
+              )} */}
 
               {/* Login Button */}
               <TouchableOpacity
                 onPress={handleSubmit(onSubmit)}
-                style={[
-                  styles.button,
-                  {
-                    paddingVertical: responsiveWidth(3),
-                    borderRadius: responsiveWidth(10),
-                  },
-                ]}
+                className="w-full items-center bg-[#F69E04]"
+                style={{
+                  paddingVertical: responsiveWidth(3),
+                  borderRadius: responsiveWidth(10),
+                }}
               >
                 {isSubmitting ? (
-                  <ActivityIndicator color="#fff" />
+                  <ActivityIndicator color="#FFFFFF" />
                 ) : (
                   <Text
-                    style={[
-                      styles.buttonText,
-                      { fontSize: responsiveFontSize(2) },
-                    ]}
+                    className="font-bold text-white"
+                    style={{ fontSize: responsiveFontSize(2) }}
                   >
                     Login
                   </Text>
@@ -205,42 +201,3 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
     </ImageBackground>
   );
 };
-
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
-  },
-  container: { flex: 1 },
-  innerContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  formContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    width: '85%',
-    alignItems: 'center',
-  },
-  logo: { resizeMode: 'contain', marginBottom: 20 },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    borderColor: '#FFB302',
-    borderWidth: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    marginBottom: 15,
-  },
-  icon: { marginRight: 10 },
-  input: { flex: 1, color: '#FFFFFF' },
-  button: { backgroundColor: '#F69E04', width: '100%', alignItems: 'center' },
-  buttonText: { color: '#fff', fontWeight: 'bold' },
-  ladyBackground: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-    zIndex: 1,
-  },
-});
