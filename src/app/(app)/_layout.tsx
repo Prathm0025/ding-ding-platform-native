@@ -37,6 +37,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Games',
+          headerShown: false,
           tabBarIcon: ({ color }) => <FeedIcon color={color} />,
           headerRight: () => <LogoutItem />,
           tabBarButtonTestID: 'games-tab',

@@ -1,3 +1,5 @@
+/* eslint-disable max-lines-per-function */
+
 import { useRouter } from 'expo-router';
 import React from 'react';
 import {
@@ -20,15 +22,12 @@ type Props = Game;
 export const Card = ({ name: title, _id, thumbnail, slug }: Props) => {
   const { width, height } = useWindowDimensions();
 
-  // Responsive helper functions
   const resWidth = (percentage: number) => (percentage / 100) * width;
   const resHeight = (percentage: number) => (percentage / 100) * height;
   const resSize = (percentage: number) =>
     (percentage / 100) * Math.min(width, height);
 
   const router = useRouter();
-
-  // Shared value for scale animation using reanimated
   const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -54,28 +53,50 @@ export const Card = ({ name: title, _id, thumbnail, slug }: Props) => {
       }}
     >
       <Animated.View
-        className="overflow-hidden border border-yellow-500 bg-red-500 shadow-lg"
         style={[
           {
+            overflow: 'hidden',
+            backgroundColor: '#ff0000',
+            borderColor: '#FFD700',
+            shadowColor: '#FFD700',
+            shadowOpacity: 0.8,
             width: resWidth(20),
             height: resHeight(53),
             borderRadius: resSize(5),
             borderWidth: resSize(0.4),
             padding: resSize(0.5),
-            marginHorizontal: resSize(1.5),
             shadowRadius: resSize(1.8),
             shadowOffset: { width: resSize(0.4), height: resSize(0.8) },
+            marginHorizontal: resSize(1.5),
           },
           animatedStyle,
         ]}
       >
         <ImageBackground
           source={{ uri: thumbnail }}
-          className="flex-1 items-center justify-end"
-          imageStyle={{ borderRadius: resSize(40) }}
+          style={{
+            flex: 1,
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+          }}
+          imageStyle={{ borderRadius: resSize(4) }}
         >
-          <View className="w-full items-center bg-black bg-opacity-50 p-1">
-            <Text className="text-center text-sm font-bold text-white">
+          <View
+            style={{
+              width: '100%',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              padding: 5,
+              alignItems: 'center',
+            }}
+          >
+            <Text
+              style={{
+                color: '#fff',
+                fontSize: 14,
+                fontWeight: 'bold',
+                textAlign: 'center',
+              }}
+            >
               {title}
             </Text>
           </View>

@@ -1,6 +1,3 @@
-// import { Stack, useLocalSearchParams } from 'expo-router';
-// import * as React from 'react';
-
 import { Stack, useLocalSearchParams } from 'expo-router';
 
 import { useGame } from '@/api/games/use-game';
@@ -15,18 +12,14 @@ import { useAuth } from '@/lib';
 
 export default function Game() {
   const local = useLocalSearchParams<{ slug: string }>();
-  // const local = { slug: 'cleopatra' }
   const token = useAuth.use.token();
 
   const { data, isPending, isError } = useGame({
     //@ts-ignore
     variables: { slug: local.slug, token },
   });
-  // useEffect(() => {
-  //   console.log('gameurl', data);
-  // }, [data]);
 
-  // console.log(data, 'data', isPending, isError);
+  console.log(data, 'data', isPending, isError);
 
   if (isPending) {
     return (
