@@ -67,7 +67,6 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
         injectedJavaScriptObject={{
           socketURL,
           token: authToken,
-          nameSpace: 'game',
         }}
         javaScriptEnabled={true}
         onMessage={(event) => {

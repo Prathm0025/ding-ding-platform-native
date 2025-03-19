@@ -1,7 +1,6 @@
 /* eslint-disable max-lines-per-function */
-
 import { Image } from 'expo-image';
-import React from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -11,12 +10,46 @@ import {
   View,
 } from 'react-native';
 
-const Header = () => {
-  const { width } = useWindowDimensions();
-  const responsiveWidth = (percentage: any) => (percentage / 100) * width;
-  // Fetch initial credits from storage
+import { getCredits, setCredits } from '@/lib/auth/utils';
+import { useSocket } from '@/lib/socket/socket';
 
-  // Listen for real-time credit updates
+const Header = React.memo(() => {
+  const { width } = useWindowDimensions();
+  const responsiveWidth = (percentage: number) => (percentage / 100) * width;
+
+  const { data } = useSocket();
+
+  const lastCreditRef = useRef<number | null>(null);
+
+  // Fetch initial credits from storage (for offline mode)
+  useEffect(() => {
+    const fetchInitialCredits = async () => {
+      try {
+        const storedCredits = getCredits();
+        if (storedCredits) {
+          setCredits(storedCredits);
+          lastCreditRef.current = parseInt(storedCredits, 10);
+        }
+      } catch (error) {
+        console.error('Failed to load initial credits:', error);
+      }
+    };
+
+    fetchInitialCredits();
+  }, []);
+
+  const credits = useMemo(() => {
+    const newCredit = data?.data?.credits;
+
+    if (newCredit !== undefined && newCredit !== lastCreditRef.current) {
+      lastCreditRef.current = newCredit;
+      // console.log('Updating credit:', newCredit);
+      setCredits(newCredit);
+      return newCredit;
+    }
+
+    return lastCreditRef.current;
+  }, [data?.data?.credits]);
 
   return (
     <ImageBackground
@@ -41,7 +74,7 @@ const Header = () => {
             Name
           </Text>
           <Text style={[styles.coin, { fontSize: responsiveWidth(1.5) }]}>
-            {/* {credit !== null ? credit?.toLocaleString() : "Loading..."} */}
+            {credits !== undefined ? credits?.toLocaleString() : 'Loading...'}
           </Text>
         </View>
       </View>
@@ -62,13 +95,6 @@ const Header = () => {
 
       {/* Icons */}
       <View style={styles.iconsContainer}>
-        {/* <TouchableOpacity onPress={handleLogout}>
-                    <Image source={require('../assets/images/h-icon1.png')} style={{
-                        width: responsiveWidth(3.5),
-                        height: responsiveWidth(4),
-                        marginHorizontal: responsiveWidth(1.1),
-                    }} />
-                </TouchableOpacity> */}
         <TouchableOpacity>
           <Image
             source={require('../../../assets/h-icon2.png')}
@@ -93,7 +119,7 @@ const Header = () => {
       </View>
     </ImageBackground>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

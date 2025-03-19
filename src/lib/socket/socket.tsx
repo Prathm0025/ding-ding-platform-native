@@ -7,14 +7,17 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { showMessage } from 'react-native-flash-message';
 import { io, type Socket } from 'socket.io-client';
 
 import { useAuth } from '../auth';
 interface SocketContextType {
   socket: Socket | null;
   status: 'idle' | 'connected' | 'disconnected' | 'error';
+  data: any | null;
   emit: (event: string, data?: any) => void;
   disconnect: () => void;
+  emitAlert: (message: string) => void;
 }
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
@@ -22,6 +25,7 @@ const SocketContext = createContext<SocketContextType | undefined>(undefined);
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const token = useAuth.use.token();
   const platformId = useAuth.use.platformId();
+  const [data, setData] = useState<any>(null);
   const [status, setStatus] = useState<
     'idle' | 'connected' | 'disconnected' | 'error'
   >('idle');
@@ -36,8 +40,8 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     console.log('[WebSocket] Connecting...');
-    const newSocket = io(`${Env.API_URL}/playground`, {
-      auth: { token, origin: platformId, playgroundId: platformId },
+    const newSocket = io(`${Env.API_URL}`, {
+      auth: { token, origin: platformId },
       transports: ['websocket'],
       reconnection: false,
     });
@@ -57,6 +61,21 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       setStatus('error');
     });
 
+    newSocket.on('data', (eventData) => {
+      setData(eventData);
+    });
+
+    newSocket.on('alert', (message) => {
+      console.log('ALERT RECEIVED:', message);
+      showMessage({
+        message: 'Alert',
+        description: message,
+        type: 'warning', // Can be 'success', 'danger', 'info'
+        icon: 'auto',
+        duration: 3000, // Auto-dismiss after 3 seconds
+      });
+    });
+
     socketRef.current = newSocket;
 
     return () => {
@@ -64,7 +83,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       newSocket.disconnect();
       setStatus('disconnected');
     };
-  }, [token, platformId]);
+  }, []);
 
   const disconnectSocket = () => {
     if (socketRef.current) {
@@ -74,13 +93,25 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const emitAlert = (message: string) => {
+    showMessage({
+      message: 'Alert',
+      description: message,
+      type: 'warning',
+      icon: 'auto',
+      duration: 3000,
+    });
+  };
+
   return (
     <SocketContext.Provider
       value={{
         socket: socketRef.current,
         status,
-        emit: (event, data) => socketRef.current?.emit(event, data),
+        data,
+        emit: (event, payload) => socketRef.current?.emit(event, payload),
         disconnect: disconnectSocket,
+        emitAlert, // ✅ Expose emitAlert to be used anywhere in the app
       }}
     >
       {children}
