@@ -1,6 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import { Image } from 'expo-image';
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect } from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -19,8 +19,6 @@ const Header = React.memo(() => {
 
   const { data } = useSocket();
 
-  const lastCreditRef = useRef<number | null>(null);
-
   // Fetch initial credits from storage (for offline mode)
   useEffect(() => {
     const fetchInitialCredits = async () => {
@@ -28,7 +26,6 @@ const Header = React.memo(() => {
         const storedCredits = getCredits();
         if (storedCredits) {
           setCredits(storedCredits);
-          lastCreditRef.current = parseInt(storedCredits, 10);
         }
       } catch (error) {
         console.error('Failed to load initial credits:', error);
@@ -37,23 +34,6 @@ const Header = React.memo(() => {
 
     fetchInitialCredits();
   }, []);
-
-  // ✅ Use useMemo to avoid recalculations
-  const credits = useMemo(() => {
-    const newCredit = data?.data?.credits;
-
-    if (
-      newCredit !== undefined &&
-      newCredit !== lastCreditRef.current // ✅ Only update if different
-    ) {
-      lastCreditRef.current = newCredit;
-      console.log('Updating credit:', newCredit);
-      setCredits(newCredit);
-      return newCredit;
-    }
-
-    return lastCreditRef.current;
-  }, [data?.data?.credits]); // ✅ Only re-evaluate when data changes
 
   return (
     <ImageBackground
@@ -78,7 +58,9 @@ const Header = React.memo(() => {
             Name
           </Text>
           <Text style={[styles.coin, { fontSize: responsiveWidth(1.5) }]}>
-            {credits !== undefined ? credits?.toLocaleString() : 'Loading...'}
+            {data?.data?.credits !== undefined
+              ? data.data.credits.toLocaleString()
+              : 'Loading...'}
           </Text>
         </View>
       </View>

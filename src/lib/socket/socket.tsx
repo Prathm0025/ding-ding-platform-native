@@ -1,4 +1,5 @@
 /* eslint-disable max-lines-per-function */
+
 import { Env } from '@env';
 import React, {
   createContext,
@@ -11,6 +12,7 @@ import { showMessage } from 'react-native-flash-message';
 import { io, type Socket } from 'socket.io-client';
 
 import { useAuth } from '../auth';
+
 interface SocketContextType {
   socket: Socket | null;
   status: 'idle' | 'connected' | 'disconnected' | 'error';
@@ -30,6 +32,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     'idle' | 'connected' | 'disconnected' | 'error'
   >('idle');
   const socketRef = useRef<Socket | null>(null);
+  const lastDataRef = useRef<any>(null); // ✅ Track last known data
 
   useEffect(() => {
     if (!token || !platformId) {
@@ -62,7 +65,12 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     });
 
     newSocket.on('data', (eventData) => {
-      setData(eventData);
+      // Only update if the new data is different from the last one
+      if (JSON.stringify(eventData) !== JSON.stringify(lastDataRef.current)) {
+        console.log('[WebSocket] New Data Received:', eventData);
+        lastDataRef.current = eventData;
+        setData(eventData);
+      }
     });
 
     newSocket.on('alert', (message) => {
@@ -70,9 +78,9 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       showMessage({
         message: 'Alert',
         description: message,
-        type: 'warning', // Can be 'success', 'danger', 'info'
+        type: 'warning',
         icon: 'auto',
-        duration: 3000, // Auto-dismiss after 3 seconds
+        duration: 3000,
       });
     });
 
@@ -83,7 +91,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       newSocket.disconnect();
       setStatus('disconnected');
     };
-  }, []);
+  }, [token, platformId]);
 
   const disconnectSocket = () => {
     if (socketRef.current) {
@@ -111,7 +119,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
         data,
         emit: (event, payload) => socketRef.current?.emit(event, payload),
         disconnect: disconnectSocket,
-        emitAlert, // ✅ Expose emitAlert to be used anywhere in the app
+        emitAlert,
       }}
     >
       {children}
