@@ -48,7 +48,7 @@ export default function Game() {
     <View className="flex-1 p-3 ">
       <Stack.Screen options={{ title: local.slug, headerBackTitle: 'Games' }} />
       {/* <FocusAwareStatusBar /> */}
-      <Text className="text-center text-lg font-bold">{data?.url}</Text>
+      {/* <Text className="text-center text-lg font-bold">{data?.url}</Text> */}
 
       <GameScreen gameUrl={data?.url} />
       {/* <Text>{data?.url} </Text> */}
