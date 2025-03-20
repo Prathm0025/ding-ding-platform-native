@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import { Redirect, SplashScreen, Tabs } from 'expo-router';
+import { Redirect, SplashScreen, Stack, Tabs } from 'expo-router';
 import React, { useCallback, useEffect } from 'react';
 
 import { Item } from '@/components/settings/item';
@@ -32,7 +32,7 @@ export default function TabLayout() {
     return <Redirect href="/login" />;
   }
   return (
-    <Tabs>
+    <Stack>
       <Tabs.Screen
         name="index"
         options={{
@@ -62,7 +62,7 @@ export default function TabLayout() {
           tabBarButtonTestID: 'settings-tab',
         }}
       />
-    </Tabs>
+    </Stack>
   );
 }
 

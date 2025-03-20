@@ -1,5 +1,7 @@
 /* eslint-disable max-lines-per-function */
+
 import { Image } from 'expo-image';
+import { useRouter } from 'expo-router';
 import React, { useEffect } from 'react';
 import {
   ImageBackground,
@@ -18,6 +20,7 @@ const Header = React.memo(() => {
   const responsiveWidth = (percentage: number) => (percentage / 100) * width;
 
   const { data } = useSocket();
+  const router = useRouter();
 
   // Fetch initial credits from storage (for offline mode)
   useEffect(() => {
@@ -91,7 +94,8 @@ const Header = React.memo(() => {
             }}
           />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push('/(app)/settings')}>
+          {/* ⬆️ Navigate directly to the Settings tab */}
           <Image
             source={require('../../../assets/h-icon3.png')}
             style={{
