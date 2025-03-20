@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
 
+import { useInstall } from '@/api/games/use-install';
 import { Cover } from '@/components/cover';
 import {
   Button,
@@ -13,6 +14,13 @@ import { useIsFirstTime } from '@/lib/hooks';
 export default function Onboarding() {
   const [_, setIsFirstTime] = useIsFirstTime();
   const router = useRouter();
+  const { refetch, isFetched } = useInstall({ enabled: false });
+
+  const handleInstall = () => {
+    if (!isFetched) {
+      refetch();
+    }
+  };
   return (
     <View className="flex h-full items-center  justify-center">
       <FocusAwareStatusBar />
@@ -20,31 +28,24 @@ export default function Onboarding() {
         <Cover />
       </View>
       <View className="justify-end ">
-        <Text className="my-3 text-center text-5xl font-bold">
-          DINGDING
-        </Text>
+        <Text className="my-3 text-center text-5xl font-bold">DINGDING</Text>
         <Text className="mb-2 text-center text-lg text-gray-600">
           Only Casino Platform you need
         </Text>
 
-        <Text className="my-1 pt-6 text-left text-lg">
-          🚀 ready to go{' '}
-        </Text>
-        <Text className="my-1 text-left text-lg">
-          🥷 Unparallel experience
-        </Text>
+        <Text className="my-1 pt-6 text-left text-lg">🚀 ready to go </Text>
+        <Text className="my-1 text-left text-lg">🥷 Unparallel experience</Text>
         <Text className="my-1 text-left text-lg">
           🧩 Minimal clutter & distraction
         </Text>
-        <Text className="my-1 text-left text-lg">
-          💪 well maintained
-        </Text>
+        <Text className="my-1 text-left text-lg">💪 well maintained</Text>
       </View>
       <SafeAreaView className="mt-6">
         <Button
           label="Let's Get Started "
           onPress={() => {
             setIsFirstTime(false);
+            handleInstall();
             router.replace('/login');
           }}
         />

@@ -52,12 +52,11 @@ const _useAuth = create<AuthState>((set, get) => ({
       return { success: true };
     } catch (e: any) {
       if (isAxiosError(e)) {
-        // console.log(e.status)
-        const msg = e.response?.data.errorStack.split(':')[1].split('at')[0];
-
-        showErrorMessage(msg);
-        // set({ response: e.response });
-        // Do something with this error...
+        showErrorMessage(e.response?.data?.message || e.message);
+        return {
+          success: false,
+          error: e.message || e.response?.data?.message,
+        };
       } else {
         console.log('Login error:', e);
         return { success: false, error: e.message };
