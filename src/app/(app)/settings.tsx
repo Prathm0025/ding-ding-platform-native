@@ -5,6 +5,7 @@ import { useColorScheme } from 'nativewind';
 import { Item } from '@/components/settings/item';
 import { ItemsContainer } from '@/components/settings/items-container';
 import { LanguageItem } from '@/components/settings/language-item';
+import { SoundItem } from '@/components/settings/sound-item';
 import { ThemeItem } from '@/components/settings/theme-item';
 import {
   colors,
@@ -13,7 +14,7 @@ import {
   Text,
   View,
 } from '@/components/ui';
-import { Github, Rate, Share, Support, Website } from '@/components/ui/icons';
+import { Share, Website } from '@/components/ui/icons';
 import { translate, useAuth } from '@/lib';
 import { useSocket } from '@/lib/socket/socket';
 
@@ -40,6 +41,7 @@ export default function Settings() {
           <ItemsContainer title="settings.generale">
             <LanguageItem />
             <ThemeItem />
+            <SoundItem />
           </ItemsContainer>
 
           <ItemsContainer title="settings.about">
@@ -51,7 +53,7 @@ export default function Settings() {
             <Item
               text="settings.share"
               icon={<Share color={iconColor} />}
-              onPress={() => { }}
+              onPress={() => {}}
             />
             {/* <Item */}
             {/*   text="settings.rate" */}
@@ -66,8 +68,8 @@ export default function Settings() {
           </ItemsContainer>
 
           <ItemsContainer title="settings.links">
-            <Item text="settings.privacy" onPress={() => { }} />
-            <Item text="settings.terms" onPress={() => { }} />
+            <Item text="settings.privacy" onPress={() => {}} />
+            <Item text="settings.terms" onPress={() => {}} />
             {/* <Item */}
             {/*   text="settings.github" */}
             {/*   icon={<Github color={iconColor} />} */}
@@ -76,7 +78,7 @@ export default function Settings() {
             <Item
               text="settings.website"
               icon={<Website color={iconColor} />}
-              onPress={() => { }}
+              onPress={() => {}}
             />
           </ItemsContainer>
 
