@@ -11,7 +11,7 @@ export const useGames = createQuery<Response, Variables, AxiosError>({
   queryKey: ['games'],
   fetcher: () => {
     return client
-      .get(`api/games?platform=milkyway&category=all`)
+      .get(`api/games?platform=milkyway-app&category=all`)
       .then((response) => response.data.others);
 
     // const response = await api.get(`/api/games?platform=${config.platform}&category=${category}`);

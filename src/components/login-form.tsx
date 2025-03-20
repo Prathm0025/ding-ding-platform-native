@@ -10,6 +10,7 @@ import {
   ImageBackground,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -35,10 +36,6 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
   const { isSubmitting } = formState;
   const [passwordVisible, setPasswordVisible] = useState(false);
   const { width, height } = useWindowDimensions();
-
-  useEffect(() => {
-    console.log('isSubmitting', isSubmitting);
-  }, [isSubmitting]);
 
   useEffect(() => {
     const lockOrientation = async () => {
@@ -67,139 +64,153 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.container}
         >
-          <View
-            style={[
-              styles.innerContainer,
-              { paddingVertical: responsiveHeight(5) },
-            ]}
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+            keyboardShouldPersistTaps="handled"
           >
             <View
               style={[
-                styles.formContainer,
-                {
-                  padding: responsiveWidth(5),
-                  borderRadius: responsiveWidth(3),
-                },
+                styles.innerContainer,
+                { paddingVertical: responsiveHeight(5) },
               ]}
             >
-              <Image
-                source={require('../../assets/logoDingDing.png')}
-                style={[
-                  styles.logo,
-                  { width: responsiveWidth(50), height: responsiveHeight(12) },
-                ]}
-              />
-
-              {/* Username Input */}
               <View
                 style={[
-                  styles.inputContainer,
+                  styles.formContainer,
                   {
-                    height: responsiveHeight(6),
-                    borderRadius: responsiveWidth(20),
-                    paddingHorizontal: responsiveWidth(4),
+                    padding: responsiveWidth(5),
+                    borderRadius: responsiveWidth(3),
                   },
                 ]}
               >
                 <Image
-                  source={require('../../assets/user.png')}
+                  source={require('../../assets/logoDingDing.png')}
                   style={[
-                    styles.icon,
-                    { width: responsiveWidth(6), height: responsiveHeight(3) },
+                    styles.logo,
+                    {
+                      width: responsiveWidth(50),
+                      height: responsiveHeight(12),
+                    },
                   ]}
                 />
-                <Controller
-                  control={control}
-                  name="username"
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                      placeholder="Username"
-                      style={[
-                        styles.input,
-                        { fontSize: responsiveFontSize(1.7) },
-                      ]}
-                      placeholderTextColor="#FFFFFF"
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      value={value}
-                    />
-                  )}
-                />
-              </View>
 
-              {/* Password Input */}
-              <View
-                style={[
-                  styles.inputContainer,
-                  {
-                    height: responsiveHeight(6),
-                    borderRadius: responsiveWidth(20),
-                    paddingHorizontal: responsiveWidth(4),
-                  },
-                ]}
-              >
-                <Image
-                  source={require('../../assets/lock.png')}
+                {/* Username Input */}
+                <View
                   style={[
-                    styles.icon,
-                    { width: responsiveWidth(6), height: responsiveHeight(3) },
+                    styles.inputContainer,
+                    {
+                      height: responsiveHeight(6),
+                      borderRadius: responsiveWidth(20),
+                      paddingHorizontal: responsiveWidth(4),
+                    },
                   ]}
-                />
-                <Controller
-                  control={control}
-                  name="password"
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                      placeholder="Password"
-                      style={[
-                        styles.input,
-                        { fontSize: responsiveFontSize(1.7) },
-                      ]}
-                      placeholderTextColor="#FFFFFF"
-                      secureTextEntry={!passwordVisible}
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      value={value}
-                    />
-                  )}
-                />
-                <TouchableOpacity
-                  onPress={() => setPasswordVisible(!passwordVisible)}
                 >
-                  <Ionicons
-                    name={passwordVisible ? 'eye' : 'eye-off'}
-                    size={responsiveFontSize(2)}
-                    color="#FFFFFF"
+                  <Image
+                    source={require('../../assets/user.png')}
+                    style={[
+                      styles.icon,
+                      {
+                        width: responsiveWidth(6),
+                        height: responsiveHeight(3),
+                      },
+                    ]}
                   />
+                  <Controller
+                    control={control}
+                    name="username"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <TextInput
+                        placeholder="Username"
+                        style={[
+                          styles.input,
+                          { fontSize: responsiveFontSize(1.7) },
+                        ]}
+                        placeholderTextColor="#FFFFFF"
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                      />
+                    )}
+                  />
+                </View>
+
+                {/* Password Input */}
+                <View
+                  style={[
+                    styles.inputContainer,
+                    {
+                      height: responsiveHeight(6),
+                      borderRadius: responsiveWidth(20),
+                      paddingHorizontal: responsiveWidth(4),
+                    },
+                  ]}
+                >
+                  <Image
+                    source={require('../../assets/lock.png')}
+                    style={[
+                      styles.icon,
+                      {
+                        width: responsiveWidth(6),
+                        height: responsiveHeight(3),
+                      },
+                    ]}
+                  />
+                  <Controller
+                    control={control}
+                    name="password"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <TextInput
+                        placeholder="Password"
+                        style={[
+                          styles.input,
+                          { fontSize: responsiveFontSize(1.7) },
+                        ]}
+                        placeholderTextColor="#FFFFFF"
+                        secureTextEntry={!passwordVisible}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                      />
+                    )}
+                  />
+                  <TouchableOpacity
+                    onPress={() => setPasswordVisible(!passwordVisible)}
+                  >
+                    <Ionicons
+                      name={passwordVisible ? 'eye' : 'eye-off'}
+                      size={responsiveFontSize(2)}
+                      color="#FFFFFF"
+                    />
+                  </TouchableOpacity>
+                </View>
+
+                {/* Login Button */}
+                <TouchableOpacity
+                  onPress={handleSubmit(onSubmit)}
+                  style={[
+                    styles.button,
+                    {
+                      paddingVertical: responsiveWidth(3),
+                      borderRadius: responsiveWidth(10),
+                    },
+                  ]}
+                >
+                  {isSubmitting ? (
+                    <ActivityIndicator color="#fff" />
+                  ) : (
+                    <Text
+                      style={[
+                        styles.buttonText,
+                        { fontSize: responsiveFontSize(2) },
+                      ]}
+                    >
+                      Login
+                    </Text>
+                  )}
                 </TouchableOpacity>
               </View>
-
-              {/* Login Button */}
-              <TouchableOpacity
-                onPress={handleSubmit(onSubmit)}
-                style={[
-                  styles.button,
-                  {
-                    paddingVertical: responsiveWidth(3),
-                    borderRadius: responsiveWidth(10),
-                  },
-                ]}
-              >
-                {isSubmitting ? (
-                  <ActivityIndicator color="#fff" />
-                ) : (
-                  <Text
-                    style={[
-                      styles.buttonText,
-                      { fontSize: responsiveFontSize(2) },
-                    ]}
-                  >
-                    Login
-                  </Text>
-                )}
-              </TouchableOpacity>
             </View>
-          </View>
+          </ScrollView>
         </KeyboardAvoidingView>
       </ImageBackground>
     </ImageBackground>
