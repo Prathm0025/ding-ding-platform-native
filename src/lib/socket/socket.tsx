@@ -8,7 +8,6 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { showMessage } from 'react-native-flash-message';
 import { io, type Socket } from 'socket.io-client';
 
 import { useAuth } from '../auth';
@@ -19,7 +18,6 @@ interface SocketContextType {
   data: any | null;
   emit: (event: string, data?: any) => void;
   disconnect: () => void;
-  emitAlert: (message: string) => void;
 }
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
@@ -73,16 +71,16 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       }
     });
 
-    newSocket.on('alert', (message) => {
-      console.log('ALERT RECEIVED:', message);
-      showMessage({
-        message: 'Alert',
-        description: message,
-        type: 'warning',
-        icon: 'auto',
-        duration: 3000,
-      });
-    });
+    // newSocket.on('alert', (message) => {
+    //   console.log('ALERT RECEIVED:', message);
+    //   showMessage({
+    //     message: 'Alert',
+    //     description: message,
+    //     type: 'warning',
+    //     icon: 'auto',
+    //     duration: 3000,
+    //   });
+    // });
 
     socketRef.current = newSocket;
 
@@ -101,15 +99,15 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const emitAlert = (message: string) => {
-    showMessage({
-      message: 'Alert',
-      description: message,
-      type: 'warning',
-      icon: 'auto',
-      duration: 3000,
-    });
-  };
+  // const emitAlert = (message: string) => {
+  //   showMessage({
+  //     message: 'Alert',
+  //     description: message,
+  //     type: 'warning',
+  //     icon: 'auto',
+  //     duration: 3000,
+  //   });
+  // };
 
   return (
     <SocketContext.Provider
@@ -119,7 +117,6 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
         data,
         emit: (event, payload) => socketRef.current?.emit(event, payload),
         disconnect: disconnectSocket,
-        emitAlert,
       }}
     >
       {children}
