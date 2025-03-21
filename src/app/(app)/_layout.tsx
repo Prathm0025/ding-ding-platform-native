@@ -32,7 +32,7 @@ export default function TabLayout() {
     return <Redirect href="/login" />;
   }
   return (
-    <Stack>
+    <Stack screenOptions={{ statusBarHidden: true, gestureEnabled: false }}>
       <Tabs.Screen
         name="index"
         options={{

@@ -1,4 +1,5 @@
 import { FlashList } from '@shopify/flash-list';
+import { ImageBackground } from 'expo-image';
 import { useFocusEffect } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import React, { useCallback, useEffect } from 'react';
@@ -57,17 +58,23 @@ export default function Feed() {
 
   return (
     <View className="w-full flex-1">
-      <Header />
-      <FocusAwareStatusBar />
-      <FlashList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(_, index) => `item-${index}`}
-        ListEmptyComponent={<EmptyList isLoading={isPending} />}
-        estimatedItemSize={300}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-      />
+      <ImageBackground
+        source={require('../../../assets/whole-bg.webp')}
+        className="flex-1 items-center justify-end"
+        resizeMode="cover"
+      >
+        <Header />
+        <FocusAwareStatusBar />
+        <FlashList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(_, index) => `item-${index}`}
+          ListEmptyComponent={<EmptyList isLoading={isPending} />}
+          estimatedItemSize={300}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        />
+      </ImageBackground>
     </View>
   );
 }

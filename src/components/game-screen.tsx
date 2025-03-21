@@ -13,6 +13,7 @@ import {
 import { WebView } from 'react-native-webview';
 
 import { useAuth } from '@/lib';
+import { useSoundStore } from '@/lib/sound';
 
 import GameLoader from './game-loader';
 
@@ -30,6 +31,7 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
   const router = useRouter();
   const { width, height } = useWindowDimensions();
   // const selectedUrl = useRecoilValue(selectedGameAtom)
+  const { play } = useSoundStore();
 
   useEffect(() => {
     const lockOrientation = async () => {
@@ -53,6 +55,7 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
     return () => {
       backHandler.remove();
       ScreenOrientation.unlockAsync();
+      play();
     };
   }, []);
 
