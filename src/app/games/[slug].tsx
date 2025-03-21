@@ -2,12 +2,7 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 
 import { useGame } from '@/api/games/use-game';
 import GameScreen from '@/components/game-screen';
-import {
-  ActivityIndicator,
-  FocusAwareStatusBar,
-  Text,
-  View,
-} from '@/components/ui';
+import { FocusAwareStatusBar, Text, View } from '@/components/ui';
 import { useAuth } from '@/lib';
 
 export default function Game() {
@@ -23,35 +18,22 @@ export default function Game() {
 
   if (isPending) {
     return (
-      <View className="flex-1 justify-center  p-3">
-        <Stack.Screen
-          options={{ title: local.slug, headerBackTitle: 'Games' }}
-        />
+      <View className="flex-1 justify-center p-3">
+        <Stack.Screen options={{ headerShown: false }} />
         <FocusAwareStatusBar />
-        <ActivityIndicator />
+        <Text className="text-center">Error loading post</Text>
       </View>
     );
   }
   if (isError) {
     return (
       <View className="flex-1 justify-center p-3">
-        <Stack.Screen
-          options={{ title: local.slug, headerBackTitle: 'Games' }}
-        />
+        <Stack.Screen options={{ headerShown: false }} />
         <FocusAwareStatusBar />
         <Text className="text-center">Error loading post</Text>
       </View>
     );
   }
 
-  return (
-    <View className="flex-1 p-3 ">
-      <Stack.Screen options={{ title: local.slug, headerBackTitle: 'Games' }} />
-      {/* <FocusAwareStatusBar /> */}
-      {/* <Text className="text-center text-lg font-bold">{data?.url}</Text> */}
-
-      <GameScreen gameUrl={data?.url} />
-      {/* <Text>{data?.url} </Text> */}
-    </View>
-  );
+  return <GameScreen gameUrl={data?.url} />;
 }

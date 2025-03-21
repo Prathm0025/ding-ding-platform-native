@@ -15,10 +15,10 @@ export default function Login() {
     if (status === 'signIn') {
       router.replace('/');
     }
-  }, [status]);
+  }, [status, router]);
 
   const onSubmit: LoginFormProps['onSubmit'] = (data) => {
-    console.log(data);
+    // console.log(data);
     login(data.username, data.password);
   };
   return (

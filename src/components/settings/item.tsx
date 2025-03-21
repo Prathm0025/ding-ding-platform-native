@@ -10,7 +10,7 @@ type ItemProps = {
   onPress?: () => void;
   icon?: React.ReactNode;
 };
-
+//dr
 export const Item = ({ text, value, icon, onPress }: ItemProps) => {
   const isPressable = onPress !== undefined;
   return (

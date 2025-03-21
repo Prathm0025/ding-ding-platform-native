@@ -12,7 +12,7 @@ import {
   View,
 } from 'react-native';
 
-import { getCredits, setCredits } from '@/lib/auth/utils';
+import { getCredits, getName, setCredits } from '@/lib/auth/utils';
 import { useSocket } from '@/lib/socket/socket';
 
 const Header = React.memo(() => {
@@ -21,6 +21,7 @@ const Header = React.memo(() => {
 
   const { data } = useSocket();
   const router = useRouter();
+  const name = getName();
 
   // Fetch initial credits from storage (for offline mode)
   useEffect(() => {
@@ -58,7 +59,7 @@ const Header = React.memo(() => {
         />
         <View>
           <Text style={[styles.userName, { fontSize: responsiveWidth(1.5) }]}>
-            Name
+            {name}
           </Text>
           <Text style={[styles.coin, { fontSize: responsiveWidth(1.5) }]}>
             {data?.data?.credits !== undefined

@@ -1,18 +1,26 @@
 import { FlashList } from '@shopify/flash-list';
 import { useFocusEffect } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import type { Game } from '@/api';
 import { useGames } from '@/api';
 import { Card } from '@/components/card';
 import { EmptyList, FocusAwareStatusBar, Text, View } from '@/components/ui';
 import Header from '@/components/ui/header';
-import { useSound } from '@/lib/hooks/use-sound';
+import { useSoundStore } from '@/lib/sound';
 
 export default function Feed() {
   const { data, isPending, isError } = useGames();
-  const { stop } = useSound(require('../../../assets/music/bg-audio.wav'));
+  const loadSound = useSoundStore((state) => state.loadSound);
+  const { isMuted, stop } = useSoundStore();
+  useEffect(() => {
+    loadSound(require('../../../assets/music/bg-audio.wav'));
+
+    return () => {
+      stop();
+    };
+  }, [isMuted]);
 
   // Lock to Landscape Mode
   useFocusEffect(
@@ -26,10 +34,9 @@ export default function Feed() {
       lockOrientation();
 
       return () => {
-        stop(); // Stop sound on exit
         ScreenOrientation.unlockAsync();
       };
-    }, [stop])
+    }, [])
   );
 
   const renderItem = ({ item }: { item: Game }) => (

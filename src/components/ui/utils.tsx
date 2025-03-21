@@ -8,6 +8,14 @@ const { width, height } = Dimensions.get('screen');
 export const WIDTH = width;
 export const HEIGHT = height;
 
+export const showSuccess = (message: string = 'Something went wrong') => {
+  showMessage({
+    message,
+    type: 'success',
+    duration: 2000,
+    icon: 'success',
+  });
+};
 // for onError react queries and mutations
 export const showError = (error: AxiosError) => {
   console.log(JSON.stringify(error?.response?.data));
@@ -26,6 +34,7 @@ export const showErrorMessage = (message: string = 'Something went wrong ') => {
   showMessage({
     message,
     type: 'danger',
+    icon: 'danger',
     duration: 4000,
   });
 };

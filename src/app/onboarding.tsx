@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router';
 import React from 'react';
 import { Image } from 'react-native';
 
+import { useInstall } from '@/api/games/use-install';
 import {
   Button,
   FocusAwareStatusBar,
@@ -14,7 +15,13 @@ import { useIsFirstTime } from '@/lib';
 export default function Onboarding() {
   const [_, setIsFirstTime] = useIsFirstTime();
   const router = useRouter();
+  const { refetch, isFetched } = useInstall({ enabled: false });
 
+  const handleInstall = () => {
+    if (!isFetched) {
+      refetch();
+    }
+  };
   return (
     <View className="flex-1 items-center justify-center bg-black">
       <FocusAwareStatusBar />
@@ -39,6 +46,7 @@ export default function Onboarding() {
           label="Let's Get Started"
           onPress={() => {
             setIsFirstTime(false);
+            handleInstall();
             router.replace('/login');
           }}
           className="rounded-full bg-yellow-500 "
