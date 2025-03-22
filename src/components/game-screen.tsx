@@ -5,6 +5,8 @@ import { useRouter } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  AppState,
+  type AppStateStatus,
   BackHandler,
   StyleSheet,
   useWindowDimensions,
@@ -17,9 +19,9 @@ import { useAuth } from '@/lib';
 import GameLoader from './game-loader';
 
 const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
-  console.log(gameUrl, 'gameUrl');
+  // console.log(gameUrl, 'gameUrl');
 
-  const gameWebViewRef = useRef(null);
+  const gameWebViewRef = useRef<WebView>(null);
   const authToken = useAuth.use.token();
   // console.log(authToken);
 
@@ -31,6 +33,7 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
   const { width, height } = useWindowDimensions();
   // const selectedUrl = useRecoilValue(selectedGameAtom)
 
+  // i have a react native app (games platform) with unity games . im using react native webview to show the games in our app . the unity app has its own sound we need to make sure that when our app is not being actively used unity sound is also muted . we need to think about ways to resolve this issue .
   useEffect(() => {
     const lockOrientation = async () => {
       await ScreenOrientation.lockAsync(
@@ -49,10 +52,40 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
       backAction
     );
 
+    const handleAppStateChange = (nextAppState: AppStateStatus) => {
+      if (nextAppState === 'background') {
+        console.log('back');
+
+        // gameWebViewRef.current?.injectJavaScript(`
+        //   if (typeof unityInst!== 'undefined') {
+        //     unityInst.SendMessage('AudioController', 'RecieveReactNativeAudioChanges’, false);
+        //     console.log('unityInst is defined');
+        //   }else{
+        //     console.log('unityInst is not defined');
+        // `);
+      } else if (nextAppState === 'active') {
+        console.log('front');
+        // gameWebViewRef.current?.injectJavaScript(`
+        //   if (typeof unityInst!== 'undefined') {
+        //     unityInst.SendMessage('AudioController', 'RecieveReactNativeAudioChanges’, true);
+        //     console.log('unityInst is defined');
+        //   }else{
+        //     console.log('unityInst is not defined');
+        // `);
+      }
+    };
+
+    const subscription = AppState.addEventListener(
+      'change',
+      handleAppStateChange
+    );
+
     // Cleanup the listener when component unmounts
     return () => {
       backHandler.remove();
       ScreenOrientation.unlockAsync();
+
+      subscription.remove();
     };
   }, []);
 
