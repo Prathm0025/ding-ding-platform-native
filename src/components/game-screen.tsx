@@ -70,6 +70,7 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
         injectedJavaScriptObject={{
           socketURL,
           token: authToken,
+          nameSpace: '',
         }}
         javaScriptEnabled={true}
         onMessage={(event) => {
