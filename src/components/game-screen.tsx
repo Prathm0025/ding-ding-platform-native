@@ -16,6 +16,7 @@ import { WebView } from 'react-native-webview';
 
 import { useBackground } from '@/api/games/use-background';
 import { useAuth } from '@/lib';
+import { useSoundStore } from '@/lib/sound';
 
 import GameLoader from './game-loader';
 
@@ -35,6 +36,7 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
   const router = useRouter();
   const { width, height } = useWindowDimensions();
   // const selectedUrl = useRecoilValue(selectedGameAtom)
+  const { play } = useSoundStore();
   const { data, refetch } = useBackground({
     enabled: false,
 
@@ -86,6 +88,7 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
     return () => {
       backHandler.remove();
       ScreenOrientation.unlockAsync();
+      play();
 
       subscription.remove();
     };
@@ -102,6 +105,7 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
         injectedJavaScriptObject={{
           socketURL,
           token: authToken,
+          nameSpace: '',
         }}
         javaScriptEnabled={true}
         onMessage={(event) => {

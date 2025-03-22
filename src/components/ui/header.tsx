@@ -85,16 +85,6 @@ const Header = React.memo(() => {
 
       {/* Icons */}
       <View style={styles.iconsContainer}>
-        <TouchableOpacity>
-          <Image
-            source={require('../../../assets/h-icon2.png')}
-            style={{
-              width: responsiveWidth(3.5),
-              height: responsiveWidth(4),
-              marginHorizontal: responsiveWidth(1.1),
-            }}
-          />
-        </TouchableOpacity>
         <TouchableOpacity onPress={() => router.push('/(app)/settings')}>
           {/* ⬆️ Navigate directly to the Settings tab */}
           <Image

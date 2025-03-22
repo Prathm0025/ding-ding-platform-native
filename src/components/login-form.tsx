@@ -53,7 +53,7 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
 
   return (
     <ImageBackground
-      source={require('../../assets/bg.png')}
+      source={require('../../assets/bg.webp')}
       style={styles.background}
     >
       <ImageBackground
