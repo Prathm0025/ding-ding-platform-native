@@ -37,16 +37,8 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
   const { width, height } = useWindowDimensions();
   // const selectedUrl = useRecoilValue(selectedGameAtom)
   const { play } = useSoundStore();
-  const { data, refetch } = useBackground({
-    enabled: false,
 
-    variables: { isBack: isBack.current },
-  });
-
-  useEffect(() => {
-    console.log('data', data);
-  }, [data]);
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const lockOrientation = async () => {
       await ScreenOrientation.lockAsync(
@@ -65,16 +57,18 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
       backAction
     );
 
-    const handleAppStateChange = (nextAppState: AppStateStatus) => {
+    const handleAppStateChange = async (nextAppState: AppStateStatus) => {
       if (nextAppState === 'background') {
         console.log('back');
         isBack.current = true;
-        refetch();
+
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        await useBackground(isBack.current);
+        router.replace('/');
       } else if (nextAppState === 'active') {
         console.log('front');
         if (isBack.current) {
           isBack.current = false;
-          refetch();
         }
       }
     };
