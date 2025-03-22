@@ -1,9 +1,9 @@
 import { useRouter } from 'expo-router';
 import React, { useEffect } from 'react';
+import { StatusBar } from 'react-native';
 
 import type { LoginFormProps } from '@/components/login-form';
 import { LoginForm } from '@/components/login-form';
-import { FocusAwareStatusBar } from '@/components/ui';
 import { useAuth } from '@/lib';
 
 export default function Login() {
@@ -23,7 +23,7 @@ export default function Login() {
   };
   return (
     <>
-      <FocusAwareStatusBar />
+      <StatusBar hidden />
       <LoginForm onSubmit={onSubmit} />
     </>
   );

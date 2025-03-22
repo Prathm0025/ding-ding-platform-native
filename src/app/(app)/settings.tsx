@@ -7,13 +7,7 @@ import { ItemsContainer } from '@/components/settings/items-container';
 import { LanguageItem } from '@/components/settings/language-item';
 import { SoundItem } from '@/components/settings/sound-item';
 import { ThemeItem } from '@/components/settings/theme-item';
-import {
-  colors,
-  FocusAwareStatusBar,
-  ScrollView,
-  Text,
-  View,
-} from '@/components/ui';
+import { colors, ScrollView, Text, View } from '@/components/ui';
 import { Share, Website } from '@/components/ui/icons';
 import { translate, useAuth } from '@/lib';
 import { useSocket } from '@/lib/socket/socket';
@@ -31,8 +25,6 @@ export default function Settings() {
   };
   return (
     <>
-      <FocusAwareStatusBar />
-
       <ScrollView>
         <View className="flex-1 px-4 pt-16 ">
           <Text className="text-xl font-bold">

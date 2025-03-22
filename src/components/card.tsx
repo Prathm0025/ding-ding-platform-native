@@ -55,8 +55,8 @@ export const Card = ({ name: title, _id, thumbnail, slug }: Props) => {
         style={[
           animatedStyle,
           {
-            width: resWidth(20),
-            height: resHeight(53),
+            width: resWidth(18),
+            height: resHeight(48),
           },
         ]}
         className="mx-2 overflow-hidden rounded-lg border border-yellow-400 shadow-md"
