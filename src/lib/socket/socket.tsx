@@ -44,7 +44,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     const newSocket = io(`${Env.API_URL}`, {
       auth: { token, origin: platformId },
       transports: ['websocket'],
-      reconnection: false,
+      reconnection: true,
     });
 
     newSocket.on('connect', () => {

@@ -14,12 +14,15 @@ import {
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 
+import { useBackground } from '@/api/games/use-background';
 import { useAuth } from '@/lib';
 
 import GameLoader from './game-loader';
 
 const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
   // console.log(gameUrl, 'gameUrl');
+
+  const isBack = useRef(false);
 
   const gameWebViewRef = useRef<WebView>(null);
   const authToken = useAuth.use.token();
@@ -32,8 +35,16 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
   const router = useRouter();
   const { width, height } = useWindowDimensions();
   // const selectedUrl = useRecoilValue(selectedGameAtom)
+  const { data, refetch } = useBackground({
+    enabled: false,
 
-  // i have a react native app (games platform) with unity games . im using react native webview to show the games in our app . the unity app has its own sound we need to make sure that when our app is not being actively used unity sound is also muted . we need to think about ways to resolve this issue .
+    variables: { isBack: isBack.current },
+  });
+
+  useEffect(() => {
+    console.log('data', data);
+  }, [data]);
+
   useEffect(() => {
     const lockOrientation = async () => {
       await ScreenOrientation.lockAsync(
@@ -55,23 +66,14 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
       if (nextAppState === 'background') {
         console.log('back');
-
-        // gameWebViewRef.current?.injectJavaScript(`
-        //   if (typeof unityInst!== 'undefined') {
-        //     unityInst.SendMessage('AudioController', 'RecieveReactNativeAudioChanges’, false);
-        //     console.log('unityInst is defined');
-        //   }else{
-        //     console.log('unityInst is not defined');
-        // `);
+        isBack.current = true;
+        refetch();
       } else if (nextAppState === 'active') {
         console.log('front');
-        // gameWebViewRef.current?.injectJavaScript(`
-        //   if (typeof unityInst!== 'undefined') {
-        //     unityInst.SendMessage('AudioController', 'RecieveReactNativeAudioChanges’, true);
-        //     console.log('unityInst is defined');
-        //   }else{
-        //     console.log('unityInst is not defined');
-        // `);
+        if (isBack.current) {
+          isBack.current = false;
+          refetch();
+        }
       }
     };
 
