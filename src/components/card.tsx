@@ -55,11 +55,11 @@ export const Card = ({ name: title, _id, thumbnail, slug }: Props) => {
         style={[
           animatedStyle,
           {
-            width: resWidth(18),
-            height: resHeight(48),
+            width: resWidth(15),
+            height: resHeight(40),
           },
         ]}
-        className="mx-2 overflow-hidden rounded-lg border border-yellow-400 shadow-md"
+        className="mx-2 mb-8 overflow-hidden rounded-lg border border-yellow-400 shadow-md"
       >
         {/* Background Image */}
 

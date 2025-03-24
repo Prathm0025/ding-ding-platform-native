@@ -9,20 +9,15 @@ import { SoundItem } from '@/components/settings/sound-item';
 import { ThemeItem } from '@/components/settings/theme-item';
 import { colors, ScrollView, Text, View } from '@/components/ui';
 import { Website } from '@/components/ui/icons';
-import { translate, useAuth } from '@/lib';
-import { useSocket } from '@/lib/socket/socket';
+import { translate } from '@/lib';
 
 export default function Settings() {
-  const signOut = useAuth.use.signOut();
+  // const signOut = useAuth.use.signOut();
   const { colorScheme } = useColorScheme();
   const iconColor =
     colorScheme === 'dark' ? colors.neutral[400] : colors.neutral[500];
-  const { disconnect } = useSocket();
+  // const { disconnect } = useSocket();
 
-  const handleLogout = () => {
-    disconnect();
-    signOut();
-  };
   return (
     <>
       <ScrollView>
@@ -74,11 +69,11 @@ export default function Settings() {
             />
           </ItemsContainer>
 
-          <View className="my-8">
+          {/* <View className="my-8">
             <ItemsContainer>
               <Item text="settings.logout" onPress={handleLogout} />
             </ItemsContainer>
-          </View>
+          </View> */}
         </View>
       </ScrollView>
     </>

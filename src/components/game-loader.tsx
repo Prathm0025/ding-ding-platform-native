@@ -77,7 +77,7 @@ const GameLoader = () => {
     <ImageBackground
       source={require('../../assets/game-loader-bg.png')} // Replace with your background image path
       style={styles.overlay}
-      resizeMode="cover"
+      contentFit="cover"
     >
       <Image source={require('../../assets/logo.gif')} style={styles.loader} />
       <View style={styles.progressBarContainer}>

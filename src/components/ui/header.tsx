@@ -12,6 +12,7 @@ import {
   View,
 } from 'react-native';
 
+import { useAuth } from '@/lib';
 import { getCredits, getName, setCredits } from '@/lib/auth/utils';
 import { useSocket } from '@/lib/socket/socket';
 
@@ -19,9 +20,10 @@ const Header = React.memo(() => {
   const { width } = useWindowDimensions();
   const responsiveWidth = (percentage: number) => (percentage / 100) * width;
 
-  const { data } = useSocket();
+  const { data, disconnect } = useSocket();
   const router = useRouter();
   const name = getName();
+  const signOut = useAuth.use.signOut();
 
   // Fetch initial credits from storage (for offline mode)
   useEffect(() => {
@@ -38,6 +40,12 @@ const Header = React.memo(() => {
 
     fetchInitialCredits();
   }, []);
+
+  const handleLogout = () => {
+    disconnect();
+    signOut();
+    router.replace('/login');
+  };
 
   return (
     <ImageBackground
@@ -85,8 +93,20 @@ const Header = React.memo(() => {
 
       {/* Icons */}
       <View style={styles.iconsContainer}>
+        <TouchableOpacity onPress={handleLogout}>
+          <Image
+            source={require('../../../assets/h-icon1.webp')}
+            style={{
+              width: responsiveWidth(3.5),
+              height: responsiveWidth(4),
+              marginHorizontal: responsiveWidth(1.1),
+            }}
+          />
+        </TouchableOpacity>
+
         <TouchableOpacity onPress={() => router.push('/(app)/settings')}>
           {/* ⬆️ Navigate directly to the Settings tab */}
+
           <Image
             source={require('../../../assets/h-icon3.png')}
             style={{

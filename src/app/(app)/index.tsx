@@ -12,13 +12,13 @@ import { StatusBar, StyleSheet } from 'react-native';
 import type { Game } from '@/api';
 import { useGames } from '@/api';
 import { Card } from '@/components/card';
-import { EmptyList, FocusAwareStatusBar, Text, View } from '@/components/ui';
+import { EmptyList, FocusAwareStatusBar, View } from '@/components/ui';
 import Footer from '@/components/ui/footer';
 import Header from '@/components/ui/header';
 import { useSoundStore } from '@/lib/sound';
 
 export default function Feed() {
-  const { data, isPending, isError } = useGames();
+  const { data, isPending } = useGames();
   const loadSound = useSoundStore((state) => state.loadSound);
   const { isMuted, stop } = useSoundStore();
   const [OrientationLock, setIsOrientationLocked] = useState(false);
@@ -45,19 +45,15 @@ export default function Feed() {
     }, [])
   );
 
+  if (isPending) {
+    return null;
+  }
+
   const renderItem = ({ item }: { item: Game }) => (
     <View style={styles.cardContainer}>
       <Card {...item} />
     </View>
   );
-
-  if (isError) {
-    return (
-      <View style={styles.centered}>
-        <Text>Error Loading Data</Text>
-      </View>
-    );
-  }
 
   if (!OrientationLock) {
     return null;
@@ -69,7 +65,7 @@ export default function Feed() {
       <ImageBackground
         source={require('../../../assets/whole-bg.webp')}
         style={styles.background}
-        resizeMode="cover"
+        contentFit="cover"
       >
         {/* Coin GIF with Blur */}
         <View style={styles.coinContainer}>
@@ -85,16 +81,19 @@ export default function Feed() {
         <FocusAwareStatusBar />
 
         {/* FlashList */}
-        <FlashList
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={(_, index) => `item-${index}`}
-          ListEmptyComponent={<EmptyList isLoading={isPending} />}
-          estimatedItemSize={300}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.flashListContent}
-        />
+        {/* Only render FlashList when ready */}
+        {OrientationLock && data && (
+          <FlashList
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={(item) => item?._id.toString()}
+            ListEmptyComponent={<EmptyList isLoading={isPending} />}
+            estimatedItemSize={300}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.flashListContent}
+          />
+        )}
 
         {/* Footer */}
         <View style={styles.footerContainer}>

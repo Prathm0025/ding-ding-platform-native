@@ -61,7 +61,8 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
         style={styles.ladyBackground}
       >
         <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
           style={styles.container}
         >
           <ScrollView

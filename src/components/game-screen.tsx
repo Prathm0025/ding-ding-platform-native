@@ -56,7 +56,7 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
       backHandler.remove();
       play();
     };
-  }, []);
+  }, [isGameReady]);
 
   return (
     <View style={[styles.container, { width, height }]}>
