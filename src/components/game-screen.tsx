@@ -18,7 +18,7 @@ import { useSoundStore } from '@/lib/sound';
 import GameLoader from './game-loader';
 
 const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
-  console.log(gameUrl, 'gameUrl');
+  // console.log(gameUrl, 'gameUrl');
 
   const gameWebViewRef = useRef(null);
   const authToken = useAuth.use.token();
@@ -54,7 +54,6 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
     // Cleanup the listener when component unmounts
     return () => {
       backHandler.remove();
-      ScreenOrientation.unlockAsync();
       play();
     };
   }, []);
@@ -87,6 +86,7 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
             ? { width: 0, height: 0, opacity: 0, position: 'absolute' }
             : { width, height },
         ]}
+        renderLoading={() => <GameLoader />}
       />
     </View>
   );

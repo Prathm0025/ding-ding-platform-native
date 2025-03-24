@@ -1,4 +1,5 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 
 import { useGame } from '@/api/games/use-game';
 import GameScreen from '@/components/game-screen';
@@ -18,6 +19,8 @@ export default function Game() {
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
+      <StatusBar hidden />
+
       {isError ? (
         <View className="flex-1 justify-center p-3">
           <Text className="text-center">Error loading post</Text>

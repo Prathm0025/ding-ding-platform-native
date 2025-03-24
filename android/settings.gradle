@@ -21,7 +21,7 @@ extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
   }
 }
 
-rootProject.name = 'com.underpin.dingding'
+rootProject.name = 'Ding Ding'
 
 dependencyResolutionManagement {
   versionCatalogs {

@@ -1,6 +1,7 @@
 /* eslint-disable max-lines-per-function */
 
 import { Image, ImageBackground } from 'expo-image';
+import * as ScreenOrientation from 'expo-screen-orientation';
 import React, { useEffect, useRef } from 'react';
 import {
   Animated,
@@ -9,7 +10,6 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-
 const GameLoader = () => {
   const { width, height } = useWindowDimensions();
   const resSize = (percentage: number) =>
@@ -28,6 +28,14 @@ const GameLoader = () => {
         useNativeDriver: false,
       }).start(() => loopAnimation());
     };
+
+    const lockOrientation = async () => {
+      await ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.LANDSCAPE
+      );
+    };
+
+    lockOrientation();
 
     loopAnimation();
   }, []);
