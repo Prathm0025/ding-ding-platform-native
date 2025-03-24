@@ -81,7 +81,6 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
     // Cleanup the listener when component unmounts
     return () => {
       backHandler.remove();
-      ScreenOrientation.unlockAsync();
       play();
 
       subscription.remove();
@@ -116,6 +115,7 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
             ? { width: 0, height: 0, opacity: 0, position: 'absolute' }
             : { width, height },
         ]}
+        renderLoading={() => <GameLoader />}
       />
     </View>
   );

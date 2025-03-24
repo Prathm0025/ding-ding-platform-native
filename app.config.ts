@@ -1,24 +1,24 @@
 /* eslint-disable max-lines-per-function */
 import type { ConfigContext, ExpoConfig } from '@expo/config';
-import type { AppIconBadgeConfig } from 'app-icon-badge/types';
 
 import { ClientEnv, Env } from './env';
 
-const appIconBadgeConfig: AppIconBadgeConfig = {
-  enabled: Env.APP_ENV !== 'production',
-  badges: [
-    {
-      text: Env.APP_ENV,
-      type: 'banner',
-      color: 'white',
-    },
-    {
-      text: Env.VERSION.toString(),
-      type: 'ribbon',
-      color: 'white',
-    },
-  ],
-};
+// const appIconBadgeConfig: AppIconBadgeConfig = {
+//   enabled: false,
+//   badges: [
+//     {
+//       text: 'Ding Ding',
+//       type: 'banner',
+//       color: 'white',
+
+//     },
+//     {
+//       text: Env.VERSION.toString(),
+//       type: 'ribbon',
+//       color: 'white',
+//     },
+//   ],
+// };
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
@@ -28,7 +28,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   scheme: Env.SCHEME,
   slug: 'ding-ding',
   version: Env.VERSION.toString(),
-  orientation: 'portrait',
+  orientation: 'landscape',
   icon: './assets/icon.png',
   userInterfaceStyle: 'automatic',
   newArchEnabled: true,
@@ -51,13 +51,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   android: {
     adaptiveIcon: {
-      foregroundImage: './assets/adaptive-icon.png',
+      foregroundImage: './assets/icon.png',
       backgroundColor: '#2E3C4B',
     },
     package: Env.PACKAGE,
   },
   web: {
-    favicon: './assets/favicon.png',
+    favicon: './assets/icon.png',
     bundler: 'metro',
   },
   plugins: [
@@ -65,7 +65,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       'expo-splash-screen',
       {
         backgroundColor: '#2E3C4B',
-        image: './assets/splash-icon.png',
+        image: './assets/icon.png',
         imageWidth: 150,
       },
     ],
@@ -77,7 +77,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     ],
     'expo-localization',
     'expo-router',
-    ['app-icon-badge', appIconBadgeConfig],
     ['react-native-edge-to-edge'],
   ],
   extra: {

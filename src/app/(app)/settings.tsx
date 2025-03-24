@@ -1,14 +1,14 @@
 /* eslint-disable max-lines-per-function */
 import { Env } from '@env';
 import { useColorScheme } from 'nativewind';
+import { Linking } from 'react-native';
 
 import { Item } from '@/components/settings/item';
 import { ItemsContainer } from '@/components/settings/items-container';
-import { LanguageItem } from '@/components/settings/language-item';
 import { SoundItem } from '@/components/settings/sound-item';
 import { ThemeItem } from '@/components/settings/theme-item';
 import { colors, ScrollView, Text, View } from '@/components/ui';
-import { Share, Website } from '@/components/ui/icons';
+import { Website } from '@/components/ui/icons';
 import { translate, useAuth } from '@/lib';
 import { useSocket } from '@/lib/socket/socket';
 
@@ -31,7 +31,7 @@ export default function Settings() {
             {translate('settings.title')}
           </Text>
           <ItemsContainer title="settings.generale">
-            <LanguageItem />
+            {/* <LanguageItem /> */}
             <ThemeItem />
             <SoundItem />
           </ItemsContainer>
@@ -41,23 +41,23 @@ export default function Settings() {
             {/* <Item text="settings.version" value={Env.VERSION} /> */}
           </ItemsContainer>
 
-          <ItemsContainer title="settings.support_us">
+          {/* <ItemsContainer title="settings.support_us">
             <Item
               text="settings.share"
               icon={<Share color={iconColor} />}
               onPress={() => {}}
-            />
-            {/* <Item */}
-            {/*   text="settings.rate" */}
-            {/*   icon={<Rate color={iconColor} />} */}
-            {/*   onPress={() => {}} */}
-            {/* /> */}
-            {/* <Item */}
-            {/*   text="settings.support" */}
-            {/*   icon={<Support color={iconColor} />} */}
-            {/*   onPress={() => {}} */}
-            {/* /> */}
-          </ItemsContainer>
+            /> */}
+          {/* <Item */}
+          {/*   text="settings.rate" */}
+          {/*   icon={<Rate color={iconColor} />} */}
+          {/*   onPress={() => {}} */}
+          {/* /> */}
+          {/* <Item */}
+          {/*   text="settings.support" */}
+          {/*   icon={<Support color={iconColor} />} */}
+          {/*   onPress={() => {}} */}
+          {/* /> */}
+          {/* </ItemsContainer> */}
 
           <ItemsContainer title="settings.links">
             <Item text="settings.privacy" onPress={() => {}} />
@@ -70,7 +70,7 @@ export default function Settings() {
             <Item
               text="settings.website"
               icon={<Website color={iconColor} />}
-              onPress={() => {}}
+              onPress={() => Linking.openURL('https://www.dingdinghouse.com')}
             />
           </ItemsContainer>
 

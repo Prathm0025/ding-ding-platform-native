@@ -6,7 +6,7 @@ import { ImageBackground } from 'expo-image';
 import { Image } from 'expo-image';
 import { useFocusEffect } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
 
 import type { Game } from '@/api';
@@ -21,6 +21,8 @@ export default function Feed() {
   const { data, isPending, isError } = useGames();
   const loadSound = useSoundStore((state) => state.loadSound);
   const { isMuted, stop } = useSoundStore();
+  const [OrientationLock, setIsOrientationLocked] = useState(false);
+
   useEffect(() => {
     loadSound(require('../../../assets/music/bg-audio.wav'));
 
@@ -36,51 +38,53 @@ export default function Feed() {
         await ScreenOrientation.lockAsync(
           ScreenOrientation.OrientationLock.LANDSCAPE
         );
+        setIsOrientationLocked(true);
       };
 
       lockOrientation();
-
-      return () => {
-        ScreenOrientation.unlockAsync();
-      };
     }, [])
   );
 
   const renderItem = ({ item }: { item: Game }) => (
-    <View
-      style={{ height: 300, justifyContent: 'center', alignItems: 'center' }}
-    >
+    <View style={styles.cardContainer}>
       <Card {...item} />
     </View>
   );
 
   if (isError) {
     return (
-      <View className="flex-1 items-center justify-center">
-        <Text> Error Loading data </Text>
+      <View style={styles.centered}>
+        <Text>Error Loading Data</Text>
       </View>
     );
   }
 
+  if (!OrientationLock) {
+    return null;
+  }
+
   return (
-    <View className="h-dvh w-full flex-1">
+    <View style={styles.container}>
       <StatusBar hidden />
       <ImageBackground
         source={require('../../../assets/whole-bg.webp')}
-        className="size-full flex-1"
+        style={styles.background}
         resizeMode="cover"
       >
+        {/* Coin GIF with Blur */}
         <View style={styles.coinContainer}>
           <BlurView intensity={50} style={styles.blurOverlay} tint="dark" />
-
           <Image
             source={require('../../../assets/coin.gif')}
             style={styles.coinGif}
           />
         </View>
 
+        {/* Header */}
         <Header />
         <FocusAwareStatusBar />
+
+        {/* FlashList */}
         <FlashList
           data={data}
           renderItem={renderItem}
@@ -89,8 +93,11 @@ export default function Feed() {
           estimatedItemSize={300}
           horizontal
           showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.flashListContent}
         />
-        <View className="bottom-9 z-10 flex items-center justify-between">
+
+        {/* Footer */}
+        <View style={styles.footerContainer}>
           <Footer />
         </View>
       </ImageBackground>
@@ -123,23 +130,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 0,
   },
-  mainContainer: {
+  cardContainer: {
+    height: 300,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  flashListContent: {
+    paddingHorizontal: 16,
+    paddingBottom: 80,
+  },
+  footerContainer: {
     position: 'absolute',
-    top: 0,
+    bottom: 0,
     left: 0,
     right: 0,
-    bottom: 0,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    zIndex: 3,
+    zIndex: 2,
   },
   coinGif: {
     width: '80%',
     height: '80%',
     opacity: 0.7,
   },
-  audioPlayer: {
-    width: 0,
-    height: 0,
+  centered: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

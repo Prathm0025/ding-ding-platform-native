@@ -36,7 +36,7 @@ require('dotenv').config({
 
 const BUNDLE_ID = 'com.com.underpin.dingding'; // ios bundle id
 const PACKAGE = 'com.com.underpin.dingding'; // android package name
-const NAME = 'com.underpin.dingding'; // app name
+const NAME = 'Ding Ding'; // app name
 const EXPO_ACCOUNT_OWNER = 'rana562'; // expo account owner
 const EAS_PROJECT_ID = 'ff3702db-2b39-4340-a46c-ca66d6d88e0e'; // eas project id
 const SCHEME = 'com.underpin.dingding'; // app scheme
