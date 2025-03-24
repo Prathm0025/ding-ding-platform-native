@@ -1,5 +1,4 @@
 /* eslint-disable max-lines-per-function */
-
 import { Env } from '@env';
 import { useRouter } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
@@ -14,7 +13,6 @@ import {
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 
-import { useBackground } from '@/api/games/use-background';
 import { useAuth } from '@/lib';
 import { useSoundStore } from '@/lib/sound';
 
@@ -38,6 +36,18 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
   // const selectedUrl = useRecoilValue(selectedGameAtom)
   const { play } = useSoundStore();
 
+  // const sendToUnity = (data: object) => {
+  //   const message = JSON.stringify(data);
+  //   gameWebViewRef.current?.injectJavaScript(`
+  //     window.dispatchEvent(new MessageEvent('message', { data: '${message}' }));
+  //     true;
+  //   `);
+  // };
+  // const sendToUnityTest = () => {
+  //   gameWebViewRef.current?.injectJavaScript(`
+  //     SendMessage('AudioController', 'RecieveReactNativeAudioChanges’, false);
+  //   `);
+  // }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const lockOrientation = async () => {
@@ -48,6 +58,7 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
 
     lockOrientation();
     const backAction = () => {
+      router.replace('/');
       return true;
     };
 
@@ -61,14 +72,18 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
       if (nextAppState === 'background') {
         console.log('back');
         isBack.current = true;
+        // sendToUnity({ type: `appState` });
+        // sendToUnityTest();
 
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        await useBackground(isBack.current);
+        // await useBackground(isBack.current);
         router.replace('/');
       } else if (nextAppState === 'active') {
         console.log('front');
         if (isBack.current) {
           isBack.current = false;
+          // sendToUnity({ type: `appState ` });
+          // sendToUnityTest();
         }
       }
     };
@@ -121,8 +136,6 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
   );
 };
 
-export default GameScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -142,3 +155,5 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
 });
+
+export default GameScreen;
