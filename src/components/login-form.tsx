@@ -1,8 +1,7 @@
 /* eslint-disable max-lines-per-function */
 import { Ionicons } from '@expo/vector-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as ScreenOrientation from 'expo-screen-orientation';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
   ActivityIndicator,
@@ -37,14 +36,13 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const { width, height } = useWindowDimensions();
 
-  useEffect(() => {
-    const lockOrientation = async () => {
-      await ScreenOrientation.lockAsync(
-        ScreenOrientation.OrientationLock.PORTRAIT
-      );
-    };
-    lockOrientation();
-  }, []);
+  const handleLogin = async (data: FormType) => {
+    try {
+      onSubmit(data);
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
+  };
 
   const responsiveWidth = (percentage: number) => (percentage / 100) * width;
   const responsiveHeight = (percentage: number) => (percentage / 100) * height;
@@ -187,7 +185,7 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
 
                 {/* Login Button */}
                 <TouchableOpacity
-                  onPress={handleSubmit(onSubmit)}
+                  onPress={handleSubmit(handleLogin)}
                   style={[
                     styles.button,
                     {
