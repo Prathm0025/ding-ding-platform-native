@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { Image } from 'react-native';
 
 import { useInstall } from '@/api/games/use-install';
@@ -16,6 +16,12 @@ export default function Onboarding() {
   const [_, setIsFirstTime] = useIsFirstTime();
   const router = useRouter();
   const { refetch, isFetched } = useInstall({ enabled: false });
+
+  useLayoutEffect(() => {
+    setIsFirstTime(false);
+    handleInstall();
+    router.replace('/login');
+  }, []);
 
   const handleInstall = () => {
     if (!isFetched) {

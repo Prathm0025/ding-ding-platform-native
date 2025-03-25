@@ -1,10 +1,11 @@
 /* eslint-disable max-lines-per-function */
-
 import { Env } from '@env';
 import { useRouter } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  AppState,
+  type AppStateStatus,
   BackHandler,
   StyleSheet,
   useWindowDimensions,
@@ -20,7 +21,9 @@ import GameLoader from './game-loader';
 const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
   // console.log(gameUrl, 'gameUrl');
 
-  const gameWebViewRef = useRef(null);
+  const isBack = useRef(false);
+
+  const gameWebViewRef = useRef<WebView>(null);
   const authToken = useAuth.use.token();
   // console.log(authToken);
 
@@ -33,6 +36,19 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
   // const selectedUrl = useRecoilValue(selectedGameAtom)
   const { play } = useSoundStore();
 
+  // const sendToUnity = (data: object) => {
+  //   const message = JSON.stringify(data);
+  //   gameWebViewRef.current?.injectJavaScript(`
+  //     window.dispatchEvent(new MessageEvent('message', { data: '${message}' }));
+  //     true;
+  //   `);
+  // };
+  // const sendToUnityTest = () => {
+  //   gameWebViewRef.current?.injectJavaScript(`
+  //     SendMessage('AudioController', 'RecieveReactNativeAudioChanges’, false);
+  //   `);
+  // }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const lockOrientation = async () => {
       await ScreenOrientation.lockAsync(
@@ -42,6 +58,7 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
 
     lockOrientation();
     const backAction = () => {
+      router.replace('/');
       return true;
     };
 
@@ -51,10 +68,37 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
       backAction
     );
 
+    const handleAppStateChange = async (nextAppState: AppStateStatus) => {
+      if (nextAppState === 'background') {
+        console.log('back');
+        isBack.current = true;
+        // sendToUnity({ type: `appState` });
+        // sendToUnityTest();
+
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        // await useBackground(isBack.current);
+        router.replace('/');
+      } else if (nextAppState === 'active') {
+        console.log('front');
+        if (isBack.current) {
+          isBack.current = false;
+          // sendToUnity({ type: `appState ` });
+          // sendToUnityTest();
+        }
+      }
+    };
+
+    const subscription = AppState.addEventListener(
+      'change',
+      handleAppStateChange
+    );
+
     // Cleanup the listener when component unmounts
     return () => {
       backHandler.remove();
       play();
+
+      subscription.remove();
     };
   }, [isGameReady]);
 
@@ -92,8 +136,6 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
   );
 };
 
-export default GameScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -113,3 +155,5 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
 });
+
+export default GameScreen;
