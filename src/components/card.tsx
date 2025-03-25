@@ -2,7 +2,7 @@
 
 import { BlurView } from 'expo-blur';
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   ImageBackground,
   Pressable,
@@ -22,12 +22,16 @@ type Props = Game;
 
 export const Card = ({ name: title, _id, thumbnail, slug }: Props) => {
   const { width, height } = useWindowDimensions();
-
-  const resWidth = (percentage: number) => (percentage / 100) * width;
-  const resHeight = (percentage: number) => (percentage / 100) * height;
-
   const router = useRouter();
   const scale = useSharedValue(1);
+
+  // Memoize dimension calculations to prevent recalculations on every render.
+  const { cardWidth, cardHeight } = useMemo(() => {
+    return {
+      cardWidth: (15 / 100) * width,
+      cardHeight: (40 / 100) * height,
+    };
+  }, [width, height]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
@@ -55,14 +59,13 @@ export const Card = ({ name: title, _id, thumbnail, slug }: Props) => {
         style={[
           animatedStyle,
           {
-            width: resWidth(15),
-            height: resHeight(40),
+            width: cardWidth,
+            height: cardHeight,
+            backgroundColor: '#000', // Fallback background to prevent white flashes
           },
         ]}
         className="mx-2 mb-8 overflow-hidden rounded-lg border border-yellow-400 shadow-md"
       >
-        {/* Background Image */}
-
         {/* Blur Overlay */}
         <BlurView intensity={30} className="z-1 absolute inset-0" tint="dark" />
 
@@ -70,6 +73,7 @@ export const Card = ({ name: title, _id, thumbnail, slug }: Props) => {
         <ImageBackground
           source={{ uri: thumbnail }}
           className="size-full items-center justify-end rounded-lg"
+          style={{ backgroundColor: '#000' }}
         >
           <View className="w-full items-center bg-black/50 p-2">
             <Text className="text-center text-base font-bold text-white">

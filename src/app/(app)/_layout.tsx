@@ -1,7 +1,11 @@
+/* eslint-disable max-lines-per-function */
+
 import { Redirect, SplashScreen, Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import React, { useCallback, useEffect } from 'react';
 
 import { useAuth, useIsFirstTime } from '@/lib';
+import { cacheImages } from '@/lib/utils/cache-image';
 
 export default function MainLayout() {
   const status = useAuth.use.status();
@@ -9,6 +13,22 @@ export default function MainLayout() {
 
   const hideSplash = useCallback(async () => {
     await SplashScreen.hideAsync();
+  }, []);
+  useEffect(() => {
+    async function loadAssets() {
+      const imageAssets = cacheImages([
+        require('../../../assets/ALL.webp'),
+        require('../../../assets/SLOT.webp'),
+        require('../../../assets/KENO.webp'),
+        require('../../../assets/OTHER.webp'),
+        require('../../../assets/fotter-coin.gif'),
+        require('../../../assets/footer-bg.webp'),
+        require('../../../assets/whole-bg.webp'),
+      ]);
+
+      await Promise.all(imageAssets);
+    }
+    loadAssets();
   }, []);
 
   useEffect(() => {
@@ -27,14 +47,24 @@ export default function MainLayout() {
   }
 
   return (
-    <Stack screenOptions={{ statusBarHidden: true, gestureEnabled: false }}>
-      <Stack.Screen
-        name="index"
-        options={{
-          title: 'Games',
-          headerShown: false,
-        }}
-      />
-    </Stack>
+    <>
+      <StatusBar hidden />
+      <Stack screenOptions={{ statusBarHidden: true, gestureEnabled: true }}>
+        <Stack.Screen
+          name="index"
+          options={{
+            title: 'Games',
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="settings"
+          options={{
+            title: 'Settings',
+            // headerShown: false,
+          }}
+        />
+      </Stack>
+    </>
   );
 }
