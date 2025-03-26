@@ -28,8 +28,8 @@ export const Card = ({ name: title, _id, thumbnail, slug }: Props) => {
   // Memoize dimension calculations to prevent recalculations on every render.
   const { cardWidth, cardHeight } = useMemo(() => {
     return {
-      cardWidth: (15 / 100) * width,
-      cardHeight: (40 / 100) * height,
+      cardWidth: (20 / 100) * width,
+      cardHeight: (50 / 100) * height,
     };
   }, [width, height]);
 
