@@ -4,8 +4,7 @@ import { useBottomSheetModal } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 import { BlurView } from 'expo-blur';
 import { Image, ImageBackground } from 'expo-image';
-import * as ScreenOrientation from 'expo-screen-orientation';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Animated, StatusBar, StyleSheet } from 'react-native';
 
 import type { Game } from '@/api';
@@ -24,20 +23,8 @@ export default function Feed() {
   const { dismissAll } = useBottomSheetModal();
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  useEffect(
-    useCallback(() => {
-      dismissAll();
-      const lockOrientation = async () => {
-        await ScreenOrientation.lockAsync(
-          ScreenOrientation.OrientationLock.LANDSCAPE
-        );
-        // setOrientationLock(true);
-      };
-
-      lockOrientation();
-    }, [])
-  );
   useEffect(() => {
+    dismissAll();
     loadSound(require('../../../assets/music/bg-audio.wav'));
     return () => {
       stop();
@@ -57,23 +44,12 @@ export default function Feed() {
 
   // When orientation is locked, start the fade-in animation
   useEffect(() => {
-    // if (orientationLock) {
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 500,
       useNativeDriver: true,
     }).start();
-    // }
   }, []);
-
-  // While waiting for orientation lock, display a consistent placeholder
-  // if (!orientationLock) {
-  // return (
-  //   <View style={[styles.container, styles.centered]}>
-  //     <ActivityIndicator size="large" color="#ffffff" />
-  //   </View>
-  // );
-  // }
 
   // Render each card
   const renderItem = ({ item }: { item: Game }) => (

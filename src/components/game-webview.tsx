@@ -21,7 +21,6 @@ const GameWebView = ({ gameUrl, onGameReady }: Props) => {
   const router = useRouter();
   const { width, height } = useWindowDimensions();
 
-  // ✅ Memoized WebView to prevent rerendering
   const webView = useMemo(
     () => (
       <WebView
@@ -38,7 +37,7 @@ const GameWebView = ({ gameUrl, onGameReady }: Props) => {
           if (event.nativeEvent.data === 'onExit') {
             router.replace('/');
           } else if (event.nativeEvent.data === 'OnEnter') {
-            onGameReady(); // ✅ Notify parent component that the game is ready
+            onGameReady();
           }
         }}
         style={[styles.game, { width, height }]}

@@ -43,6 +43,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     hidden: true,
     translucent: true,
   },
+
   ios: {
     supportsTablet: true,
     bundleIdentifier: Env.BUNDLE_ID,

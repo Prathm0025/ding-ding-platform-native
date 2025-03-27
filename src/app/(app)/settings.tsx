@@ -11,11 +11,9 @@ import { colors, ScrollView, View } from '@/components/ui';
 import { Website } from '@/components/ui/icons';
 
 export default function Settings() {
-  // const signOut = useAuth.use.signOut();
   const { colorScheme } = useColorScheme();
   const iconColor =
     colorScheme === 'dark' ? colors.neutral[400] : colors.neutral[500];
-  // const { disconnect } = useSocket();
 
   return (
     <>
