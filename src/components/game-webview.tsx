@@ -30,7 +30,7 @@ const GameWebView = ({ gameUrl, onGameReady }: Props) => {
         injectedJavaScriptObject={{
           socketURL,
           token: authToken,
-          // nameSpace: '',
+          nameSpace: 'game',
         }}
         javaScriptEnabled={true}
         onMessage={(event) => {

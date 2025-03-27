@@ -3,6 +3,7 @@
 import { Redirect, SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React, { useCallback, useEffect } from 'react';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import { useAuth, useIsFirstTime } from '@/lib';
 import { cacheImages } from '@/lib/utils/cache-image';
@@ -48,23 +49,39 @@ export default function MainLayout() {
 
   return (
     <>
-      <StatusBar hidden />
-      <Stack screenOptions={{ statusBarHidden: true, gestureEnabled: true }}>
-        <Stack.Screen
-          name="index"
-          options={{
-            title: 'Games',
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="settings"
-          options={{
-            title: 'Settings',
-            // headerShown: false,
-          }}
-        />
-      </Stack>
+      <SafeAreaProvider>
+        <SafeAreaView
+          style={{ flex: 1 }}
+          edges={['top', 'left', 'right', 'bottom']}
+        >
+          <StatusBar hidden />
+          <Stack
+            screenOptions={{ statusBarHidden: true, gestureEnabled: true }}
+          >
+            <Stack.Screen
+              name="index"
+              options={{
+                title: 'Games',
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="settings"
+              options={{
+                title: 'Settings',
+                // headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="login"
+              options={{
+                title: 'login',
+                headerShown: false,
+              }}
+            />
+          </Stack>
+        </SafeAreaView>
+      </SafeAreaProvider>
     </>
   );
 }

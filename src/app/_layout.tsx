@@ -10,6 +10,7 @@ import { StyleSheet } from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import { APIProvider } from '@/api';
 import { hydrateAuth, loadSelectedTheme } from '@/lib';
@@ -36,11 +37,21 @@ export default function RootLayout() {
   return (
     <Providers>
       <SocketProvider>
-        <Stack>
-          <Stack.Screen name="(app)" options={{ headerShown: false }} />
-          <Stack.Screen name="onboarding" options={{ headerShown: false }} />
-          <Stack.Screen name="login" options={{ headerShown: false }} />
-        </Stack>
+        <SafeAreaProvider>
+          <SafeAreaView
+            style={{ flex: 1, backgroundColor: '#fff' }}
+            edges={['top']}
+          >
+            <Stack>
+              <Stack.Screen name="(app)" options={{ headerShown: false }} />
+              <Stack.Screen
+                name="onboarding"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen name="login" options={{ headerShown: false }} />
+            </Stack>
+          </SafeAreaView>
+        </SafeAreaProvider>
       </SocketProvider>
     </Providers>
   );

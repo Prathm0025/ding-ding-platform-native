@@ -39,6 +39,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   runtimeVersion: '1.0.0', // Add this (can match your version or use semver-based versioning)
 
   assetBundlePatterns: ['**/*'],
+  androidStatusBar: {
+    hidden: true,
+    translucent: true,
+  },
   ios: {
     supportsTablet: true,
     bundleIdentifier: Env.BUNDLE_ID,

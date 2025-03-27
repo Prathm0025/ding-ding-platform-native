@@ -1,4 +1,5 @@
 /* eslint-disable max-lines-per-function */
+
 import { Ionicons } from '@expo/vector-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
@@ -6,15 +7,10 @@ import { Controller, useForm } from 'react-hook-form';
 import {
   ActivityIndicator,
   Image,
-  ImageBackground,
-  KeyboardAvoidingView,
-  Platform,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  useWindowDimensions,
   View,
 } from 'react-native';
 import * as z from 'zod';
@@ -34,7 +30,7 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
   });
   const { isSubmitting } = formState;
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const { width, height } = useWindowDimensions();
+  // const { width, height } = useWindowDimensions();
 
   const handleLogin = async (data: FormType) => {
     try {
@@ -44,213 +40,99 @@ export const LoginForm = ({ onSubmit = () => {} }: LoginFormProps) => {
     }
   };
 
-  const responsiveWidth = (percentage: number) => (percentage / 100) * width;
-  const responsiveHeight = (percentage: number) => (percentage / 100) * height;
-  const responsiveFontSize = (percentage: number) =>
-    (percentage / 100) * Math.sqrt(width * height);
-
   return (
-    <ImageBackground
-      source={require('../../assets/bg.webp')}
-      style={styles.background}
-    >
-      <ImageBackground
-        source={require('../../assets/lady.png')}
-        style={styles.ladyBackground}
-      >
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
-          style={styles.container}
+    <View className="flex-1 flex-row">
+      {/* Left Panel: Decorative Image */}
+      <View className="flex-1">
+        <Image
+          source={require('../../assets/lady.png')}
+          className="size-full"
+          resizeMode="cover"
+        />
+      </View>
+      {/* Right Panel: Login Form */}
+      <View className="flex-1 justify-center rounded-lg p-6 ">
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+          keyboardShouldPersistTaps="handled"
         >
-          <ScrollView
-            contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
-            keyboardShouldPersistTaps="handled"
-          >
-            <View
-              style={[
-                styles.innerContainer,
-                { paddingVertical: responsiveHeight(5) },
-              ]}
-            >
-              <View
-                style={[
-                  styles.formContainer,
-                  {
-                    padding: responsiveWidth(5),
-                    borderRadius: responsiveWidth(3),
-                  },
-                ]}
-              >
-                <Image
-                  source={require('../../assets/logoDingDing.png')}
-                  style={[
-                    styles.logo,
-                    {
-                      width: responsiveWidth(50),
-                      height: responsiveHeight(12),
-                    },
-                  ]}
-                />
+          <View className="items-center">
+            <Image
+              source={require('../../assets/logoDingDing.png')}
+              className="mb-6 h-20 w-1/2"
+              resizeMode="contain"
+            />
 
-                {/* Username Input */}
-                <View
-                  style={[
-                    styles.inputContainer,
-                    {
-                      height: responsiveHeight(6),
-                      borderRadius: responsiveWidth(20),
-                      paddingHorizontal: responsiveWidth(4),
-                    },
-                  ]}
-                >
-                  <Image
-                    source={require('../../assets/user.png')}
-                    style={[
-                      styles.icon,
-                      {
-                        width: responsiveWidth(6),
-                        height: responsiveHeight(3),
-                      },
-                    ]}
+            {/* Username Input */}
+            <View className="mb-4 h-12 flex-row items-center rounded-full border border-yellow-500 bg-black bg-opacity-60 px-4">
+              <Image
+                source={require('../../assets/user.png')}
+                className="mr-2 size-6"
+                resizeMode="contain"
+              />
+              <Controller
+                control={control}
+                name="username"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    placeholder="Username"
+                    placeholderTextColor="#fff"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    className="flex-1 text-base text-white"
                   />
-                  <Controller
-                    control={control}
-                    name="username"
-                    render={({ field: { onChange, onBlur, value } }) => (
-                      <TextInput
-                        placeholder="Username"
-                        style={[
-                          styles.input,
-                          { fontSize: responsiveFontSize(1.7) },
-                        ]}
-                        placeholderTextColor="#FFFFFF"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                      />
-                    )}
-                  />
-                </View>
-
-                {/* Password Input */}
-                <View
-                  style={[
-                    styles.inputContainer,
-                    {
-                      height: responsiveHeight(6),
-                      borderRadius: responsiveWidth(20),
-                      paddingHorizontal: responsiveWidth(4),
-                    },
-                  ]}
-                >
-                  <Image
-                    source={require('../../assets/lock.png')}
-                    style={[
-                      styles.icon,
-                      {
-                        width: responsiveWidth(6),
-                        height: responsiveHeight(3),
-                      },
-                    ]}
-                  />
-                  <Controller
-                    control={control}
-                    name="password"
-                    render={({ field: { onChange, onBlur, value } }) => (
-                      <TextInput
-                        placeholder="Password"
-                        style={[
-                          styles.input,
-                          { fontSize: responsiveFontSize(1.7) },
-                        ]}
-                        placeholderTextColor="#FFFFFF"
-                        secureTextEntry={!passwordVisible}
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                      />
-                    )}
-                  />
-                  <TouchableOpacity
-                    onPress={() => setPasswordVisible(!passwordVisible)}
-                  >
-                    <Ionicons
-                      name={passwordVisible ? 'eye' : 'eye-off'}
-                      size={responsiveFontSize(2)}
-                      color="#FFFFFF"
-                    />
-                  </TouchableOpacity>
-                </View>
-
-                {/* Login Button */}
-                <TouchableOpacity
-                  onPress={handleSubmit(handleLogin)}
-                  style={[
-                    styles.button,
-                    {
-                      paddingVertical: responsiveWidth(3),
-                      borderRadius: responsiveWidth(10),
-                    },
-                  ]}
-                >
-                  {isSubmitting ? (
-                    <ActivityIndicator color="#fff" />
-                  ) : (
-                    <Text
-                      style={[
-                        styles.buttonText,
-                        { fontSize: responsiveFontSize(2) },
-                      ]}
-                    >
-                      Login
-                    </Text>
-                  )}
-                </TouchableOpacity>
-              </View>
+                )}
+              />
             </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </ImageBackground>
-    </ImageBackground>
+
+            {/* Password Input */}
+            <View className="mb-4 h-12 flex-row items-center rounded-full border border-yellow-500 bg-black bg-opacity-60 px-4">
+              <Image
+                source={require('../../assets/lock.png')}
+                className="mr-2 size-6"
+                resizeMode="contain"
+              />
+              <Controller
+                control={control}
+                name="password"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <TextInput
+                    placeholder="Password"
+                    placeholderTextColor="#fff"
+                    secureTextEntry={!passwordVisible}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    value={value}
+                    className="flex-1 text-base text-white"
+                  />
+                )}
+              />
+              <TouchableOpacity
+                onPress={() => setPasswordVisible(!passwordVisible)}
+              >
+                <Ionicons
+                  name={passwordVisible ? 'eye' : 'eye-off'}
+                  size={20}
+                  color="#fff"
+                />
+              </TouchableOpacity>
+            </View>
+
+            {/* Login Button */}
+            <TouchableOpacity
+              onPress={handleSubmit(handleLogin)}
+              className="w-full items-center rounded-full bg-orange-500 py-3"
+            >
+              {isSubmitting ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text className="text-lg font-bold text-white">Login</Text>
+              )}
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
+    </View>
   );
 };
-
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
-  },
-  container: { flex: 1 },
-  innerContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  formContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    width: '85%',
-    alignItems: 'center',
-  },
-  logo: { resizeMode: 'contain', marginBottom: 20 },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    borderColor: '#FFB302',
-    borderWidth: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    marginBottom: 15,
-  },
-  icon: { marginRight: 10 },
-  input: { flex: 1, color: '#FFFFFF' },
-  button: { backgroundColor: '#F69E04', width: '100%', alignItems: 'center' },
-  buttonText: { color: '#fff', fontWeight: 'bold' },
-  ladyBackground: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-    zIndex: 1,
-  },
-});

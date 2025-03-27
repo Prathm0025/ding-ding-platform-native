@@ -100,6 +100,7 @@ export const Modal = React.forwardRef(
         {...detachedProps}
         ref={modal.ref}
         index={0}
+        enablePanDownToClose={true}
         snapPoints={snapPoints}
         backdropComponent={props.backdropComponent || renderBackdrop}
         enableDynamicSizing={false}

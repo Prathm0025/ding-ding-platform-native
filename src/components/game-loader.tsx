@@ -74,16 +74,23 @@ const GameLoader = () => {
   });
 
   return (
-    <ImageBackground
-      source={require('../../assets/game-loader-bg.png')} // Replace with your background image path
-      style={styles.overlay}
-      contentFit="cover"
-    >
-      <Image source={require('../../assets/logo.gif')} style={styles.loader} />
-      <View style={styles.progressBarContainer}>
-        <Animated.View style={[styles.progressBar, { width: progressWidth }]} />
-      </View>
-    </ImageBackground>
+    <>
+      <ImageBackground
+        source={require('../../assets/game-loader-bg.png')}
+        style={styles.overlay}
+        contentFit="cover"
+      >
+        <Image
+          source={require('../../assets/logo.gif')}
+          style={styles.loader}
+        />
+        <View style={styles.progressBarContainer}>
+          <Animated.View
+            style={[styles.progressBar, { width: progressWidth }]}
+          />
+        </View>
+      </ImageBackground>
+    </>
   );
 };
 

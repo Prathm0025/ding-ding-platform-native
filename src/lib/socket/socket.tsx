@@ -44,7 +44,6 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     const newSocket = io(`${Env.API_URL}/playground`, {
       auth: { token, origin: platformId, playgroundId: platformId },
       transports: ['websocket'],
-      reconnection: true,
     });
 
     newSocket.on('connect', () => {
@@ -63,6 +62,8 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     });
 
     newSocket.on('data', (eventData) => {
+      console.log(eventData, 'eventDta');
+
       // Only update if the new data is different from the last one
       if (JSON.stringify(eventData) !== JSON.stringify(lastDataRef.current)) {
         console.log('[WebSocket] New Data Received:', eventData);

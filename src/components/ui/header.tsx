@@ -21,6 +21,7 @@ const Header = React.memo(() => {
   const responsiveWidth = (percentage: number) => (percentage / 100) * width;
 
   const { data, disconnect } = useSocket();
+
   const router = useRouter();
   const name = getName();
   const signOut = useAuth.use.signOut();
@@ -70,8 +71,8 @@ const Header = React.memo(() => {
             {name}
           </Text>
           <Text style={[styles.coin, { fontSize: responsiveWidth(1.5) }]}>
-            {data?.data?.credits !== undefined
-              ? data.data.credits.toLocaleString()
+            {data?.payload !== undefined
+              ? data.payload?.credits.toFixed(2)
               : 'Loading...'}
           </Text>
         </View>

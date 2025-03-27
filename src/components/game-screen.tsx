@@ -1,5 +1,6 @@
 import { useRouter } from 'expo-router';
 import * as ScreenOrientation from 'expo-screen-orientation';
+import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import {
   AppState,
@@ -62,7 +63,7 @@ const GameScreen = ({ gameUrl }: { gameUrl: string }) => {
 
   return (
     <View style={[styles.container, { width, height }]}>
-      {/* ✅ Show loader only if game is not ready */}
+      <StatusBar hidden={true} />
       {!isGameReady && <GameLoader />}
 
       <GameWebView gameUrl={gameUrl} onGameReady={() => setIsGameReady(true)} />

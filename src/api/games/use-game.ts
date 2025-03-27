@@ -1,16 +1,33 @@
-import type { AxiosError } from 'axios';
-import { createQuery } from 'react-query-kit';
+// import { useSocket } from '@/lib/socket/socket';
+// import { Events } from '@/lib/utils/events';
+// import { createQuery } from 'react-query-kit';
 
-import { client } from '../common';
+// type Response = { url?: string; message?: string };
+// type Variables = { slug: string };
 
-type Response = any;
-type Variables = { slug: string; token: string }; // as react-query-kit is strongly typed, we need to specify the type of the variables as void in case we don't need them
+// export const useGame = createQuery<Response, Variables>({
+//   queryKey: ['gameUrl'],
+//   fetcher: (variables) => {
+//     return new Promise((resolve, reject) => {
+//       console.log("I am here for URL");
 
-export const useGame = createQuery<Response, Variables, AxiosError>({
-  queryKey: ['gameUrl'],
-  fetcher: (variable) => {
-    return client
-      .get(`api/games/${variable.slug}`)
-      .then((response) => response.data);
-  },
-});
+//       const { socket, status } = useSocket();
+// console.log(status);
+
+//       if (!socket || status !== 'connected') {
+
+//         return reject(new Error('Socket not connected'));
+//       }
+
+//       socket.emit(Events.PLAYGROUND_GAME_URL, { slug: variables.slug }, (res: any) => {
+//         console.log("I am here for URL 45");
+
+//         if (res.success) {
+//           resolve({ url: res.data.url });
+//         } else {
+//           reject(new Error(res.message));
+//         }
+//       });
+//     });
+//   },
+// });
