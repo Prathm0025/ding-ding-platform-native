@@ -1,4 +1,5 @@
 /* eslint-disable max-lines-per-function */
+
 import { FlashList } from '@shopify/flash-list';
 import { BlurView } from 'expo-blur';
 import { Image, ImageBackground } from 'expo-image';
@@ -17,6 +18,7 @@ export default function Feed() {
   const { data, isPending } = useGames();
   const loadSound = useSoundStore((state) => state.loadSound);
   const { isMuted, stop } = useSoundStore();
+  // const [orientationLock, setOrientationLock] = useState(false);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -40,12 +42,23 @@ export default function Feed() {
 
   // When orientation is locked, start the fade-in animation
   useEffect(() => {
+    // if (orientationLock) {
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 500,
       useNativeDriver: true,
     }).start();
+    // }
   }, []);
+
+  // While waiting for orientation lock, display a consistent placeholder
+  // if (!orientationLock) {
+  // return (
+  //   <View style={[styles.container, styles.centered]}>
+  //     <ActivityIndicator size="large" color="#ffffff" />
+  //   </View>
+  // );
+  // }
 
   // Render each card
   const renderItem = ({ item }: { item: Game }) => (

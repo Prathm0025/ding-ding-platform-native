@@ -3,13 +3,7 @@ import React, { useLayoutEffect } from 'react';
 import { Image } from 'react-native';
 
 import { useInstall } from '@/api/games/use-install';
-import {
-  Button,
-  FocusAwareStatusBar,
-  SafeAreaView,
-  Text,
-  View,
-} from '@/components/ui';
+import { Button, SafeAreaView, Text, View } from '@/components/ui';
 import { useIsFirstTime } from '@/lib';
 
 export default function Onboarding() {
@@ -30,7 +24,7 @@ export default function Onboarding() {
   };
   return (
     <View className="flex-1 items-center justify-center bg-black">
-      <FocusAwareStatusBar />
+      {/* <FocusAwareStatusBar /> */}
 
       {/* GIF Logo */}
       <Image
