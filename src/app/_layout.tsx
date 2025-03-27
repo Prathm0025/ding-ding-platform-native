@@ -42,7 +42,9 @@ export default function RootLayout() {
             style={{ flex: 1, backgroundColor: '#fff' }}
             edges={['top']}
           >
-            <Stack>
+            <Stack
+              screenOptions={{ statusBarHidden: true, gestureEnabled: true }}
+            >
               <Stack.Screen name="(app)" options={{ headerShown: false }} />
               <Stack.Screen
                 name="onboarding"

@@ -1,6 +1,4 @@
 /* eslint-disable max-lines-per-function */
-
-import { useBottomSheetModal } from '@gorhom/bottom-sheet';
 import { FlashList } from '@shopify/flash-list';
 import { BlurView } from 'expo-blur';
 import { Image, ImageBackground } from 'expo-image';
@@ -19,12 +17,10 @@ export default function Feed() {
   const { data, isPending } = useGames();
   const loadSound = useSoundStore((state) => state.loadSound);
   const { isMuted, stop } = useSoundStore();
-  // const [orientationLock, setOrientationLock] = useState(false);
-  const { dismissAll } = useBottomSheetModal();
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
+
   useEffect(() => {
-    dismissAll();
     loadSound(require('../../../assets/music/bg-audio.wav'));
     return () => {
       stop();
