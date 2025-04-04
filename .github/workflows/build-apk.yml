@@ -37,14 +37,21 @@ jobs:
 
       - name: ⚙️ Setup Expo
         uses: expo/expo-github-action@v8
+        run: npm install -g expo-cli
+        run: npm install -g eas-cli
         with:
+          expo-version: latest
+          eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
+          expo-cache: true
+          eas-cache: true
+
 
       - name: 🏗️ Prebuild (Android)
         run: pnpm prebuild
 
-      - name: 🚀 Build APK with Expo (EAS)
-        run: eas build --platform android --profile production --non-interactive --local
+      - name: Build Android APK
+        run: eas build --platform android --profile production --non-interactive
 
       - name: 📂 Find and Move APK to root
         run: |
