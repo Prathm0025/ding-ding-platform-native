@@ -1,0 +1,61 @@
+name: Build APK and Push to Repo
+
+on:
+  push:
+    branches:
+      - prathm
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+
+    env:
+      EAS_NO_VCS: 1  # Needed to avoid Git errors inside EAS builds
+
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: 🔧 Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: 📦 Install PNPM
+        run: npm install -g pnpm
+
+      - name: 📦 Install project dependencies
+        run: pnpm install
+
+      - name: ☕ Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: ⚙️ Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 🏗️ Prebuild (Android)
+        run: pnpm prebuild
+
+      - name: 🚀 Build APK with Expo (EAS)
+        run: eas build --platform android --profile production --non-interactive --local
+
+      - name: 📂 Find and Move APK to root
+        run: |
+          mkdir -p built-apk
+          find . -name '*.apk' -exec cp {} built-apk/app-release.apk \;
+
+      - name: 🆙 Commit and Push APK
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          cp built-apk/app-release.apk ./AppBuild.apk
+          git add AppBuild.apk
+          git commit -m "📦 New APK build [CI]" || echo "No changes to commit"
+          git push origin prathm
