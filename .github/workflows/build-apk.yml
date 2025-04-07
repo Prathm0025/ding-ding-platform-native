@@ -37,14 +37,17 @@ jobs:
 
       - name: ⚙️ Setup Expo
         uses: expo/expo-github-action@v8
-        run: npm install -g expo-cli
-        run: npm install -g eas-cli
         with:
           expo-version: latest
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
           expo-cache: true
           eas-cache: true
+
+      - name: 📥 Install Expo and EAS CLI
+        run: |
+          npm install -g expo-cli
+          npm install -g eas-cli
 
 
       - name: 🏗️ Prebuild (Android)
