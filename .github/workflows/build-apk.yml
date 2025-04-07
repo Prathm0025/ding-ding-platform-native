@@ -54,7 +54,7 @@ jobs:
         run: pnpm prebuild
 
       - name: Build Android APK
-        run: eas build --platform android --profile production --non-interactive
+        run: pnpm build:production:android
 
       - name: 📂 Find and Move APK to root
         run: |
