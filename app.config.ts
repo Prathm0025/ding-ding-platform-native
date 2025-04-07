@@ -26,7 +26,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   description: `${Env.NAME} Mobile App`,
   owner: Env.EXPO_ACCOUNT_OWNER,
   scheme: Env.SCHEME,
-  slug: 'ding-ding',
+  slug: 'ding-ding-house-apk',
   version: Env.VERSION.toString(),
   orientation: 'landscape',
   icon: './assets/icon.png',
