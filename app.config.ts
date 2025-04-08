@@ -3,23 +3,6 @@ import type { ConfigContext, ExpoConfig } from '@expo/config';
 
 import { ClientEnv, Env } from './env';
 
-// const appIconBadgeConfig: AppIconBadgeConfig = {
-//   enabled: false,
-//   badges: [
-//     {
-//       text: 'Ding Ding',
-//       type: 'banner',
-//       color: 'white',
-
-//     },
-//     {
-//       text: Env.VERSION.toString(),
-//       type: 'ribbon',
-//       color: 'white',
-//     },
-//   ],
-// };
-
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: Env.NAME,
@@ -32,13 +15,18 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   icon: './assets/icon.png',
   userInterfaceStyle: 'automatic',
   newArchEnabled: true,
+
   updates: {
     fallbackToCacheTimeout: 0,
-    url: 'https://u.expo.dev/ff3702db-2b39-4340-a46c-ca66d6d88e0e', // Add this
+    url: `https://u.expo.dev/${Env.EAS_PROJECT_ID}`, // Dynamic URL based on your env
   },
-  runtimeVersion: '1.0.0', // Add this (can match your version or use semver-based versioning)
+
+  runtimeVersion: {
+    policy: 'appVersion', // Uses version from appVersionSource
+  },
 
   assetBundlePatterns: ['**/*'],
+
   androidStatusBar: {
     hidden: true,
     translucent: true,
@@ -48,12 +36,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     supportsTablet: true,
     bundleIdentifier: Env.BUNDLE_ID,
     config: {
-      usesNonExemptEncryption: false, // Avoid the export compliance warning on the app store
+      usesNonExemptEncryption: false,
     },
   },
-  experiments: {
-    typedRoutes: true,
-  },
+
   android: {
     adaptiveIcon: {
       foregroundImage: './assets/icon.png',
@@ -61,10 +47,16 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
     package: Env.PACKAGE,
   },
+
   web: {
     favicon: './assets/icon.png',
     bundler: 'metro',
   },
+
+  experiments: {
+    typedRoutes: true,
+  },
+
   plugins: [
     [
       'expo-splash-screen',
@@ -84,6 +76,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     'expo-router',
     ['react-native-edge-to-edge'],
   ],
+
   extra: {
     ...ClientEnv,
     eas: {
