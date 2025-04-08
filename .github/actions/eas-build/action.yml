@@ -29,7 +29,7 @@ name: 'Setup EAS Build + Trigger Build'
 description: 'Setup EAS Build + Trigger Build'
 inputs:
   APP_ENV:
-    description: 'APP_ENV (one of): development, staging, production'
+    description: 'APP_ENV (one of): production'
     required: true
     default: 'production'
   AUTO_SUBMIT: ## TODO: we need to handle this too
@@ -77,9 +77,4 @@ runs:
     - name: 📱 Run Android Build
       if: ${{ inputs.ANDROID == 'true' }}
       run: pnpm build:${{ inputs.APP_ENV }}:android --non-interactive  --no-wait --message "Build  ${{ inputs.APP_ENV }} ${{ inputs.VERSION }}"
-      shell: bash
-
-    - name: 📱 Run IOS Build
-      if: ${{ inputs.IOS == 'true' }}
-      run: pnpm build:${{ inputs.APP_ENV }}:ios --non-interactive  --no-wait --message "Build ${{ inputs.APP_ENV }} ${{ inputs.VERSION }}"
       shell: bash
