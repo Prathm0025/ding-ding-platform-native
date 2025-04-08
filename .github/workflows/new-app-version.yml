@@ -62,4 +62,4 @@ jobs:
 
       - name: 🏃‍♂️ Run App release
         run: |
-          pnpm app-release ${{ github.event.inputs.release-type }} -- --branch=prathm
+          pnpm app-release ${{ github.event.inputs.release-type }}
