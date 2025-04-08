@@ -31,7 +31,7 @@ inputs:
   APP_ENV:
     description: 'APP_ENV (one of): development, staging, production'
     required: true
-    default: 'staging'
+    default: 'production'
   AUTO_SUBMIT: ## TODO: we need to handle this too
     description: 'AUTO_SUBMIT (one of): true, false'
     required: true
