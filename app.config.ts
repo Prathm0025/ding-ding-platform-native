@@ -21,9 +21,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     url: `https://u.expo.dev/${Env.EAS_PROJECT_ID}`, // Dynamic URL based on your env
   },
 
-  runtimeVersion: {
-    policy: 'appVersion', // Uses version from appVersionSource
-  },
+  runtimeVersion: Env.VERSION.toString(),
 
   assetBundlePatterns: ['**/*'],
 
