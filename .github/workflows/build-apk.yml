@@ -3,7 +3,7 @@ name: Build APK and Push to Repo
 on:
   push:
     branches:
-      - main
+      - prathm
 
 jobs:
   build-apk:
