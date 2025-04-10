@@ -52,7 +52,7 @@ jobs:
         run: pnpm prebuild
 
       - name: Build Android APK
-        run: pnpm build:production:android
+        run: pnpm build:development:android
 
       - name: 📂 Find and Move APK to root
         run: |
