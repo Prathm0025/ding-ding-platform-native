@@ -26,6 +26,7 @@
       "channel": "staging",
       "distribution": "internal",
       "pnpm": "9.12.3",
+      "installCommand": "pnpm install",
       "ios": {
         "image": "latest"
       },
@@ -43,6 +44,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "pnpm": "9.12.3",
+      "installCommand": "pnpm install",
       "ios": {
         "image": "latest"
       },
