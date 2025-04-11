@@ -71,7 +71,4 @@
   "submit": {
     "production": {}
   },
-  "hooks": {
-    "preinstall": "eas-build-pre-install.sh"
-  }
 }
