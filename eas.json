@@ -3,10 +3,14 @@
     "version": ">= 3.8.1",
     "appVersionSource": "remote"
   },
+  "packageManager": "pnpm@9.12.3",
   "build": {
     "production": {
       "channel": "production",
       "distribution": "store",
+      "node": "18", 
+      "npm": null,
+      "yarn": null,
       "pnpm": "9.12.3",
       "ios": {
         "image": "latest"
