@@ -8,21 +8,23 @@ jobs:
     name: EAS Update
     runs-on: ubuntu-latest
     steps:
-      - name: Check for EXPO_TOKEN
-        run: |
-          if [ -z "${{ secrets.EXPO_TOKEN }}" ]; then
-            echo "You must provide an EXPO_TOKEN secret linked to this project's Expo account in this repo's secrets. Learn more: https://docs.expo.dev/eas-update/github-actions"
-            exit 1
-          fi
-
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: 16.x
-          cache: yarn
+          cache: 'pnpm'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install pnpm
+        run: corepack prepare pnpm@10.6.5 --activate
+
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Setup Expo
         uses: expo/expo-github-action@v7
@@ -30,9 +32,6 @@ jobs:
           expo-version: latest
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
-
-      - name: 📦 Install dependencies
-        run: yarn install
 
       - name: Build APK
         run: eas build --profile preview --platform android --non-interactive --clear-cache
