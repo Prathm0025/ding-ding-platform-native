@@ -56,7 +56,7 @@ jobs:
           path: android/app/build/outputs/apk/release/
 
       - name: Upload AAB (App Bundle) Release - ${{ env.repository_name }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.date_today }} - ${{ env.repository_name }} - App bundle(s) AAB release generated
           path: android/app/build/outputs/bundle/release/
