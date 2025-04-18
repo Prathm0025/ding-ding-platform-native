@@ -55,19 +55,19 @@ jobs:
           name: ${{ env.date_today }} - ${{ env.repository_name }} - APK(s) release generated
           path: android/app/build/outputs/apk/release/
 
-      - name: Push APK & AAB to the repository
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git config --global http.postBuffer 524288000
-          git fetch
-          git checkout ${{ github.ref_name }}
-          mkdir -p release-artifacts/
-          cp android/app/build/outputs/apk/release/*.apk release-artifacts/
-
-          git add release-artifacts/
-          git commit -m "chore(build): 🤖 auto-commit APK & AAB on ${{ env.date_today }}"
-          git pull --rebase origin ${{ github.ref_name }}
-          git push origin HEAD:${{ github.ref_name }}
+      - name: Release APK to GitHub Releases
+        uses: softprops/action-gh-release@v1
+        with:
+          name: "${{ env.date_today }} Android Release"
+          tag_name: "release-${{ env.date_today }}"
+          files: |
+            android/app/build/outputs/apk/release/app-release.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Upload APK to S3
+        run: aws s3 cp android/app/build/outputs/apk/release/app-release.apk s3://dingdingapk-prod/apks/app-release-${{ env.date_today }}.apk
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ap-south-1
