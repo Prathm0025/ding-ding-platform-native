@@ -19,6 +19,9 @@ jobs:
       - name: Set repository name as env variable
         run: echo "repository_name=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
 
+      - name: Generate unique release tag
+        run: echo "release_tag=release-${{ env.date_today }}-${{ github.run_number }}" >> $GITHUB_ENV
+
       - name: ☕ Setup JDK
         uses: actions/setup-java@v3
         with:
@@ -49,6 +52,9 @@ jobs:
           cd android
           ./gradlew bundleRelease
 
+      - name: Ensure output directory exists
+        run: mkdir -p android/app/build/outputs/apk/release/
+
       - name: Upload APK Release - ${{ env.repository_name }}
         uses: actions/upload-artifact@v4
         with:
@@ -59,14 +65,17 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           name: "${{ env.date_today }} Android Release"
-          tag_name: "release-${{ env.date_today }}"
+          tag_name: "${{ env.release_tag }}"
           files: |
             android/app/build/outputs/apk/release/app-release.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - name: Upload APK to S3
-        run: aws s3 cp android/app/build/outputs/apk/release/app-release.apk s3://dingdingapk-prod/apks/app-release-${{ env.date_today }}.apk
+      - name: Upload APK to S3 (public)
+        run: |
+          aws s3 cp android/app/build/outputs/apk/release/app-release.apk \
+            s3://dingdingapk-prod/apks/app-release-${{ env.date_today }}.apk \
+            --acl public-read
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
