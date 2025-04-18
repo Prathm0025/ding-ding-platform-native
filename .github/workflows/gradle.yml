@@ -59,6 +59,7 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
+          git config --global http.postBuffer 524288000
           git fetch
           git checkout ${{ github.ref_name }}
           mkdir -p release-artifacts/
@@ -66,6 +67,7 @@ jobs:
 
           git add release-artifacts/
           git commit -m "chore(build): 🤖 auto-commit APK & AAB on ${{ env.date_today }}"
+          git pull --rebase origin ${{ github.ref_name }}
           git push origin HEAD:${{ github.ref_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
