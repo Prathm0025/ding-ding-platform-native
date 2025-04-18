@@ -55,8 +55,17 @@ jobs:
           name: ${{ env.date_today }} - ${{ env.repository_name }} - APK(s) release generated
           path: android/app/build/outputs/apk/release/
 
-      - name: Upload AAB (App Bundle) Release - ${{ env.repository_name }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.date_today }} - ${{ env.repository_name }} - App bundle(s) AAB release generated
-          path: android/app/build/outputs/bundle/release/
+      - name: Push APK & AAB to the repository
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git fetch
+          git checkout ${{ github.ref_name }}
+          mkdir -p release-artifacts/
+          cp android/app/build/outputs/apk/release/*.apk release-artifacts/
+
+          git add release-artifacts/
+          git commit -m "🤖 Auto-commit: Added APK & AAB on ${{ env.date_today }}"
+          git push origin HEAD:${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
