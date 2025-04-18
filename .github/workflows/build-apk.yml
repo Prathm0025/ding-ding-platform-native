@@ -1,9 +1,7 @@
 name: Build APK and Push to Repo
 
 on:
-  push:
-    branches:
-      - prathm
+  workflow_dispatch:
 
 jobs:
   build-apk:
