@@ -65,7 +65,7 @@ jobs:
           cp android/app/build/outputs/apk/release/*.apk release-artifacts/
 
           git add release-artifacts/
-          git commit -m "🤖 Auto-commit: Added APK & AAB on ${{ env.date_today }}"
+          git commit -m "chore(build): 🤖 auto-commit APK & AAB on ${{ env.date_today }}"
           git push origin HEAD:${{ github.ref_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
