@@ -13,14 +13,23 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
 
-      - name: Set current date as env variable
+      - name: 📆 Set current date
         run: echo "date_today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
-      - name: Set repository name as env variable
+      - name: 📁 Set repository name
         run: echo "repository_name=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
 
-      - name: Generate unique release tag
-        run: echo "release_tag=release-${{ env.date_today }}-${{ github.run_number }}" >> $GITHUB_ENV
+      - name: 🔢 Get today's build count
+        id: build_counter
+        run: |
+          builds=$(gh release list --limit 100 --repo "${{ github.repository }}" | grep "${{ env.date_today }}" | wc -l)
+          echo "build_count=$((builds + 1))" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: 🏷️ Set release tag
+        run: |
+          echo "release_tag=DingDingHouse-${{ env.date_today }}-${{ steps.build_counter.outputs.build_count }}" >> $GITHUB_ENV
 
       - name: ☕ Setup JDK
         uses: actions/setup-java@v3
@@ -39,42 +48,54 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Setup Android SDK
+      - name: 🛠️ Setup Android SDK
         uses: android-actions/setup-android@v2
 
-      - name: Build Android APK
+      - name: 📦 Build Android APK
         run: |
           cd android
           ./gradlew assembleRelease
 
-      - name: Build Android AAB
+      - name: 📦 Rename APK to DingDingHouse.apk
         run: |
-          cd android
-          ./gradlew bundleRelease
+          mv android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/DingDingHouse.apk
 
-      - name: Ensure output directory exists
+      - name: 📂 Ensure output directory exists
         run: mkdir -p android/app/build/outputs/apk/release/
 
-      - name: Upload APK Release - ${{ env.repository_name }}
+      - name: ⬆️ Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.date_today }} - ${{ env.repository_name }} - APK(s) release generated
-          path: android/app/build/outputs/apk/release/
+          name: ${{ env.date_today }} - ${{ env.repository_name }} - DingDingHouse.apk
+          path: android/app/build/outputs/apk/release/DingDingHouse.apk
 
-      - name: Release APK to GitHub Releases
+      - name: 🚀 Release APK to GitHub Releases
         uses: softprops/action-gh-release@v1
         with:
-          name: "${{ env.date_today }} Android Release"
+          name: "DingDingHouse-${{ env.date_today }} #${{ steps.build_counter.outputs.build_count }}"
           tag_name: "${{ env.release_tag }}"
-          files: |
-            android/app/build/outputs/apk/release/app-release.apk
+          files: android/app/build/outputs/apk/release/DingDingHouse.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - name: Upload APK to S3 (public)
+      - name: 🗑️ Delete existing APK on S3 (if exists)
         run: |
-          aws s3 cp android/app/build/outputs/apk/release/app-release.apk \
-            s3://dingdingapk-prod/apks/app-release-${{ env.date_today }}.apk \
+          set -e
+          if aws s3 ls s3://dingdingapk-prod/apks/DingDingHouse.apk; then
+            echo "Old APK found. Deleting..."
+            aws s3 rm s3://dingdingapk-prod/apks/DingDingHouse.apk
+          else
+            echo "No previous APK found."
+          fi
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ap-south-1
+
+      - name: ☁️ Upload APK to S3 (public)
+        run: |
+          aws s3 cp android/app/build/outputs/apk/release/DingDingHouse.apk \
+            s3://dingdingapk-prod/apks/DingDingHouse.apk \
             --acl public-read
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
